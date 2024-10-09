@@ -1,67 +1,162 @@
 {
+  "formTitle": "Cadastro de fornecedore",
+  "saveBtnTitle": "Salvar",
+  "deleteBtnTitle": "Deletar",
+  "updateBtnTitle": "Atualizar",
   "controls": [
-   {
-     "name": "id",
-     "label": "Código",
-     "value": "",
-     "type": "text",
-     "validators": {
-       "required": true,
-       "minLength": 6
-     }
-   },
-   {
-     "name": "name",
-     "label": "Nome",
-     "value": "",
-     "type": "text",
-     "validators": {
-       "required": true
-     }
-   },
-   {
-     "name": "nature",
-     "label": "Natureza",
-     "value": ["Pessoa Física","Jurídica"],
-     "type": "select",
-     "validators": {}
-   },
-   {
-     "name": "address",
-     "label": "Endereço",
-     "value": "",
-     "type": "text",
-     "validators": {
-       "required": true
-     }
-   },
-   {
-     "name": "active",
-     "label": "Ativo",
-     "value": "true",
-     "type": "toggle",
-     "validators": {}
-   },
-   {
-     "name": "acceptPix",
-     "label": "Aceita Pix",
-     "value": "false",
-     "type": "checkbox",
-     "validators": {}
-   },
-   {
-     "name": "keyPixType",
-     "label": "Natureza",
-     "value": ["CNPJ/CPF", "E-mail", "Celular","Chave Aleatória"],
-     "type": "select",
-     "validators": {}
-   },
-   {
-     "name": "obs",
-     "label": "Observação",
-     "value": "",
-     "type": "textarea",
-     "validators": {}
-   }
+    {
+      "name": "id",
+      "label": "Código",
+      "value": "",
+      "type": "text",
+      "validators": [
+        {
+          "required": true,
+          "message": "Campo id Obrigatório!"
+        },
+        {
+          "minLength": 6,
+          "message": "Precisa ter no minimo 6 caracteres!"
+        }
+      ]
+    },
+    {
+      "name": "name",
+      "label": "Nome",
+      "placeholder": "Digite seu Usuário!",
+      "value": "",
+      "type": "text",
+      "validators": [
+        {
+          "required": true,
+          "message": "Campo id Obrigatório!"
+        }
+      ]
+    },
+    {
+      "name": "nature",
+      "label": "Natureza",
+      "options": [
+        {
+          "id": "1",
+          "value": "Pessoa fisica"
+        },
+        {
+          "id": "2",
+          "value": "Pessoa Jurídica"
+        }
+      ],
+      "type": "select",
+      "validators": {}
+    },
+    {
+      "name": "address",
+      "label": "Endereço",
+      "placeholder": "Endereço...",
+      "value": "",
+      "type": "text",
+      "validators": [
+        {
+          "required": true,
+          "message": "Campo endereço Obrigatório!"
+        }
+      ]
+    },
+    {
+      "name": "active",
+      "label": "Ativo",
+      "value": "true",
+      "type": "toggle",
+      "validators": {}
+    },
+    {
+      "name": "acceptPix",
+      "label": "Aceita Pix",
+      "value": "false",
+      "type": "checkbox",
+      "validators": {}
+    },
+    {
+      "name": "pixType",
+      "label": "Tipo da Chave Pix",
+      "options": [
+        {
+          "id": "1",
+          "value": "CPF/CNPJ"
+        },
+        {
+          "id": "2",
+          "value": "E-mail"
+        },
+        {
+          "id": "3",
+          "value": "Celular"
+        },
+        {
+          "id": "4",
+          "value": "Chave Aleatória"
+        }
+      ],
+      "type": "select",
+      "validators": {}
+    },
+    {
+      "name": "keyPix",
+      "label": "Chave Pix",
+      "placeholder": "Digite sua chave pix CPF/CNPJ",
+      "value": "",
+      "type": "text",
+      "validators": [
+        {
+          "required": true,
+          "message": "Campo Obrigatório!"
+        },
+        {
+          "minLength": 11,
+          "message": "Precisa ter no minimo 11 caracteres!"
+        },
+        {
+          "maxLength": 14,
+          "message": "14 caracteres permitido no maximo!"
+        }
+      ]
+    },
+    {
+      "name": "keyPix",
+      "label": "Chave Pix",
+      "placeholder": "Digite sua chave pix E-mail",
+      "value": "",
+      "type": "text",
+      "validators": {
+        "required": true
+      }
+    },
+    {
+      "name": "keyPix",
+      "label": "Chave Pix",
+      "placeholder": "Digite sua chave pix Telefone",
+      "value": "",
+      "type": "number",
+      "validators": {
+        "required": true
+      }
+    },
+    {
+      "name": "keyPix",
+      "label": "Chave Pix",
+      "placeholder": "Digite sua chave pix Aleatória",
+      "value": "",
+      "type": "text",
+      "validators": {
+        "required": true
+      }
+    },
+    {
+      "name": "obs",
+      "label": "Observação",
+      "value": "",
+      "type": "textarea",
+      "validators": {}
+    }
   ]
- }
+}
