@@ -1,0 +1,67 @@
+{
+  "controls": [
+   {
+     "name": "id",
+     "label": "Código",
+     "value": "",
+     "type": "text",
+     "validators": {
+       "required": true,
+       "minLength": 6
+     }
+   },
+   {
+     "name": "name",
+     "label": "Nome",
+     "value": "",
+     "type": "text",
+     "validators": {
+       "required": true
+     }
+   },
+   {
+     "name": "nature",
+     "label": "Natureza",
+     "value": ["Pessoa Física","Jurídica"],
+     "type": "select",
+     "validators": {}
+   },
+   {
+     "name": "address",
+     "label": "Endereço",
+     "value": "",
+     "type": "text",
+     "validators": {
+       "required": true
+     }
+   },
+   {
+     "name": "active",
+     "label": "Ativo",
+     "value": "true",
+     "type": "toggle",
+     "validators": {}
+   },
+   {
+     "name": "acceptPix",
+     "label": "Aceita Pix",
+     "value": "false",
+     "type": "checkbox",
+     "validators": {}
+   },
+   {
+     "name": "keyPixType",
+     "label": "Natureza",
+     "value": ["CNPJ/CPF", "E-mail", "Celular","Chave Aleatória"],
+     "type": "select",
+     "validators": {}
+   },
+   {
+     "name": "obs",
+     "label": "Observação",
+     "value": "",
+     "type": "textarea",
+     "validators": {}
+   }
+  ]
+ }
