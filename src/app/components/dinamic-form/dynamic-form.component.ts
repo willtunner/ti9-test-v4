@@ -24,7 +24,7 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
     MatSlideToggleModule,
     MatButtonModule,
     MatIconModule,
-    MatDialogModule
+    MatDialogModule,
   ],
   templateUrl: './dynamic-form.component.html',
   styleUrl: './dynamic-form.component.css'
@@ -33,24 +33,24 @@ export class DynamicFormComponent implements OnInit {
 
   form: IForm;
   fb = inject(FormBuilder);
-  dynamicFormGroup: FormGroup = this.fb.group({});
+  dynamicFormGroup: FormGroup = this.fb.group({}, {updateOn: 'submit'});
 
   constructor(
     public dialogRef: MatDialogRef<DynamicFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    console.log(data)
-    this.form = data.formData;
+    this.form = data;
   }
 
 
   ngOnInit(): void {
+    console.log('form dinamico', this.form);
     if (this.form?.formControls) {
       let formGroup: any = {};
       this.form.formControls.forEach((control: IFormControl) => {
         let controlValidators: any = [];
 
-        if (control.validators) {
+        if (control.validators && Array.isArray(control.validators)) {
           control.validators.forEach((val: IValidator) => {
             if (val.validatorName === 'required') controlValidators.push(Validators.required);
             if (val.validatorName === 'email') controlValidators.push(Validators.email);
@@ -64,6 +64,9 @@ export class DynamicFormComponent implements OnInit {
 
       this.dynamicFormGroup = this.fb.group(formGroup);
     }
+
+
+console.log('acceptPix',this.isPixAccepted());
   }
 
   onsubmit() {
@@ -71,11 +74,40 @@ console.log(this.dynamicFormGroup.value);
 
   }
 
+  onCancel() {
+    this.dynamicFormGroup.reset();
+  }
+
+  isPixAccepted(): boolean {
+    return this.dynamicFormGroup.get('acceptPix')?.value;
+  }
+
   closeDialog(): void {
 
     this.dialogRef.close({ name: 'Novo Nome', email: 'novo-email@example.com' });
   }
 
+  // getInvalidControls(): { [key: string]: any } {
+  //   const invalidControls: { [key: string]: any } = {};
+  //   Object.keys(this.dynamicFormGroup.controls).forEach(key => {
+  //     const control = this.dynamicFormGroup.get(key);
+  //     if (control && control.invalid) {
+  //       invalidControls[key] = control.errors;
+  //     }
+  //   });
+  //   return invalidControls;
+  // }
+
+  getValidationErros(control: IFormControl): string {
+    const myFormControl = this.dynamicFormGroup.get(control.name);
+    let errorMessage = '';
+    control.validators.forEach((val) => {
+      if(myFormControl?.hasError(val.validatorName as string)) {
+        errorMessage = val.message as string;
+      }
+    });
+    return errorMessage;
+  }
 
 }
 
