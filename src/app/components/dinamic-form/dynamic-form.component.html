@@ -1,0 +1,88 @@
+<h2 mat-dialog-title>{{ form }}</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="dynamicFormGroup">
+    <!-- Campo Nome -->
+    <mat-form-field>
+      <mat-label>Nome</mat-label>
+      <input matInput>
+      <mat-error>Nome é obrigatório.</mat-error>
+    </mat-form-field>
+
+        <!-- Natureza como subgrupo -->
+        <div>
+          <!-- Campo Tipo de Natureza -->
+          <mat-form-field>
+            <mat-label>Natureza</mat-label>
+            <mat-select>
+              <mat-option value="Pessoa Física">Pessoa Física</mat-option>
+              <mat-option value="Pessoa Jurídica">Pessoa Jurídica</mat-option>
+            </mat-select>
+            <mat-error>Natureza é obrigatória.</mat-error>
+          </mat-form-field>
+
+          <!-- Campo Documento (CPF/CNPJ) -->
+          <mat-form-field>
+            <mat-label>Documento</mat-label>
+            <input matInput>
+            <mat-error>Documento é obrigatório.</mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Campo Endereço -->
+    <mat-form-field>
+      <mat-label>Endereço</mat-label>
+      <input matInput>
+      <mat-error>Endereço é obrigatório.</mat-error>
+    </mat-form-field>
+
+    <!-- Campo Estado (UF) -->
+    <mat-form-field>
+      <mat-label>Estado (UF)</mat-label>
+      <mat-select>
+        <mat-option value="SP">São Paulo</mat-option>
+        <mat-option value="RJ">Rio de Janeiro</mat-option>
+      </mat-select>
+      <mat-error>Estado é obrigatório.</mat-error>
+    </mat-form-field>
+
+    <!-- Slide Toggle Ativo -->
+    <mat-slide-toggle>Ativo</mat-slide-toggle>
+
+    <!-- Checkbox Aceita Pix -->
+    <mat-checkbox>Aceita Pix</mat-checkbox>
+
+    <div>
+    <!-- Tipo de Chave Pix -->
+    <mat-form-field>
+      <mat-label>Tipo de Chave Pix</mat-label>
+      <mat-select>
+        <mat-option value="CNPJ/CPF">CNPJ/CPF</mat-option>
+        <mat-option value="E-mail">E-mail</mat-option>
+        <mat-option value="Celular">Celular</mat-option>
+        <mat-option value="Chave Aleatória">Chave Aleatória</mat-option>
+      </mat-select>
+      <mat-error>Tipo de Chave Pix é obrigatório.</mat-error>
+    </mat-form-field>
+
+    <!-- Campo Chave Pix -->
+    <mat-form-field>
+      <mat-label>Chave Pix</mat-label>
+      <input matInput>
+      <mat-error>Error Pix</mat-error>
+    </mat-form-field>
+    </div>
+
+    <!-- Campo Observações -->
+    <mat-form-field>
+      <mat-label>Observações</mat-label>
+      <textarea matInput></textarea>
+    </mat-form-field>
+
+    <!-- Botões de Ação -->
+    <div class="button-container">
+      <button mat-raised-button color="primary" class="save-button">Salvar</button>
+      <button mat-raised-button color="warn" class="cancel-button">Cancelar</button>
+    </div>
+  </form>
+</mat-dialog-content>

@@ -1,0 +1,35 @@
+mat-dialog-content {
+  padding: 20px; /* Espaçamento geral na modal */
+}
+
+form {
+  display: flex;
+  flex-direction: column; /* Para colocar cada campo em uma linha */
+}
+
+mat-form-field {
+  margin-bottom: 20px; /* Espaçamento entre os campos */
+  width: 100%; /* Garantir que o campo ocupe toda a largura */
+}
+
+/* Estilo para os botões */
+.button-container {
+  display: flex;
+  justify-content: flex-end; /* Para alinhar os botões à direita */
+  gap: 10px; /* Espaçamento entre os botões */
+}
+
+.save-button {
+  background-color: #4caf50; /* Verde */
+  color: white; /* Cor do texto */
+}
+
+.cancel-button {
+  background-color: #f44336; /* Vermelho */
+  color: white; /* Cor do texto */
+}
+
+.save-button:hover,
+.cancel-button:hover {
+  opacity: 0.8; /* Efeito de hover */
+}

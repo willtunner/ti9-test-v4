@@ -1,20 +1,23 @@
-{
-  "formTitle": "Cadastro de fornecedore",
+export const supplierFormConfig = {
+  "formTitle": "Cadastro de fornecedor",
   "saveBtnTitle": "Salvar",
   "deleteBtnTitle": "Deletar",
   "updateBtnTitle": "Atualizar",
-  "controls": [
+  "formControls": [
     {
       "name": "id",
       "label": "Código",
       "value": "",
       "type": "text",
+      "class": "",
       "validators": [
         {
+          "validatorName": "required",
           "required": true,
-          "message": "Campo id Obrigatório!"
+          "message": "Campo Obrigatório!"
         },
         {
+          "validatorName": "minlength",
           "minLength": 6,
           "message": "Precisa ter no minimo 6 caracteres!"
         }
@@ -26,10 +29,12 @@
       "placeholder": "Digite seu Usuário!",
       "value": "",
       "type": "text",
+      "class": "",
       "validators": [
         {
+          "validatorName": "required",
           "required": true,
-          "message": "Campo id Obrigatório!"
+          "message": "Campo Obrigatório!"
         }
       ]
     },
@@ -47,6 +52,7 @@
         }
       ],
       "type": "select",
+      "class": "",
       "validators": {}
     },
     {
@@ -55,10 +61,12 @@
       "placeholder": "Endereço...",
       "value": "",
       "type": "text",
+      "class": "",
       "validators": [
         {
+          "validatorName": "required",
           "required": true,
-          "message": "Campo endereço Obrigatório!"
+          "message": "Campo Obrigatório!"
         }
       ]
     },
@@ -67,6 +75,7 @@
       "label": "Ativo",
       "value": "true",
       "type": "toggle",
+      "class": "",
       "validators": {}
     },
     {
@@ -74,6 +83,7 @@
       "label": "Aceita Pix",
       "value": "false",
       "type": "checkbox",
+      "class": "",
       "validators": {}
     },
     {
@@ -98,6 +108,7 @@
         }
       ],
       "type": "select",
+      "class": "",
       "validators": {}
     },
     {
@@ -106,16 +117,20 @@
       "placeholder": "Digite sua chave pix CPF/CNPJ",
       "value": "",
       "type": "text",
+      "class": "",
       "validators": [
         {
+          "validatorName": "required",
           "required": true,
           "message": "Campo Obrigatório!"
         },
         {
+          "validatorName": "minlength",
           "minLength": 11,
           "message": "Precisa ter no minimo 11 caracteres!"
         },
         {
+          "validatorName": "maxlength",
           "maxLength": 14,
           "message": "14 caracteres permitido no maximo!"
         }
@@ -127,8 +142,11 @@
       "placeholder": "Digite sua chave pix E-mail",
       "value": "",
       "type": "text",
+      "class": "",
       "validators": {
-        "required": true
+        "validatorName": "required",
+        "required": true,
+        "message": "Campo Obrigatório!"
       }
     },
     {
@@ -137,8 +155,11 @@
       "placeholder": "Digite sua chave pix Telefone",
       "value": "",
       "type": "number",
+      "class": "",
       "validators": {
-        "required": true
+        "validatorName": "required",
+        "required": true,
+        "message": "Campo Obrigatório!"
       }
     },
     {
@@ -147,8 +168,11 @@
       "placeholder": "Digite sua chave pix Aleatória",
       "value": "",
       "type": "text",
+      "class": "",
       "validators": {
-        "required": true
+        "validatorName": "required",
+        "required": true,
+        "message": "Campo Obrigatório!"
       }
     },
     {
@@ -156,6 +180,7 @@
       "label": "Observação",
       "value": "",
       "type": "textarea",
+      "class": "",
       "validators": {}
     }
   ]
