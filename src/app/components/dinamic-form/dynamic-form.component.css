@@ -1,0 +1,31 @@
+.container2 {
+    display: flex;
+    justify-content: center;
+}
+
+.base {
+    width: 90%;
+}
+
+
+
+.button-container {
+    display: flex;
+    justify-content: flex-end; /* Para alinhar os botões à direita */
+    gap: 10px; /* Espaçamento entre os botões */
+  }
+
+  .save-button {
+    background-color: #4caf50; /* Verde */
+    color: white; /* Cor do texto */
+  }
+
+  .cancel-button {
+    background-color: #f44336; /* Vermelho */
+    color: white; /* Cor do texto */
+  }
+
+  .save-button:hover,
+  .cancel-button:hover {
+    opacity: 0.8; /* Efeito de hover */
+  }

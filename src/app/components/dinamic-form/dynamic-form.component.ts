@@ -33,7 +33,7 @@ export class DynamicFormComponent implements OnInit {
 
   form: IForm;
   fb = inject(FormBuilder);
-  dynamicFormGroup: FormGroup = this.fb.group({}, {updateOn: 'submit'});
+  dynamicFormGroup: FormGroup = this.fb.group({}, { updateOn: 'submit' });
 
   constructor(
     public dialogRef: MatDialogRef<DynamicFormComponent>,
@@ -64,13 +64,10 @@ export class DynamicFormComponent implements OnInit {
 
       this.dynamicFormGroup = this.fb.group(formGroup);
     }
-
-
-console.log('acceptPix',this.isPixAccepted());
   }
 
   onsubmit() {
-console.log(this.dynamicFormGroup.value);
+    console.log(this.dynamicFormGroup.value);
 
   }
 
@@ -87,27 +84,22 @@ console.log(this.dynamicFormGroup.value);
     this.dialogRef.close({ name: 'Novo Nome', email: 'novo-email@example.com' });
   }
 
-  // getInvalidControls(): { [key: string]: any } {
-  //   const invalidControls: { [key: string]: any } = {};
-  //   Object.keys(this.dynamicFormGroup.controls).forEach(key => {
-  //     const control = this.dynamicFormGroup.get(key);
-  //     if (control && control.invalid) {
-  //       invalidControls[key] = control.errors;
-  //     }
-  //   });
-  //   return invalidControls;
-  // }
-
   getValidationErros(control: IFormControl): string {
     const myFormControl = this.dynamicFormGroup.get(control.name);
     let errorMessage = '';
-    control.validators.forEach((val) => {
-      if(myFormControl?.hasError(val.validatorName as string)) {
+  
+    // Garante que 'control.validators' seja sempre um array
+    const validatorsArray = Array.isArray(control.validators) ? control.validators : [control.validators];
+  
+    validatorsArray.forEach((val) => {
+      if (myFormControl?.hasError(val.validatorName as string)) {
         errorMessage = val.message as string;
       }
     });
+  
     return errorMessage;
   }
+  
 
 }
 
