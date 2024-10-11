@@ -41,8 +41,17 @@
           @if( control.type === 'checkbox' ) {
             <mat-checkbox [checked]="control.value" formControlName="{{ control.name }}"> {{ control.label }} </mat-checkbox>
           }
+
+          @if (control.type === 'select' && control.name === 'pixType' && isPixAccepted()) {
+            <mat-form-field>
+              <mat-label>{{ control.label }}</mat-label>
+              <textarea matInput formControlName="{{ control.name }}"></textarea>
+            </mat-form-field>
+          }
+        
+
       
-          @if( control.type === 'textarea' ) {
+          @if( control.type === 'select' && control.name === '' ) {
             <mat-form-field>
               <mat-label>{{ control.label }}</mat-label>
               <textarea matInput formControlName="{{ control.name }}"></textarea>

@@ -87,8 +87,6 @@ export class DynamicFormComponent implements OnInit {
   getValidationErros(control: IFormControl): string {
     const myFormControl = this.dynamicFormGroup.get(control.name);
     let errorMessage = '';
-  
-    // Garante que 'control.validators' seja sempre um array
     const validatorsArray = Array.isArray(control.validators) ? control.validators : [control.validators];
   
     validatorsArray.forEach((val) => {
