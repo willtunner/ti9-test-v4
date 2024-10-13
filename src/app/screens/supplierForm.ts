@@ -153,45 +153,6 @@ export const supplierFormConfig = {
         }
       ]
     },
-    // {
-    //   "name": "keyPix",
-    //   "label": "Chave Pix",
-    //   "placeholder": "Digite sua chave pix E-mail",
-    //   "value": "",
-    //   "type": "text",
-    //   "class": "",
-    //   "validators": {
-    //     "validatorName": "required",
-    //     "required": true,
-    //     "message": "Campo Obrigatório!"
-    //   }
-    // },
-    // {
-    //   "name": "keyPix",
-    //   "label": "Chave Pix",
-    //   "placeholder": "Digite sua chave pix Telefone",
-    //   "value": "",
-    //   "type": "number",
-    //   "class": "",
-    //   "validators": {
-    //     "validatorName": "required",
-    //     "required": true,
-    //     "message": "Campo Obrigatório!"
-    //   }
-    // },
-    // {
-    //   "name": "keyPix",
-    //   "label": "Chave Pix",
-    //   "placeholder": "Digite sua chave pix Aleatória",
-    //   "value": "",
-    //   "type": "text",
-    //   "class": "",
-    //   "validators": {
-    //     "validatorName": "required",
-    //     "required": true,
-    //     "message": "Campo Obrigatório!"
-    //   }
-    // },
     {
       "name": "obs",
       "label": "Observação",

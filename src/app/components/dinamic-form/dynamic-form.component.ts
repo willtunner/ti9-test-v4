@@ -44,6 +44,7 @@ export class DynamicFormComponent implements OnInit {
 
 
   ngOnInit(): void {
+
     console.log('form dinamico', this.form);
     if (this.form?.formControls) {
       let formGroup: any = {};
@@ -59,11 +60,15 @@ export class DynamicFormComponent implements OnInit {
             if (val.validatorName === 'pattern') controlValidators.push(Validators.pattern(val.pattern as string));
           });
         }
-        formGroup[control.name] = [control.value || '', controlValidators]
+
+        const controlValue = control.name === 'acceptPix' ? (control.value === 'true') : control.value;
+        formGroup[control.name] = [controlValue || '', controlValidators]
       });
 
       this.dynamicFormGroup = this.fb.group(formGroup);
     }
+
+    this.onPixToggleChange();
   }
 
   onsubmit() {
@@ -76,7 +81,14 @@ export class DynamicFormComponent implements OnInit {
   }
 
   isPixAccepted(): boolean {
+    // Verifica se o campo 'acceptPix' está marcado como verdadeiro
     return this.dynamicFormGroup.get('acceptPix')?.value;
+  }
+
+  onPixToggleChange() {
+    // Trigger para forçar o update da view quando o checkbox de Pix for alterado
+    const acceptPix = this.dynamicFormGroup.get('acceptPix')?.value;
+    console.log('Pix toggle changed:', acceptPix);
   }
 
   closeDialog(): void {
@@ -88,16 +100,16 @@ export class DynamicFormComponent implements OnInit {
     const myFormControl = this.dynamicFormGroup.get(control.name);
     let errorMessage = '';
     const validatorsArray = Array.isArray(control.validators) ? control.validators : [control.validators];
-  
+
     validatorsArray.forEach((val) => {
       if (myFormControl?.hasError(val.validatorName as string)) {
         errorMessage = val.message as string;
       }
     });
-  
+
     return errorMessage;
   }
-  
+
 
 }
 
