@@ -14,14 +14,12 @@
                   @if(dynamicFormGroup.get(control.name)?.invalid && dynamicFormGroup.get(control.name)?.touched) {
                     <mat-error> {{ getValidationErros(control) }}</mat-error>
                   }
-
                 </mat-form-field>
               </div>
             }
-
           }
 
-          @if(control.type === 'select' && control.name === 'nature'){
+          @if(control.type === 'select' && control.name !== 'pixType'){
             <div [class]="control.class">
               <mat-form-field>
                 <mat-label>{{ control.label }}</mat-label>
@@ -41,20 +39,19 @@
             <mat-slide-toggle [checked]="control.value" [className]="" formControlName="{{ control.name }}">{{ control.label }}</mat-slide-toggle>
           }
 
-
           @if(control.type === 'checkbox') {
             <mat-checkbox [checked]="control.value" formControlName="{{ control.name }}" (change)="onPixToggleChange()">
               {{ control.label }}
             </mat-checkbox>
           }
 
-           @if(dynamicFormGroup.get('acceptPix')?.value){
+           @if(dynamicFormGroup.get('acceptPix')?.value) {
 
-            @if(control.name === 'pixType'){
+            @if(control.name === 'pixType') {
               <div [class]="control.class">
                 <mat-form-field>
                   <mat-label>{{ control.label }}</mat-label>
-                  <mat-select formControlName="{{ control.name }}">
+                  <mat-select formControlName="{{ control.name }}" (selectionChange)="onPixTypeChange($event)">
                     @for( opt of control.options; track opt.id ) {
                       <mat-option [value]="opt.value" selected>{{ opt.value }}</mat-option>
                     }
@@ -70,10 +67,14 @@
               <div [class]="control.class">
                 <mat-form-field>
                   <mat-label>{{ control.label }}</mat-label>
-                  <input matInput formControlName="{{ control.name }}">
+                  <input matInput formControlName="{{ control.name }}" [placeholder]="dynamicFormGroup.get('nature')?.value === 'Pessoa fisica' ? 'CPF' : 'CNPJ'" [mask]="dynamicFormGroup.get('nature')?.value === 'Pessoa fisica' ? '000.000.000-00' : '00.000.000/0000-00'">
+                  @if(dynamicFormGroup.get(control.name)?.invalid && dynamicFormGroup.get(control.name)?.touched) {
+                    <mat-error *ngIf="keyPixError">{{ keyPixError }}</mat-error>
+                  }
                 </mat-form-field>
               </div>
             }
+
            }
 
           @if (control.type === 'textarea' && control.name === 'obs') {
@@ -93,4 +94,3 @@
       </form>
   </div>
 </div>
-

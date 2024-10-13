@@ -4,12 +4,14 @@ import { IForm, IFormControl, IValidator } from '../../interface/supplier.interf
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
+import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { provideNgxMask } from 'ngx-mask'; // Fornece a máscara
+import { NgxMaskDirective } from 'ngx-mask'; // Importa a diretiva
 
 @Component({
   selector: 'app-dynamic-form',
@@ -25,15 +27,18 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
     MatButtonModule,
     MatIconModule,
     MatDialogModule,
+    NgxMaskDirective
   ],
   templateUrl: './dynamic-form.component.html',
-  styleUrl: './dynamic-form.component.css'
+  styleUrl: './dynamic-form.component.css',
+  providers: [provideNgxMask()]
 })
 export class DynamicFormComponent implements OnInit {
 
   form: IForm;
   fb = inject(FormBuilder);
   dynamicFormGroup: FormGroup = this.fb.group({}, { updateOn: 'submit' });
+  keyPixError: string | null = null;
 
   constructor(
     public dialogRef: MatDialogRef<DynamicFormComponent>,
@@ -69,6 +74,9 @@ export class DynamicFormComponent implements OnInit {
     }
 
     this.onPixToggleChange();
+    this.dynamicFormGroup.get('pixType')?.valueChanges.subscribe(value => this.onPixTypeChange(value));
+
+
   }
 
   onsubmit() {
@@ -81,14 +89,58 @@ export class DynamicFormComponent implements OnInit {
   }
 
   isPixAccepted(): boolean {
-    // Verifica se o campo 'acceptPix' está marcado como verdadeiro
     return this.dynamicFormGroup.get('acceptPix')?.value;
+  }
+
+
+
+  onPixTypeChange(event: MatSelectChange) {
+    const selectedPixType = event.value;
+
+    this.keyPixError = null;
+
+    switch (selectedPixType) {
+      case 'CPF/CNPJ':
+        // this.dynamicFormGroup.get('keyPix')?.setValidators([Validators.required, Validators.pattern(/^\d{11}$/)]);
+        // this.dynamicFormGroup.get('keyPix')?.setValidators([Validators.required, Validators.pattern(/^\d{14}$/)]);
+        // this.keyPixError = 'CPF precisa ter entre 11 e 14 dígitos.';
+        if(this.dynamicFormGroup.get('nature')?.value === 'Pessoa fisica'){
+          console.log('Pessoa fisica');
+        this.dynamicFormGroup.get('keyPix')?.setValidators([Validators.required, Validators.pattern(/^\d{11}$/)]);
+
+        }else{
+          console.log('juridica')
+        }
+        break;
+
+      case 'Email':
+        this.dynamicFormGroup.get('keyPix')?.setValidators([Validators.required, Validators.email]);
+        this.keyPixError = 'Por favor, insira um e-mail válido.';
+        break;
+
+      case 'Celular':
+        this.dynamicFormGroup.get('keyPix')?.setValidators([Validators.required, Validators.pattern(/^\d{10,11}$/)]);
+        this.keyPixError = 'Telefone precisa ter 10 ou 11 dígitos.';
+        break;
+
+      case 'Chave Aleatória':
+        this.dynamicFormGroup.get('keyPix')?.setValidators([Validators.required]);
+        this.keyPixError = 'Por favor, insira uma chave aleatória válida.';
+        break;
+
+      default:
+        this.keyPixError = 'Selecione um tipo válido de chave Pix.';
+        break;
+    }
+
+    // Atualiza a validação do campo de chave Pix
+    this.dynamicFormGroup.get('keyPix')?.updateValueAndValidity();
   }
 
   onPixToggleChange() {
     // Trigger para forçar o update da view quando o checkbox de Pix for alterado
-    const acceptPix = this.dynamicFormGroup.get('acceptPix')?.value;
-    console.log('Pix toggle changed:', acceptPix);
+    const acceptPix = this.dynamicFormGroup.get('nature')?.value;
+    console.log('nature changed:', acceptPix);
   }
 
   closeDialog(): void {
