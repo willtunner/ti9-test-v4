@@ -43,13 +43,11 @@
 
 
           @if(control.type === 'checkbox') {
-            <!-- Change event added here to detect changes in the checkbox -->
             <mat-checkbox [checked]="control.value" formControlName="{{ control.name }}" (change)="onPixToggleChange()">
               {{ control.label }}
             </mat-checkbox>
           }
 
-          <!-- Conditional rendering for pixType and keyPix based on isPixAccepted() -->
            @if(dynamicFormGroup.get('acceptPix')?.value){
 
             @if(control.name === 'pixType'){
