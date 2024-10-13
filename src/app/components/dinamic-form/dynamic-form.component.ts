@@ -57,7 +57,10 @@ export class DynamicFormComponent implements OnInit {
         let controlValidators: any = [];
 
         if (control.validators && Array.isArray(control.validators)) {
+
           control.validators.forEach((val: IValidator) => {
+            console.log(control);
+
             if (val.validatorName === 'required') controlValidators.push(Validators.required);
             if (val.validatorName === 'email') controlValidators.push(Validators.email);
             if (val.validatorName === 'minlength') controlValidators.push(Validators.minLength(val.minLength as number));
@@ -81,6 +84,7 @@ export class DynamicFormComponent implements OnInit {
 
   onsubmit() {
     console.log(this.dynamicFormGroup.value);
+    this.dialogRef.close(this.dynamicFormGroup.value);
 
   }
 
@@ -101,15 +105,13 @@ export class DynamicFormComponent implements OnInit {
 
     switch (selectedPixType) {
       case 'CPF/CNPJ':
-        // this.dynamicFormGroup.get('keyPix')?.setValidators([Validators.required, Validators.pattern(/^\d{11}$/)]);
-        // this.dynamicFormGroup.get('keyPix')?.setValidators([Validators.required, Validators.pattern(/^\d{14}$/)]);
-        // this.keyPixError = 'CPF precisa ter entre 11 e 14 dígitos.';
         if(this.dynamicFormGroup.get('nature')?.value === 'Pessoa fisica'){
           console.log('Pessoa fisica');
         this.dynamicFormGroup.get('keyPix')?.setValidators([Validators.required, Validators.pattern(/^\d{11}$/)]);
 
         }else{
           console.log('juridica')
+          this.dynamicFormGroup.get('keyPix')?.setValidators([Validators.required, Validators.pattern(/^\d{14}$/)]);
         }
         break;
 
@@ -145,7 +147,7 @@ export class DynamicFormComponent implements OnInit {
 
   closeDialog(): void {
 
-    this.dialogRef.close({ name: 'Novo Nome', email: 'novo-email@example.com' });
+    this.dialogRef.close(this.dynamicFormGroup.value);
   }
 
   getValidationErros(control: IFormControl): string {

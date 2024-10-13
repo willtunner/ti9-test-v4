@@ -1,25 +1,34 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DynamicFormComponent } from '../dinamic-form/dynamic-form.component';
 import { MatIconModule } from '@angular/material/icon';
 import { supplierFormConfig } from '../../screens/supplierForm';
 import { IForm } from '../../interface/supplier.interface';
+import { FormServiceService } from '../../services/form-service.service';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
     MatIconModule,
+    MatTableModule, // Adicione MatTableModule aqui
+    CommonModule,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
-
   supplierForm = supplierFormConfig as IForm;
+  suppliers$ = new MatTableDataSource<IForm>([]);
+  displayedColumns: string[] = ['name', 'email', 'phone', 'actions'];
 
-  constructor(public dialog: MatDialog, private snackBar: MatSnackBar) { }
+  constructor(public dialog: MatDialog, private snackBar: MatSnackBar, private formService: FormServiceService) {
+    this.suppliers$.data = this.formService.getSuppliers()();
+  }
+
 
   openFornecedorModal(): void {
     const dialogRef = this.dialog.open(DynamicFormComponent, {
@@ -28,8 +37,40 @@ export class HomeComponent {
       data: this.supplierForm
     });
 
-    dialogRef.afterClosed().subscribe((result: any) => {
+    dialogRef.afterClosed().subscribe((result: IForm) => {
+      if (result) {
+        this.formService.addSupplier(result);
+        this.suppliers$.data = this.formService.getSuppliers()(); // Atualiza o Signal após adicionar
+        this.snackBar.open('Fornecedor adicionado com sucesso!', 'Fechar', {
+          duration: 3000,
+        });
+      }
+    });
+  }
 
+  editSupplier(index: number): void {
+    const supplier = this.suppliers$.data[index]; // Pega o fornecedor a ser editado
+    const dialogRef = this.dialog.open(DynamicFormComponent, {
+      width: '600px',
+      height: '800px',
+      data: supplier // Passa os dados do fornecedor para editar
+    });
+
+    dialogRef.afterClosed().subscribe((result: IForm) => {
+      if (result) {
+        this.formService.updateSupplier(index, result);
+        this.suppliers$.data = this.formService.getSuppliers()(); // Atualiza a lista de fornecedores
+        this.snackBar.open('Fornecedor atualizado com sucesso!', 'Fechar', {
+          duration: 3000,
+        });
+      }
+    });
+}
+
+  deleteSupplier(index: number): void {
+    this.formService.removeSupplier(index);
+    this.snackBar.open('Fornecedor excluído com sucesso!', 'Fechar', {
+      duration: 3000,
     });
   }
 

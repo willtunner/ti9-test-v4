@@ -53,7 +53,13 @@ export const supplierFormConfig = {
       ],
       "type": "select",
       "class": "",
-      "validators": {}
+      "validators": [
+        {
+          "validatorName": "required",
+          "required": true,
+          "message": "Campo Obrigatório!"
+        }
+      ]
     },
     {
       "name": "address",
