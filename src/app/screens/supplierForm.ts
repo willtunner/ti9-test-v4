@@ -1,7 +1,7 @@
 export const supplierFormConfig = {
   "formTitle": "Cadastro de fornecedor",
   "saveBtnTitle": "Salvar",
-  "deleteBtnTitle": "Deletar",
+  "deleteBtnTitle": "Limpar",
   "updateBtnTitle": "Atualizar",
   "formControls": [
     {
@@ -91,7 +91,7 @@ export const supplierFormConfig = {
       ],
       "type": "select",
       "class": "",
-      "validators": {}
+      "validators": []
     },
     {
       "name": "active",
@@ -99,7 +99,7 @@ export const supplierFormConfig = {
       "value": "true",
       "type": "toggle",
       "class": "",
-      "validators": {}
+      "validators": []
     },
     {
       "name": "acceptPix",
@@ -107,7 +107,7 @@ export const supplierFormConfig = {
       "value": "false",
       "type": "checkbox",
       "class": "",
-      "validators": {}
+      "validators": []
     },
     {
       "name": "pixType",
@@ -132,7 +132,7 @@ export const supplierFormConfig = {
       ],
       "type": "select",
       "class": "",
-      "validators": {}
+      "validators": []
     },
     {
       "name": "keyPix",
@@ -142,21 +142,21 @@ export const supplierFormConfig = {
       "type": "text",
       "class": "",
       "validators": [
-        {
-          "validatorName": "required",
-          "required": true,
-          "message": "Campo Obrigatório!"
-        },
-        {
-          "validatorName": "minlength",
-          "minLength": 11,
-          "message": "Precisa ter no minimo 11 caracteres!"
-        },
-        {
-          "validatorName": "maxlength",
-          "maxLength": 14,
-          "message": "14 caracteres permitido no maximo!"
-        }
+        // {
+        //   "validatorName": "required",
+        //   "required": true,
+        //   "message": "Campo Obrigatório!"
+        // },
+        // {
+        //   "validatorName": "minlength",
+        //   "minLength": 11,
+        //   "message": "Precisa ter no minimo 11 caracteres!"
+        // },
+        // {
+        //   "validatorName": "maxlength",
+        //   "maxLength": 14,
+        //   "message": "14 caracteres permitido no maximo!"
+        // }
       ]
     },
     {
@@ -165,7 +165,7 @@ export const supplierFormConfig = {
       "value": "",
       "type": "textarea",
       "class": "",
-      "validators": {}
+      "validators": []
     }
   ]
 }

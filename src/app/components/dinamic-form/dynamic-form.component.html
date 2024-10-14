@@ -67,7 +67,10 @@
               <div [class]="control.class">
                 <mat-form-field>
                   <mat-label>{{ control.label }}</mat-label>
-                  <input matInput formControlName="{{ control.name }}" [placeholder]="dynamicFormGroup.get('nature')?.value === 'Pessoa fisica' ? 'CPF' : 'CNPJ'" [mask]="dynamicFormGroup.get('nature')?.value === 'Pessoa fisica' ? '000.000.000-00' : '00.000.000/0000-00'">
+                  <input matInput
+                         formControlName="{{ control.name }}"
+                         [placeholder]="getPixPlaceholder()"
+                         [mask]="getPixMask()">
                   @if(dynamicFormGroup.get(control.name)?.invalid && dynamicFormGroup.get(control.name)?.touched) {
                     <mat-error *ngIf="keyPixError">{{ keyPixError }}</mat-error>
                   }
@@ -94,3 +97,5 @@
       </form>
   </div>
 </div>
+
+<pre>{{ getInvalidControls() | json }}</pre>
