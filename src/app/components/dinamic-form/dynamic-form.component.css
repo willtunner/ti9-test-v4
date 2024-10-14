@@ -10,10 +10,9 @@
 
 
 .button-container {
-    display: flex;
-    justify-content: flex-end; /* Para alinhar os botões à direita */
-    gap: 10px; /* Espaçamento entre os botões */
-  }
+  display: flex;
+  justify-content: space-between;
+}
 
   .save-button {
     background-color: #4caf50; /* Verde */

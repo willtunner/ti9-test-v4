@@ -23,12 +23,10 @@ export class DynamicTableComponent<T> {
   @Output() edit = new EventEmitter<number>();
   @Output() delete = new EventEmitter<number>();
 
-  // Trigger edit action
   editElement(index: number): void {
     this.edit.emit(index);
   }
 
-  // Trigger delete action
   deleteElement(index: number): void {
     this.delete.emit(index);
   }

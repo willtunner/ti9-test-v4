@@ -1,11 +1,11 @@
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 dynamic-table">
-    <!-- Dynamic Column Definitions -->
-    <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
+    @for(column of displayedColumns; track column) {
+      <ng-container [matColumnDef]="column">
         <th mat-header-cell *matHeaderCellDef> {{ column | titlecase }} </th>
         <td mat-cell *matCellDef="let element"> {{ element[column] }} </td>
       </ng-container>
+    }
   
-    <!-- Actions Column -->
     <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef> Ações </th>
         <td mat-cell *matCellDef="let element; let i = index">
@@ -22,8 +22,10 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns.concat('actions')"></tr>
   </table>
   
-  <!-- No Records Message -->
-  <div *ngIf="dataSource.data.length === 0" class="no-records-message">
-    Não há registros.
-  </div>
+  @if(dataSource.data.length === 0) {
+    <div class="no-records-message">
+      Não há registros.
+    </div>
+  }
+
   
