@@ -54,46 +54,48 @@ export class DynamicFormComponent implements OnInit {
   }
 
   initializeForm() {
-    if (this.form?.formControls) {
-      let formGroup: any = {};
-      this.form.formControls.forEach((control: IFormControl) => {
-        let controlValidators: any = [];
-  
-        if (control.validators && Array.isArray(control.validators)) {
-          control.validators.forEach((val: IValidator) => {
-            if (val.validatorName === 'required') controlValidators.push(Validators.required);
-            if (val.validatorName === 'email') controlValidators.push(Validators.email);
-            if (val.validatorName === 'minlength') controlValidators.push(Validators.minLength(val.minLength as number));
-            if (val.validatorName === 'maxlength') controlValidators.push(Validators.maxLength(val.maxLength as number));
-            if (val.validatorName === 'pattern') controlValidators.push(Validators.pattern(val.pattern as string));
-          });
+    if (this.data) {
+        // Preencha o form com os dados do fornecedor recebido via MAT_DIALOG_DATA
+        let formGroup: any = {};
+        debugger;
+        this.data.formControls.forEach((control: IFormControl) => {
+            let controlValidators: any = [];
+    
+            if (control.validators && Array.isArray(control.validators)) {
+                control.validators.forEach((val: IValidator) => {
+                    if (val.validatorName === 'required') controlValidators.push(Validators.required);
+                    if (val.validatorName === 'email') controlValidators.push(Validators.email);
+                    if (val.validatorName === 'minlength') controlValidators.push(Validators.minLength(val.minLength as number));
+                    if (val.validatorName === 'maxlength') controlValidators.push(Validators.maxLength(val.maxLength as number));
+                    if (val.validatorName === 'pattern') controlValidators.push(Validators.pattern(val.pattern as string));
+                });
+            }
+
+            const controlValue = this.data[control.name] ?? control.value;
+            formGroup[control.name] = [controlValue || '', controlValidators];
+        });
+
+        this.dynamicFormGroup = this.fb.group(formGroup);
+
+        // Atualizar o campo keyPix se necessário
+        if (!this.dynamicFormGroup.get('keyPix')) {
+            this.dynamicFormGroup.addControl('keyPix', this.fb.control('', Validators.required));
         }
-  
-        const controlValue = control.name === 'acceptPix' ? (control.value === 'true') : control.value;
-        formGroup[control.name] = [controlValue || '', controlValidators];
-      });
-  
-      this.dynamicFormGroup = this.fb.group(formGroup);
-  
-      // Certifique-se de que todos os controles críticos foram inicializados corretamente
-      if (!this.dynamicFormGroup.get('keyPix')) {
-        this.dynamicFormGroup.addControl('keyPix', this.fb.control('', Validators.required));
-      }
-  
-      if (!this.dynamicFormGroup.get('nature')) {
-        this.dynamicFormGroup.addControl('nature', this.fb.control(''));
-      }
-  
-      if (!this.dynamicFormGroup.get('pixType')) {
-        this.dynamicFormGroup.addControl('pixType', this.fb.control(''));
-      }
-  
-      // Atualiza a validação do campo keyPix baseado na seleção do checkbox
-      this.dynamicFormGroup.get('acceptPix')?.valueChanges.subscribe(acceptPix => {
-        this.updateKeyPixValidation(acceptPix);
-      });
+
+        if (!this.dynamicFormGroup.get('nature')) {
+            this.dynamicFormGroup.addControl('nature', this.fb.control(''));
+        }
+
+        if (!this.dynamicFormGroup.get('pixType')) {
+            this.dynamicFormGroup.addControl('pixType', this.fb.control(''));
+        }
+
+        // Atualizar a validação do campo keyPix com base na seleção do checkbox
+        this.dynamicFormGroup.get('acceptPix')?.valueChanges.subscribe(acceptPix => {
+            this.updateKeyPixValidation(acceptPix);
+        });
     }
-  }
+}
 
   updateKeyPixValidation(acceptPix: boolean) {
     const keyPixControl = this.dynamicFormGroup.get('keyPix');
@@ -110,8 +112,9 @@ export class DynamicFormComponent implements OnInit {
 
   onsubmit() {
     if (this.dynamicFormGroup.valid) {
-      this.dialogRef.close(this.dynamicFormGroup.value);
-    }
+      const updatedSupplier = this.dynamicFormGroup.value;
+      this.dialogRef.close(updatedSupplier); // Passa os dados editados de volta para o homeComponent
+  }
   }
 
   onCancel() {

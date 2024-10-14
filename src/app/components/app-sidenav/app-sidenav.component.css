@@ -41,11 +41,7 @@
         border-radius: 50%;
         background-color: transparent;
         border: none;
-
-        .fa-times {
-            color: #fff;
-            font-size: 24px;
-        }
+        color: white;
     }
 }
 
