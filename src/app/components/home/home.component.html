@@ -1,96 +1,15 @@
-    <!-- Add Modal -->
+<h1>Ti9 - Teste</h1>
+
+<div class="card">
+  <div class="card-head">Lista Fornecedores</div>
+  <div class="card-body">
     <button mat-raised-button color="primary" (click)="openFornecedorModal()" class="custom-button">
       <mat-icon>add</mat-icon>
       Cad Fornecedor
     </button>
 
-    <table mat-table [dataSource]="suppliers$" class="mat-elevation-z8">
-      <!-- ID Column -->
-      <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef> ID </th>
-        <td mat-cell *matCellDef="let supplier"> {{ supplier.id }} </td>
-      </ng-container>
-
-      <!-- Name Column -->
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef> Nome </th>
-        <td mat-cell *matCellDef="let supplier"> {{ supplier.name }} </td>
-      </ng-container>
-
-      <!-- Nature Column -->
-      <ng-container matColumnDef="nature">
-        <th mat-header-cell *matHeaderCellDef> Natureza </th>
-        <td mat-cell *matCellDef="let supplier"> {{ supplier.nature }} </td>
-      </ng-container>
-
-      <!-- Address Column -->
-      <ng-container matColumnDef="address">
-        <th mat-header-cell *matHeaderCellDef> Endereço </th>
-        <td mat-cell *matCellDef="let supplier"> {{ supplier.address }} </td>
-      </ng-container>
-
-      <!-- UF Column -->
-      <ng-container matColumnDef="uf">
-        <th mat-header-cell *matHeaderCellDef> UF </th>
-        <td mat-cell *matCellDef="let supplier"> {{ supplier.uf }} </td>
-      </ng-container>
-
-      <!-- Active Column -->
-      <ng-container matColumnDef="active">
-        <th mat-header-cell *matHeaderCellDef> Ativo </th>
-        <td mat-cell *matCellDef="let supplier"> {{ supplier.active ? 'Sim' : 'Não' }} </td>
-      </ng-container>
-
-      <!-- Accept Pix Column -->
-      <ng-container matColumnDef="acceptPix">
-        <th mat-header-cell *matHeaderCellDef> Aceita Pix </th>
-        <td mat-cell *matCellDef="let supplier"> {{ supplier.acceptPix }} </td>
-      </ng-container>
-
-      <!-- Pix Type Column -->
-      <ng-container matColumnDef="pixType">
-        <th mat-header-cell *matHeaderCellDef> Tipo de Pix </th>
-        <td mat-cell *matCellDef="let supplier"> {{ supplier.pixType }} </td>
-      </ng-container>
-
-      <!-- Key Pix Column -->
-      <ng-container matColumnDef="keyPix">
-        <th mat-header-cell *matHeaderCellDef> Chave Pix </th>
-        <td mat-cell *matCellDef="let supplier"> {{ supplier.keyPix }} </td>
-      </ng-container>
-
-      <!-- Obs Column -->
-      <ng-container matColumnDef="obs">
-        <th mat-header-cell *matHeaderCellDef> Observações </th>
-        <td mat-cell *matCellDef="let supplier"> {{ supplier.obs }} </td>
-      </ng-container>
-
-      <!-- Actions Column -->
-      <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef> Ações </th>
-        <td mat-cell *matCellDef="let supplier; let i = index">
-          <div class="button-container">
-            <button mat-icon-button (click)="editSupplier(i)">
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button mat-icon-button (click)="deleteSupplier(i)">
-              <mat-icon>delete</mat-icon>
-            </button>
-          </div>
-        </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="['id', 'name', 'nature', 'address', 'uf', 'active', 'acceptPix', 'pixType', 'keyPix', 'obs', 'actions']"></tr>
-      <tr mat-row *matRowDef="let row; columns: ['id', 'name', 'nature', 'address', 'uf', 'active', 'acceptPix', 'pixType', 'keyPix', 'obs', 'actions'];"></tr>
-    </table>
-
-    @if(this.suppliers$.data.length === 0) {
-      <div class="no-records-message">
-        Não há registros.
-      </div>
-    }
-
-
-
-
-
+    <app-dynamic-table [dataSource]="suppliers$" [displayedColumns]="displayedColumns" (edit)="editSupplier($event)"
+      (delete)="deleteSupplier($event)">
+    </app-dynamic-table>
+  </div>
+</div>

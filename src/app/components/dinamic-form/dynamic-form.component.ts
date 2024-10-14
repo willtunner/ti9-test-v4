@@ -241,14 +241,14 @@ export class DynamicFormComponent implements OnInit {
     return errorMessage;
   }
 
-  getInvalidControls(): { [key: string]: any } {
-    const invalidControls: { [key: string]: any } = {};
-    Object.keys(this.dynamicFormGroup.controls).forEach(key => {
-      const control = this.dynamicFormGroup.get(key);
-      if (control && control.invalid) {
-        invalidControls[key] = control.errors;
-      }
-    });
-    return invalidControls;
-  }
+  // getInvalidControls(): { [key: string]: any } {
+  //   const invalidControls: { [key: string]: any } = {};
+  //   Object.keys(this.dynamicFormGroup.controls).forEach(key => {
+  //     const control = this.dynamicFormGroup.get(key);
+  //     if (control && control.invalid) {
+  //       invalidControls[key] = control.errors;
+  //     }
+  //   });
+  //   return invalidControls;
+  // }
 }

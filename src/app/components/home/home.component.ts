@@ -8,6 +8,7 @@ import { IForm } from '../../interface/supplier.interface';
 import { FormServiceService } from '../../services/form-service.service';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
+import { DynamicTableComponent } from '../dynamic-table/dynamic-table.component';
 
 @Component({
   selector: 'app-home',
@@ -16,6 +17,7 @@ import { CommonModule } from '@angular/common';
     MatIconModule,
     MatTableModule,
     CommonModule,
+    DynamicTableComponent,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
@@ -23,6 +25,9 @@ import { CommonModule } from '@angular/common';
 export class HomeComponent {
   supplierForm = supplierFormConfig as IForm;
   suppliers$ = new MatTableDataSource<IForm>([]);
+  displayedColumns: string[] = [
+    'id', 'name', 'nature', 'address', 'uf', 'active', 'acceptPix', 'pixType', 'keyPix', 'obs'
+  ];
 
   constructor(public dialog: MatDialog, private snackBar: MatSnackBar, private formService: FormServiceService) {
     this.suppliers$.data = this.formService.getSuppliers()();
