@@ -82,6 +82,10 @@
       <tr mat-row *matRowDef="let row; columns: ['id', 'name', 'nature', 'address', 'uf', 'active', 'acceptPix', 'pixType', 'keyPix', 'obs', 'actions'];"></tr>
     </table>
 
+    <div *ngIf="this.suppliers$.data.length === 0" class="no-records-message">
+      Não há registros.
+    </div>
+
 
 
 

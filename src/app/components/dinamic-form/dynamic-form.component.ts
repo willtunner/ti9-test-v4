@@ -10,8 +10,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { provideNgxMask } from 'ngx-mask'; // Fornece a máscara
-import { NgxMaskDirective } from 'ngx-mask'; // Importa a diretiva
+import { provideNgxMask } from 'ngx-mask';
+import { NgxMaskDirective } from 'ngx-mask';
 
 @Component({
   selector: 'app-dynamic-form',
@@ -45,12 +45,12 @@ export class DynamicFormComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.form = data;
+    this.dynamicFormGroup.patchValue(data);
   }
 
 
   ngOnInit(): void {
 
-    console.log('form dinamico', this.form);
     if (this.form?.formControls) {
       let formGroup: any = {};
       this.form.formControls.forEach((control: IFormControl) => {
@@ -59,8 +59,6 @@ export class DynamicFormComponent implements OnInit {
         if (control.validators && Array.isArray(control.validators)) {
 
           control.validators.forEach((val: IValidator) => {
-            console.log(control);
-
             if (val.validatorName === 'required') controlValidators.push(Validators.required);
             if (val.validatorName === 'email') controlValidators.push(Validators.email);
             if (val.validatorName === 'minlength') controlValidators.push(Validators.minLength(val.minLength as number));
@@ -82,10 +80,10 @@ export class DynamicFormComponent implements OnInit {
 
   }
 
-  onsubmit() {
-    console.log(this.dynamicFormGroup.value);
-    this.dialogRef.close(this.dynamicFormGroup.value);
 
+
+  onsubmit() {
+    this.dialogRef.close(this.dynamicFormGroup.value);
   }
 
   onCancel() {
@@ -106,11 +104,9 @@ export class DynamicFormComponent implements OnInit {
     switch (selectedPixType) {
       case 'CPF/CNPJ':
         if(this.dynamicFormGroup.get('nature')?.value === 'Pessoa fisica'){
-          console.log('Pessoa fisica');
         this.dynamicFormGroup.get('keyPix')?.setValidators([Validators.required, Validators.pattern(/^\d{11}$/)]);
 
         }else{
-          console.log('juridica')
           this.dynamicFormGroup.get('keyPix')?.setValidators([Validators.required, Validators.pattern(/^\d{14}$/)]);
         }
         break;
@@ -135,14 +131,11 @@ export class DynamicFormComponent implements OnInit {
         break;
     }
 
-    // Atualiza a validação do campo de chave Pix
     this.dynamicFormGroup.get('keyPix')?.updateValueAndValidity();
   }
 
   onPixToggleChange() {
-    // Trigger para forçar o update da view quando o checkbox de Pix for alterado
     const acceptPix = this.dynamicFormGroup.get('nature')?.value;
-    console.log('nature changed:', acceptPix);
   }
 
   closeDialog(): void {

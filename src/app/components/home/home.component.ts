@@ -14,7 +14,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [
     MatIconModule,
-    MatTableModule, // Adicione MatTableModule aqui
+    MatTableModule,
     CommonModule,
   ],
   templateUrl: './home.component.html',
@@ -23,7 +23,6 @@ import { CommonModule } from '@angular/common';
 export class HomeComponent {
   supplierForm = supplierFormConfig as IForm;
   suppliers$ = new MatTableDataSource<IForm>([]);
-  displayedColumns: string[] = ['name', 'email', 'phone', 'actions'];
 
   constructor(public dialog: MatDialog, private snackBar: MatSnackBar, private formService: FormServiceService) {
     this.suppliers$.data = this.formService.getSuppliers()();
@@ -40,26 +39,26 @@ export class HomeComponent {
     dialogRef.afterClosed().subscribe((result: IForm) => {
       if (result) {
         this.formService.addSupplier(result);
-        this.suppliers$.data = this.formService.getSuppliers()(); // Atualiza o Signal após adicionar
         this.snackBar.open('Fornecedor adicionado com sucesso!', 'Fechar', {
           duration: 3000,
         });
+        this.suppliers$.data = this.formService.getSuppliers()();
       }
     });
   }
 
   editSupplier(index: number): void {
-    const supplier = this.suppliers$.data[index]; // Pega o fornecedor a ser editado
+    const supplier = this.suppliers$.data[index];
     const dialogRef = this.dialog.open(DynamicFormComponent, {
       width: '600px',
       height: '800px',
-      data: supplier // Passa os dados do fornecedor para editar
+      data: supplier
     });
 
     dialogRef.afterClosed().subscribe((result: IForm) => {
       if (result) {
         this.formService.updateSupplier(index, result);
-        this.suppliers$.data = this.formService.getSuppliers()(); // Atualiza a lista de fornecedores
+        this.suppliers$.data = this.formService.getSuppliers()();
         this.snackBar.open('Fornecedor atualizado com sucesso!', 'Fechar', {
           duration: 3000,
         });
