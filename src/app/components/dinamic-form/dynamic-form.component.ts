@@ -45,19 +45,24 @@ export class DynamicFormComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.form = data;
-    this.dynamicFormGroup.patchValue(data);
   }
 
 
   ngOnInit(): void {
 
+
+    this.initializeForm();
+    this.onPixToggleChange();
+    this.dynamicFormGroup.get('pixType')?.valueChanges.subscribe(value => this.onPixTypeChange(value));
+  }
+
+  initializeForm() {
     if (this.form?.formControls) {
       let formGroup: any = {};
       this.form.formControls.forEach((control: IFormControl) => {
         let controlValidators: any = [];
 
         if (control.validators && Array.isArray(control.validators)) {
-
           control.validators.forEach((val: IValidator) => {
             if (val.validatorName === 'required') controlValidators.push(Validators.required);
             if (val.validatorName === 'email') controlValidators.push(Validators.email);
@@ -72,12 +77,8 @@ export class DynamicFormComponent implements OnInit {
       });
 
       this.dynamicFormGroup = this.fb.group(formGroup);
+
     }
-
-    this.onPixToggleChange();
-    this.dynamicFormGroup.get('pixType')?.valueChanges.subscribe(value => this.onPixTypeChange(value));
-
-
   }
 
 
