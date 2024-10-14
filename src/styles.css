@@ -110,4 +110,5 @@ mat-form-field {
 /* Estilo para os botões */
 .button-container {
   display: flex;
+  justify-content: space-between;
 }

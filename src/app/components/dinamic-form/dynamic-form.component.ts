@@ -58,7 +58,7 @@ export class DynamicFormComponent implements OnInit {
       let formGroup: any = {};
       this.form.formControls.forEach((control: IFormControl) => {
         let controlValidators: any = [];
-
+  
         if (control.validators && Array.isArray(control.validators)) {
           control.validators.forEach((val: IValidator) => {
             if (val.validatorName === 'required') controlValidators.push(Validators.required);
@@ -68,13 +68,26 @@ export class DynamicFormComponent implements OnInit {
             if (val.validatorName === 'pattern') controlValidators.push(Validators.pattern(val.pattern as string));
           });
         }
-
+  
         const controlValue = control.name === 'acceptPix' ? (control.value === 'true') : control.value;
         formGroup[control.name] = [controlValue || '', controlValidators];
       });
-
+  
       this.dynamicFormGroup = this.fb.group(formGroup);
-
+  
+      // Certifique-se de que todos os controles críticos foram inicializados corretamente
+      if (!this.dynamicFormGroup.get('keyPix')) {
+        this.dynamicFormGroup.addControl('keyPix', this.fb.control('', Validators.required));
+      }
+  
+      if (!this.dynamicFormGroup.get('nature')) {
+        this.dynamicFormGroup.addControl('nature', this.fb.control(''));
+      }
+  
+      if (!this.dynamicFormGroup.get('pixType')) {
+        this.dynamicFormGroup.addControl('pixType', this.fb.control(''));
+      }
+  
       // Atualiza a validação do campo keyPix baseado na seleção do checkbox
       this.dynamicFormGroup.get('acceptPix')?.valueChanges.subscribe(acceptPix => {
         this.updateKeyPixValidation(acceptPix);
@@ -111,60 +124,60 @@ export class DynamicFormComponent implements OnInit {
 
   onPixTypeChange(event: MatSelectChange) {
     const selectedPixType = event.value;
-
+  
     // Reset error
     this.keyPixError = null;
-
-    const nature = this.dynamicFormGroup.get('nature')?.value;
-
+  
+    const natureControl = this.dynamicFormGroup.get('nature');
+    const keyPixControl = this.dynamicFormGroup.get('keyPix');
+  
+    // Verifique se o controle 'nature' e 'keyPix' existem
+    if (!natureControl || !keyPixControl) {
+      return;  // Se não existir, saia da função
+    }
+  
+    const nature = natureControl.value;
+  
     switch (selectedPixType) {
       case 'CPF/CNPJ':
         if (nature === 'Pessoa fisica') {
           // Validação para CPF
-          this.dynamicFormGroup.get('keyPix')?.clearValidators();
-          this.dynamicFormGroup.get('keyPix')?.setValidators([
-            Validators.required,
-          ]);
+          keyPixControl.clearValidators();
+          keyPixControl.setValidators([Validators.required]);
         } else {
           // Validação para CNPJ
-          this.dynamicFormGroup.get('keyPix')?.clearValidators();
-          this.dynamicFormGroup.get('keyPix')?.setValidators([
-            Validators.required,
-          ]);
+          keyPixControl.clearValidators();
+          keyPixControl.setValidators([Validators.required]);
         }
         break;
-
+  
       case 'Email':
         // Validação para e-mail
-        this.dynamicFormGroup.get('keyPix')?.clearValidators();
-        this.dynamicFormGroup.get('keyPix')?.setValidators([
-          Validators.required,
-          Validators.email
-        ]);
+        keyPixControl.clearValidators();
+        keyPixControl.setValidators([Validators.required, Validators.email]);
         this.keyPixError = 'Por favor, insira um e-mail válido.';
         break;
-
+  
       case 'Celular':
-        this.dynamicFormGroup.get('keyPix')?.clearValidators();
-        this.dynamicFormGroup.get('keyPix')?.setValidators([
-          Validators.required,
-        ]);
+        keyPixControl.clearValidators();
+        keyPixControl.setValidators([Validators.required]);
         this.keyPixError = 'Por favor, insira um celular válido.';
         break;
-
+  
       case 'Chave Aleatória':
-        this.dynamicFormGroup.get('keyPix')?.clearValidators();
+        keyPixControl.clearValidators();
         break;
-
+  
       default:
-        this.dynamicFormGroup.get('keyPix')?.clearValidators();
+        keyPixControl.clearValidators();
         this.keyPixError = 'Selecione um tipo válido de chave Pix.';
         break;
     }
-
+  
     // Atualiza as validações
-    this.dynamicFormGroup.get('keyPix')?.updateValueAndValidity();
+    keyPixControl.updateValueAndValidity();
   }
+  
 
   getPixPlaceholder(): string {
     const pixType = this.dynamicFormGroup.get('pixType')?.value;
@@ -196,12 +209,16 @@ export class DynamicFormComponent implements OnInit {
 
   onPixToggleChange() {
     const acceptPix = this.dynamicFormGroup.get('acceptPix')?.value;
-    if (acceptPix) {
-      this.dynamicFormGroup.get('pixType')?.setValidators([Validators.required]);
-    } else {
-      this.dynamicFormGroup.get('pixType')?.clearValidators();
+    const pixTypeControl = this.dynamicFormGroup.get('pixType');
+  
+    if (pixTypeControl) {
+      if (acceptPix) {
+        pixTypeControl.setValidators([Validators.required]);
+      } else {
+        pixTypeControl.clearValidators();
+      }
+      pixTypeControl.updateValueAndValidity();
     }
-    this.dynamicFormGroup.get('pixType')?.updateValueAndValidity();
   }
 
   closeDialog(): void {
