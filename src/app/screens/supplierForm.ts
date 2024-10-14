@@ -119,7 +119,7 @@ export const supplierFormConfig = {
         },
         {
           "id": "2",
-          "value": "E-mail"
+          "value": "Email"
         },
         {
           "id": "3",

@@ -124,14 +124,12 @@ export class DynamicFormComponent implements OnInit {
           this.dynamicFormGroup.get('keyPix')?.clearValidators();
           this.dynamicFormGroup.get('keyPix')?.setValidators([
             Validators.required,
-            Validators.pattern(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/) // Padrão CPF
           ]);
         } else {
           // Validação para CNPJ
           this.dynamicFormGroup.get('keyPix')?.clearValidators();
           this.dynamicFormGroup.get('keyPix')?.setValidators([
             Validators.required,
-            Validators.pattern(/^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/) // Padrão CNPJ
           ]);
         }
         break;
@@ -147,21 +145,19 @@ export class DynamicFormComponent implements OnInit {
         break;
 
       case 'Celular':
-        // Validação para celular (10 ou 11 dígitos)
         this.dynamicFormGroup.get('keyPix')?.clearValidators();
         this.dynamicFormGroup.get('keyPix')?.setValidators([
           Validators.required,
-          Validators.pattern(/^\(\d{2}\)\s\d{4,5}-\d{4}$/) // Padrão celular
         ]);
         this.keyPixError = 'Por favor, insira um celular válido.';
         break;
 
       case 'Chave Aleatória':
-        // Sem validação específica
         this.dynamicFormGroup.get('keyPix')?.clearValidators();
         break;
 
       default:
+        this.dynamicFormGroup.get('keyPix')?.clearValidators();
         this.keyPixError = 'Selecione um tipo válido de chave Pix.';
         break;
     }
