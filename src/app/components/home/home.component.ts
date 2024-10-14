@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { DynamicTableComponent } from '../dynamic-table/dynamic-table.component';
 import { CrudServiceService } from '../../services/crud-service.service';
 import { FormServiceService } from '../../services/form-service.service';
+import { ConfirmDeleteDialogComponent } from '../confirm-delete-dialog/confirm-delete-dialog.component';
 
 @Component({
   selector: 'app-home',
@@ -95,11 +96,21 @@ export class HomeComponent {
   deleteSupplier(event: { element: IFormControl, index: number }): void {
     console.log('Element:', event.element);
     console.log('Index:', event.index);
-    this.crudService.removeSupplier(event.index);
-    this.getData();
-    this.snackBar.open('Fornecedor excluído com sucesso!', 'Fechar', {
-      duration: 3000,
+
+    const confirmDialog = this.dialog.open(ConfirmDeleteDialogComponent, {
+      width: '400px',
+      data: { message: event.element.name }
     });
+
+    confirmDialog.afterClosed().subscribe(result => {
+      if(result) {
+        this.crudService.removeSupplier(event.index);
+        this.getData();
+        this.snackBar.open('Fornecedor excluído com sucesso!', 'Fechar', {
+          duration: 3000,
+        });
+      }
+    })
   }
 
 }
