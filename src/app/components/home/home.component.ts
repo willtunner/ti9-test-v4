@@ -68,6 +68,7 @@ export class HomeComponent {
 
   deleteSupplier(index: number): void {
     this.formService.removeSupplier(index);
+    this.suppliers$.data = this.formService.getSuppliers()();
     this.snackBar.open('Fornecedor excluído com sucesso!', 'Fechar', {
       duration: 3000,
     });
