@@ -104,7 +104,7 @@ export const supplierFormConfig = {
     {
       "name": "acceptPix",
       "label": "Aceita Pix",
-      "value": "false",
+      "value": false,
       "type": "checkbox",
       "class": "",
       "validators": []

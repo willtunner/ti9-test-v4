@@ -41,4 +41,7 @@
     color: white;
   }
   
-  
+  .actions {
+    display: flex;
+    width: 80px;
+  }

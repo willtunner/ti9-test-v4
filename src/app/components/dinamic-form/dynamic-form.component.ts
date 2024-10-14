@@ -55,9 +55,8 @@ export class DynamicFormComponent implements OnInit {
 
   initializeForm() {
     if (this.data) {
-        // Preencha o form com os dados do fornecedor recebido via MAT_DIALOG_DATA
         let formGroup: any = {};
-        debugger;
+
         this.data.formControls.forEach((control: IFormControl) => {
             let controlValidators: any = [];
     
@@ -72,12 +71,17 @@ export class DynamicFormComponent implements OnInit {
             }
 
             const controlValue = this.data[control.name] ?? control.value;
-            formGroup[control.name] = [controlValue || '', controlValidators];
+            if (control.name === 'acceptPix') {
+              formGroup[control.name] = [controlValue === true || controlValue === 'true', controlValidators]; // Converte string "true" para booleano
+          } else {
+              formGroup[control.name] = [controlValue || '', controlValidators];
+          }
+
+            
         });
 
         this.dynamicFormGroup = this.fb.group(formGroup);
 
-        // Atualizar o campo keyPix se necessário
         if (!this.dynamicFormGroup.get('keyPix')) {
             this.dynamicFormGroup.addControl('keyPix', this.fb.control('', Validators.required));
         }
@@ -90,7 +94,6 @@ export class DynamicFormComponent implements OnInit {
             this.dynamicFormGroup.addControl('pixType', this.fb.control(''));
         }
 
-        // Atualizar a validação do campo keyPix com base na seleção do checkbox
         this.dynamicFormGroup.get('acceptPix')?.valueChanges.subscribe(acceptPix => {
             this.updateKeyPixValidation(acceptPix);
         });
@@ -113,7 +116,7 @@ export class DynamicFormComponent implements OnInit {
   onsubmit() {
     if (this.dynamicFormGroup.valid) {
       const updatedSupplier = this.dynamicFormGroup.value;
-      this.dialogRef.close(updatedSupplier); // Passa os dados editados de volta para o homeComponent
+      this.dialogRef.close(updatedSupplier);
   }
   }
 
@@ -128,15 +131,13 @@ export class DynamicFormComponent implements OnInit {
   onPixTypeChange(event: MatSelectChange) {
     const selectedPixType = event.value;
   
-    // Reset error
     this.keyPixError = null;
   
     const natureControl = this.dynamicFormGroup.get('nature');
     const keyPixControl = this.dynamicFormGroup.get('keyPix');
   
-    // Verifique se o controle 'nature' e 'keyPix' existem
     if (!natureControl || !keyPixControl) {
-      return;  // Se não existir, saia da função
+      return; 
     }
   
     const nature = natureControl.value;
@@ -244,14 +245,4 @@ export class DynamicFormComponent implements OnInit {
     return errorMessage;
   }
 
-  // getInvalidControls(): { [key: string]: any } {
-  //   const invalidControls: { [key: string]: any } = {};
-  //   Object.keys(this.dynamicFormGroup.controls).forEach(key => {
-  //     const control = this.dynamicFormGroup.get(key);
-  //     if (control && control.invalid) {
-  //       invalidControls[key] = control.errors;
-  //     }
-  //   });
-  //   return invalidControls;
-  // }
 }
