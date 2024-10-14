@@ -8,8 +8,7 @@ import { IForm } from '../interface/supplier.interface';
 })
 export class FormServiceService {
 
-  private apiUrl = 'http://localhost:3000/data'; // URL do json-server
-
+  private apiUrl = 'http://localhost:3000/data'; 
   constructor(private http: HttpClient) {}
 
   getSupplierForm(): Observable<IForm> {

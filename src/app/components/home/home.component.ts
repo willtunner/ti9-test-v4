@@ -3,8 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DynamicFormComponent } from '../dinamic-form/dynamic-form.component';
 import { MatIconModule } from '@angular/material/icon';
-import { supplierFormConfig } from '../../screens/supplierForm';
-import { IForm } from '../../interface/supplier.interface';
+import { IForm, IFormControl } from '../../interface/supplier.interface';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import { DynamicTableComponent } from '../dynamic-table/dynamic-table.component';
@@ -36,20 +35,22 @@ export class HomeComponent {
     private crudService: CrudServiceService, 
     private formService: FormServiceService
   ) {
-    // this.suppliers$.data = this.crudService.getSuppliers()();
+    
   }
 
   ngOnInit(): void {
-    this.loadSupplierForm(); // Carregar o formulário no OnInit
+    this.loadSupplierForm();
   }
 
   loadSupplierForm(): void {
     this.formService.getSupplierForm().subscribe((data: IForm) => {
-      console.log('Data: ',data);
-      this.supplierForm = data; // Atribuir o formulário retornado
-      // Atualizar a tabela de fornecedores
-      this.suppliers$.data = [data]; // Aqui você pode modificar caso tenha mais dados
+      this.supplierForm = data; 
+      this.getData();
     });
+  }
+
+  getData() {
+    this.suppliers$.data = this.crudService.getSuppliers()();
   }
 
 
@@ -63,11 +64,11 @@ export class HomeComponent {
     dialogRef.afterClosed().subscribe((result: IForm) => {
       if (result) {
         this.crudService.addSupplier(result);
-        this.suppliers$.data = this.crudService.getSuppliers()();
+        this.getData();
         this.snackBar.open('Fornecedor adicionado com sucesso!', 'Fechar', {
           duration: 3000,
         });
-        this.suppliers$.data = this.crudService.getSuppliers()();
+        this.getData();
       }
     });
   }
@@ -83,7 +84,7 @@ export class HomeComponent {
     dialogRef.afterClosed().subscribe((result: IForm) => {
       if (result) {
         this.crudService.updateSupplier(index, result);
-        this.suppliers$.data = this.crudService.getSuppliers()();
+        this.getData();
         this.snackBar.open('Fornecedor atualizado com sucesso!', 'Fechar', {
           duration: 3000,
         });
@@ -91,9 +92,11 @@ export class HomeComponent {
     });
 }
 
-  deleteSupplier(index: number): void {
-    this.crudService.removeSupplier(index);
-    this.suppliers$.data = this.crudService.getSuppliers()();
+  deleteSupplier(event: { element: IFormControl, index: number }): void {
+    console.log('Element:', event.element);
+    console.log('Index:', event.index);
+    this.crudService.removeSupplier(event.index);
+    this.getData();
     this.snackBar.open('Fornecedor excluído com sucesso!', 'Fechar', {
       duration: 3000,
     });

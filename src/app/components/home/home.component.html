@@ -8,7 +8,10 @@
       Cad Fornecedor
     </button>
 
-    <app-dynamic-table [dataSource]="suppliers$" [displayedColumns]="displayedColumns" (edit)="editSupplier($event)"
+    <app-dynamic-table 
+      [dataSource]="suppliers$" 
+      [displayedColumns]="displayedColumns" 
+      (edit)="editSupplier($event)"
       (delete)="deleteSupplier($event)">
     </app-dynamic-table>
   </div>
