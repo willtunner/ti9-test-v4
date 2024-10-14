@@ -39,6 +39,7 @@ export class HomeComponent {
     dialogRef.afterClosed().subscribe((result: IForm) => {
       if (result) {
         this.formService.addSupplier(result);
+        this.suppliers$.data = this.formService.getSuppliers()();
         this.snackBar.open('Fornecedor adicionado com sucesso!', 'Fechar', {
           duration: 3000,
         });
