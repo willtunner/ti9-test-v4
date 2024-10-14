@@ -37,7 +37,7 @@ export class HomeComponent {
   openFornecedorModal(): void {
     const dialogRef = this.dialog.open(DynamicFormComponent, {
       width: '600px',
-      height: '800px',
+      height: '600px',
       data: this.supplierForm
     });
 

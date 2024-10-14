@@ -1,30 +1,57 @@
 .container2 {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
+  padding: 20px; /* Adicionado padding para espaçamento */
 }
 
 .base {
-    width: 90%;
+  width: 90%;
+  max-width: 100%; /* Ajuste para evitar overflow */
 }
 
-
+.full-width {
+  width: 100%;
+  margin-bottom: 20px; /* Espaçamento entre os campos */
+}
 
 .button-container {
   display: flex;
   justify-content: space-between;
+  margin-top: 30px; /* Espaçamento superior para separar dos inputs */
 }
 
-  .save-button {
-    background-color: #4caf50; /* Verde */
-    color: white; /* Cor do texto */
-  }
+.save-button, .cancel-button {
+  min-width: 120px; /* Largura mínima para os botões */
+  font-size: 16px;  /* Tamanho da fonte */
+}
 
-  .cancel-button {
-    background-color: #f44336; /* Vermelho */
-    color: white; /* Cor do texto */
-  }
+.save-button {
+  background-color: #4caf50; /* Verde */
+  color: white; /* Cor do texto */
+}
 
-  .save-button:hover,
-  .cancel-button:hover {
-    opacity: 0.8; /* Efeito de hover */
-  }
+.cancel-button {
+  background-color: #f44336; /* Vermelho */
+  color: white; /* Cor do texto */
+}
+
+.save-button:hover,
+.cancel-button:hover {
+  opacity: 0.9; /* Suavização no hover */
+}
+
+.mat-dialog-title {
+  font-size: 24px; /* Título maior */
+  font-weight: 600; /* Negrito */
+  text-align: center; /* Centralização do título */
+}
+
+.mat-form-field {
+  font-size: 14px; /* Tamanho padrão dos labels e inputs */
+}
+
+.toggle-container, .checkbox-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px; /* Espaçamento abaixo */
+}

@@ -8,7 +8,7 @@
           @if(['text', 'email', 'password', 'number', 'date'].includes(control.type)) {
             @if(control.name !== 'keyPix') {
               <div [class]="control.class">
-                <mat-form-field>
+                <mat-form-field appearance="outline" class="full-width">
                   <mat-label>{{ control.label }}</mat-label>
                   <input matInput [type]="control.type" formControlName="{{ control.name }}">
                   @if(dynamicFormGroup.get(control.name)?.invalid && dynamicFormGroup.get(control.name)?.touched) {
@@ -19,44 +19,45 @@
             }
           }
 
-          @if(control.type === 'select' && control.name !== 'pixType'){
+          @if(control.type === 'select' && control.name !== 'pixType') {
             <div [class]="control.class">
-              <mat-form-field>
+              <mat-form-field appearance="outline" class="full-width">
                 <mat-label>{{ control.label }}</mat-label>
                 <mat-select formControlName="{{ control.name }}">
-                  @for( opt of control.options; track opt.id ) {
-                    <mat-option [value]="opt.value" selected>{{ opt.value }}</mat-option>
+                  @for(opt of control.options; track opt.id) {
+                    <mat-option [value]="opt.value">{{ opt.value }}</mat-option>
                   }
                 </mat-select>
-                @if( dynamicFormGroup.get(control.name)?.invalid && dynamicFormGroup.get(control.name)?.touched || myForm.submitted ) {
+                @if(dynamicFormGroup.get(control.name)?.invalid && dynamicFormGroup.get(control.name)?.touched || myForm.submitted) {
                   <mat-error> {{ getValidationErros(control) }}</mat-error>
                 }
               </mat-form-field>
             </div>
           }
 
-          @if( control.type === 'toggle' ) {
-            <mat-slide-toggle [checked]="control.value" [className]="" formControlName="{{ control.name }}">{{ control.label }}</mat-slide-toggle>
+          @if(control.type === 'toggle') {
+            <div class="toggle-container">
+              <mat-slide-toggle formControlName="{{ control.name }}">{{ control.label }}</mat-slide-toggle>
+            </div>
           }
 
           @if(control.type === 'checkbox') {
-            <mat-checkbox [checked]="control.value" formControlName="{{ control.name }}" (change)="onPixToggleChange()">
-              {{ control.label }}
-            </mat-checkbox>
+            <div class="checkbox-container">
+              <mat-checkbox formControlName="{{ control.name }}">{{ control.label }}</mat-checkbox>
+            </div>
           }
 
-           @if(dynamicFormGroup.get('acceptPix')?.value) {
-
+          @if(dynamicFormGroup.get('acceptPix')?.value) {
             @if(control.name === 'pixType') {
               <div [class]="control.class">
-                <mat-form-field>
+                <mat-form-field appearance="outline" class="full-width">
                   <mat-label>{{ control.label }}</mat-label>
                   <mat-select formControlName="{{ control.name }}" (selectionChange)="onPixTypeChange($event)">
-                    @for( opt of control.options; track opt.id ) {
-                      <mat-option [value]="opt.value" selected>{{ opt.value }}</mat-option>
+                    @for(opt of control.options; track opt.id) {
+                      <mat-option [value]="opt.value">{{ opt.value }}</mat-option>
                     }
                   </mat-select>
-                  @if( dynamicFormGroup.get(control.name)?.invalid && dynamicFormGroup.get(control.name)?.touched || myForm.submitted ) {
+                  @if(dynamicFormGroup.get(control.name)?.invalid && dynamicFormGroup.get(control.name)?.touched || myForm.submitted) {
                     <mat-error> {{ getValidationErros(control) }}</mat-error>
                   }
                 </mat-form-field>
@@ -65,23 +66,19 @@
 
             @if(control.name === 'keyPix') {
               <div [class]="control.class">
-                <mat-form-field>
+                <mat-form-field appearance="outline" class="full-width">
                   <mat-label>{{ control.label }}</mat-label>
-                  <input matInput
-                         formControlName="{{ control.name }}"
-                         [placeholder]="getPixPlaceholder()"
-                         [mask]="getPixMask()">
+                  <input matInput formControlName="{{ control.name }}" [placeholder]="getPixPlaceholder()" [mask]="getPixMask()">
                   @if(dynamicFormGroup.get(control.name)?.invalid && dynamicFormGroup.get(control.name)?.touched) {
-                    <mat-error *ngIf="keyPixError">{{ keyPixError }}</mat-error>
+                    <mat-error>{{ keyPixError }}</mat-error>
                   }
                 </mat-form-field>
               </div>
             }
+          }
 
-           }
-
-          @if (control.type === 'textarea' && control.name === 'obs') {
-            <mat-form-field>
+          @if(control.type === 'textarea' && control.name === 'obs') {
+            <mat-form-field appearance="outline" class="full-width">
               <mat-label>{{ control.label }}</mat-label>
               <textarea matInput formControlName="{{ control.name }}"></textarea>
             </mat-form-field>
@@ -91,11 +88,9 @@
       }
 
       <div class="button-container">
-        <button mat-raised-button color="primary" class="save-button" (click)="onsubmit()">{{ form.saveBtnTitle}}</button>
-        <button mat-raised-button color="warn" class="cancel-button" (click)="onCancel()">{{ form.deleteBtnTitle}}</button>
+        <button mat-raised-button color="primary" class="save-button" (click)="onsubmit()">{{ form.saveBtnTitle }}</button>
+        <button mat-raised-button color="warn" class="cancel-button" (click)="onCancel()">{{ form.deleteBtnTitle }}</button>
       </div>
-      </form>
+    </form>
   </div>
 </div>
-
-<!-- <pre>{{ getInvalidControls() | json }}</pre> -->
