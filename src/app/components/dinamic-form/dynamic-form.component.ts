@@ -42,7 +42,8 @@ export class DynamicFormComponent implements OnInit {
     public dialogRef: MatDialogRef<DynamicFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.form = data;
+    console.log(data);
+    this.form = data.form;
     this.dynamicFormGroup = this.fb.group({}, { updateOn: 'submit' });
   }
 
@@ -55,7 +56,7 @@ export class DynamicFormComponent implements OnInit {
     if (this.data) {
       const formGroupConfig = this.createFormGroupConfig();
       this.dynamicFormGroup = this.fb.group(formGroupConfig);
-      this.addMissingControls(['keyPix', 'nature', 'pixType']);
+      // this.addMissingControls(['keyPix', 'nature', 'pixType']);
       this.listenToAcceptPixChanges();
       this.populateFormWithData();
     }
@@ -66,8 +67,9 @@ export class DynamicFormComponent implements OnInit {
   
     this.form.formControls.forEach((control: IFormControl) => {
       const controlValidators = this.createValidators(control.validators);
-      
-      let controlValue = (this.data[control.name] ?? control.value) || '';
+  
+      // Verifica se o dado já existe no objeto `data` e preenche o valor inicial do controle.
+      let controlValue = (this.data.data[control.name] ?? control.value) || ''; // Modificado para buscar o valor em `data.data`
   
       // Verifica se o controle é o 'acceptPix' para tratar o valor como booleano
       if (control.name === 'acceptPix') {
@@ -248,11 +250,12 @@ export class DynamicFormComponent implements OnInit {
   }
 
   populateFormWithData(): void {
-    if (this.data) {
-      // Itera sobre as chaves do objeto de dados e preenche o formulário
-      Object.keys(this.data).forEach(key => {
-        if (this.dynamicFormGroup.get(key)) {
-          this.dynamicFormGroup.get(key)?.setValue(this.data[key]);
+    if (this.data && this.data.data) {
+      // Itera sobre as chaves do objeto `data.data` e preenche o formulário
+      Object.keys(this.data.data).forEach(key => {
+        const formControl = this.dynamicFormGroup.get(key);
+        if (formControl) {
+          formControl.setValue(this.data.data[key]);
         }
       });
     }

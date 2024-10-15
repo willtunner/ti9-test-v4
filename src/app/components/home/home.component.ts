@@ -47,8 +47,8 @@ export class HomeComponent {
   loadSupplierForm(): void {
     this.crudService.fetchForm().subscribe((data: IForm) => {
       console.log('supplier: ', data);
-      this.supplierForm = data; // Popula a variável supplierForm
-      this.getData(); // Carrega os dados dos fornecedores
+      this.supplierForm = data;
+      this.getData();
     });
   }
 
@@ -61,7 +61,7 @@ export class HomeComponent {
     const dialogRef = this.dialog.open(DynamicFormComponent, {
       width: '600px',
       height: '600px',
-      data: this.supplierForm
+      data: {form: this.supplierForm, data: false }
     });
 
     dialogRef.afterClosed().subscribe((result: IForm) => {
@@ -81,8 +81,8 @@ export class HomeComponent {
     console.log('supplier', supplier);
     const dialogRef = this.dialog.open(DynamicFormComponent, {
       width: '600px',
-      height: '800px',
-      data: supplier
+      height: '600px',
+      data: {form: this.supplierForm, data: supplier }
     });
 
     dialogRef.afterClosed().subscribe((supplier: IForm) => {
