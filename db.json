@@ -144,27 +144,11 @@
       {
         "name": "keyPix",
         "label": "Chave Pix",
-        "placeholder": "Digite sua chave pix CPF/CNPJ",
+        "placeholder": "",
         "value": "",
         "type": "text",
         "class": "",
-        "validators": [
-          {
-            "validatorName": "required",
-            "required": true,
-            "message": "Campo Obrigatório!"
-          },
-          {
-            "validatorName": "minlength",
-            "minLength": 11,
-            "message": "Precisa ter no minimo 11 caracteres!"
-          },
-          {
-            "validatorName": "maxlength",
-            "maxLength": 14,
-            "message": "14 caracteres permitido no maximo!"
-          }
-        ]
+        "validators": []
       },
       {
         "name": "obs",
