@@ -46,7 +46,6 @@ export class HomeComponent {
 
   loadSupplierForm(): void {
     this.crudService.fetchForm().subscribe((data: IForm) => {
-      console.log('supplier: ', data);
       this.supplierForm = data;
       this.getData();
     });
@@ -97,9 +96,6 @@ export class HomeComponent {
   }
 
   deleteSupplier(event: { element: IFormControl, index: number }): void {
-    console.log('Element:', event.element);
-    console.log('Index:', event.index);
-
     const confirmDialog = this.dialog.open(ConfirmDeleteDialogComponent, {
       width: '400px',
       data: { message: event.element.name }
