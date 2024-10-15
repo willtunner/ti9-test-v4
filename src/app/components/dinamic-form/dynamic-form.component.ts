@@ -57,6 +57,7 @@ export class DynamicFormComponent implements OnInit {
       this.dynamicFormGroup = this.fb.group(formGroupConfig);
       this.addMissingControls(['keyPix', 'nature', 'pixType']);
       this.listenToAcceptPixChanges();
+      this.populateFormWithData();
     }
   }
 
@@ -245,6 +246,18 @@ export class DynamicFormComponent implements OnInit {
   
     return errorMessage;
   }
+
+  populateFormWithData(): void {
+    if (this.data) {
+      // Itera sobre as chaves do objeto de dados e preenche o formulário
+      Object.keys(this.data).forEach(key => {
+        if (this.dynamicFormGroup.get(key)) {
+          this.dynamicFormGroup.get(key)?.setValue(this.data[key]);
+        }
+      });
+    }
+  }
+  
   
 
 }

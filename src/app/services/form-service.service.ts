@@ -8,10 +8,14 @@ import { IForm } from '../interface/supplier.interface';
 })
 export class FormServiceService {
 
-  private apiUrl = 'http://localhost:3000/data'; 
+  private apiUrl = 'http://localhost:3000'; 
   constructor(private http: HttpClient) {}
 
   getSupplierForm(): Observable<IForm> {
-    return this.http.get<IForm>(this.apiUrl);
+    return this.http.get<IForm>(`${this.apiUrl}/supplier` );
+  }
+
+  getProductForm(): Observable<IForm> {
+    return this.http.get<IForm>(`${this.apiUrl}/product` );
   }
 }

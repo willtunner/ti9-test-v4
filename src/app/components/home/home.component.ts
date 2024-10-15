@@ -31,12 +31,12 @@ export class HomeComponent {
   ];
 
   constructor(
-    public dialog: MatDialog, 
-    private snackBar: MatSnackBar, 
-    private crudService: CrudServiceService, 
+    public dialog: MatDialog,
+    private snackBar: MatSnackBar,
+    private crudService: CrudServiceService,
     private formService: FormServiceService
   ) {
-    
+
   }
 
   ngOnInit(): void {
@@ -45,7 +45,7 @@ export class HomeComponent {
 
   loadSupplierForm(): void {
     this.formService.getSupplierForm().subscribe((data: IForm) => {
-      this.supplierForm = data; 
+      this.supplierForm = data;
       this.getData();
     });
   }
@@ -76,6 +76,7 @@ export class HomeComponent {
 
   editSupplier(index: number): void {
     const supplier = this.suppliers$.data[index];
+    console.log('supplier', supplier);
     const dialogRef = this.dialog.open(DynamicFormComponent, {
       width: '600px',
       height: '800px',
@@ -91,7 +92,7 @@ export class HomeComponent {
         });
       }
     });
-}
+  }
 
   deleteSupplier(event: { element: IFormControl, index: number }): void {
     console.log('Element:', event.element);
@@ -103,7 +104,7 @@ export class HomeComponent {
     });
 
     confirmDialog.afterClosed().subscribe(result => {
-      if(result) {
+      if (result) {
         this.crudService.removeSupplier(event.index);
         this.getData();
         this.snackBar.open('Fornecedor excluído com sucesso!', 'Fechar', {

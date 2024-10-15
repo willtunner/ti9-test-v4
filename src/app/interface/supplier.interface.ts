@@ -31,3 +31,16 @@ export interface IValidator {
   maxLength?: number
   email?: string
 }
+
+export interface Supplier {
+  id: string,
+  name: string,
+  nature: string,
+  address: string,
+  uf: string,
+  active: string,
+  acceptPix: boolean,
+  pixType: string,
+  keyPix: string,
+  obs: string
+}
