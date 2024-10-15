@@ -40,18 +40,20 @@ export class HomeComponent {
   }
 
   ngOnInit(): void {
+    this.crudService.setEntityType('supplier');
     this.loadSupplierForm();
   }
 
   loadSupplierForm(): void {
-    this.formService.getSupplierForm().subscribe((data: IForm) => {
-      this.supplierForm = data;
-      this.getData();
+    this.crudService.fetchForm().subscribe((data: IForm) => {
+      console.log('supplier: ', data);
+      this.supplierForm = data; // Popula a variável supplierForm
+      this.getData(); // Carrega os dados dos fornecedores
     });
   }
 
   getData() {
-    this.suppliers$.data = this.crudService.getSuppliers()();
+    this.suppliers$.data = this.crudService.getItems()();
   }
 
 
@@ -64,7 +66,7 @@ export class HomeComponent {
 
     dialogRef.afterClosed().subscribe((result: IForm) => {
       if (result) {
-        this.crudService.addSupplier(result);
+        this.crudService.addItem(result);
         this.getData();
         this.snackBar.open('Fornecedor adicionado com sucesso!', 'Fechar', {
           duration: 3000,
@@ -83,9 +85,9 @@ export class HomeComponent {
       data: supplier
     });
 
-    dialogRef.afterClosed().subscribe((result: IForm) => {
-      if (result) {
-        this.crudService.updateSupplier(index, result);
+    dialogRef.afterClosed().subscribe((supplier: IForm) => {
+      if (supplier) {
+        this.crudService.updateItem(index, supplier);
         this.getData();
         this.snackBar.open('Fornecedor atualizado com sucesso!', 'Fechar', {
           duration: 3000,
@@ -105,7 +107,7 @@ export class HomeComponent {
 
     confirmDialog.afterClosed().subscribe(result => {
       if (result) {
-        this.crudService.removeSupplier(event.index);
+        this.crudService.removeItem(event.index);
         this.getData();
         this.snackBar.open('Fornecedor excluído com sucesso!', 'Fechar', {
           duration: 3000,

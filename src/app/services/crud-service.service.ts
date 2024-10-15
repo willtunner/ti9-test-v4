@@ -1,51 +1,63 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, WritableSignal } from '@angular/core';
 import { IForm } from '../interface/supplier.interface';
+import { FormServiceService } from './form-service.service'; // Importar o FormServiceService
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CrudServiceService {
-  private suppliers = signal<IForm[]>(this.loadSuppliersFromLocalStorage());
+  private entity: WritableSignal<string> = signal(''); // Para armazenar a entidade atual
+  private items: WritableSignal<IForm[]> = signal(this.loadItemsFromLocalStorage());
 
-  constructor() {}
+  constructor(private formService: FormServiceService) {}
 
-  private loadSuppliersFromLocalStorage(): IForm[] {
-    const data = localStorage.getItem('suppliers');
+  private loadItemsFromLocalStorage(): IForm[] {
+    const data = localStorage.getItem(this.entity());
     return data ? JSON.parse(data) : [];
   }
 
-  private saveSuppliersToLocalStorage(): void {
-    localStorage.setItem('suppliers', JSON.stringify(this.suppliers()));
+  private saveItemsToLocalStorage(): void {
+    localStorage.setItem(this.entity(), JSON.stringify(this.items()));
   }
 
-  addSupplier(supplier: IForm): void {
-    this.suppliers.update((current) => {
-      const updatedSuppliers = [...current, supplier];
-      return updatedSuppliers;
+  setEntityType(entity: string): void {
+    this.entity.set(entity);
+    this.items.set(this.loadItemsFromLocalStorage()); // Carregar os itens da nova entidade
+  }
+
+  addItem(item: IForm): void {
+    this.items.update((current) => {
+      const updatedItems = [...current, item];
+      return updatedItems;
     });
 
-    this.saveSuppliersToLocalStorage();
+    this.saveItemsToLocalStorage();
   }
 
-  removeSupplier(index: number): void {
-    this.suppliers.update((current) => {
-      const updatedSuppliers = current.filter((_, i) => i !== index);
-      return updatedSuppliers;
+  removeItem(index: number): void {
+    this.items.update((current) => {
+      const updatedItems = current.filter((_, i) => i !== index);
+      return updatedItems;
     });
 
-    this.saveSuppliersToLocalStorage();
+    this.saveItemsToLocalStorage();
   }
 
-  updateSupplier(index: number, supplier: IForm): void {
-    this.suppliers.update((current) => {
-      const updatedSuppliers = current.map((s, i) => (i === index ? supplier : s));
-      return updatedSuppliers;
+  updateItem(index: number, item: IForm): void {
+    this.items.update((current) => {
+      const updatedItems = current.map((s, i) => (i === index ? item : s));
+      return updatedItems;
     });
 
-    this.saveSuppliersToLocalStorage();
+    this.saveItemsToLocalStorage();
   }
 
-  getSuppliers() {
-    return this.suppliers;
+  getItems() {
+    return this.items;
+  }
+
+  fetchForm(): Observable<IForm> {
+    return this.formService.getForm(this.entity());
   }
 }

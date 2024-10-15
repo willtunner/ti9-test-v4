@@ -159,5 +159,47 @@
         "validators": []
       }
     ]
+  },
+  "product": {
+    "formTitle": "Cadastro de produtos",
+    "saveBtnTitle": "Salvar",
+    "deleteBtnTitle": "Deletar",
+    "updateBtnTitle": "Atualizar",
+    "formControls": [
+      {
+        "name": "id",
+        "label": "Código",
+        "value": "",
+        "type": "text",
+        "class": "",
+        "validators": [
+          {
+            "validatorName": "required",
+            "required": true,
+            "message": "Campo Obrigatório!"
+          },
+          {
+            "validatorName": "minlength",
+            "minLength": 6,
+            "message": "Precisa ter no minimo 6 caracteres!"
+          }
+        ]
+      },
+      {
+        "name": "name",
+        "label": "Nome",
+        "placeholder": "Digite seu Usuário!",
+        "value": "",
+        "type": "text",
+        "class": "",
+        "validators": [
+          {
+            "validatorName": "required",
+            "required": true,
+            "message": "Campo Obrigatório!"
+          }
+        ]
+      }
+    ]
   }
 }
