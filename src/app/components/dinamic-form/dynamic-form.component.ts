@@ -56,6 +56,9 @@ export class DynamicFormComponent implements OnInit {
   }
 
   initializeForm() {
+    console.log('inicia o form:', this.data);
+
+    debugger;
     if (this.data) {
       let formGroup: any = {};
 
@@ -70,7 +73,7 @@ export class DynamicFormComponent implements OnInit {
             if (val.validatorName === 'pattern') controlValidators.push(Validators.pattern(val.pattern as string));
           });
         }
-
+        debugger;
         const controlValue = this.data[control.name] ?? control.value;
         if (control.name === 'acceptPix') {
           formGroup[control.name] = [controlValue === true || controlValue === 'true', controlValidators]; // Converte string "true" para booleano
@@ -83,6 +86,7 @@ export class DynamicFormComponent implements OnInit {
 
       this.dynamicFormGroup = this.fb.group(formGroup);
 
+      debugger;
       if (!this.dynamicFormGroup.get('keyPix')) {
         this.dynamicFormGroup.addControl('keyPix', this.fb.control('', Validators.required));
       }
@@ -95,7 +99,12 @@ export class DynamicFormComponent implements OnInit {
         this.dynamicFormGroup.addControl('pixType', this.fb.control(''));
       }
 
+      this.updateKeyPixValidation(this.dynamicFormGroup.get('acceptPix')?.value)
+
+      debugger;
       this.dynamicFormGroup.get('acceptPix')?.valueChanges.subscribe(acceptPix => {
+        console.log('acceptPix', acceptPix);
+        debugger;
         this.updateKeyPixValidation(acceptPix);
       });
     }
@@ -103,7 +112,7 @@ export class DynamicFormComponent implements OnInit {
 
   updateKeyPixValidation(acceptPix: boolean) {
     const keyPixControl = this.dynamicFormGroup.get('keyPix');
-
+    
     if (keyPixControl) {
       if (acceptPix) {
         keyPixControl.setValidators([Validators.required]);
@@ -170,7 +179,8 @@ export class DynamicFormComponent implements OnInit {
         break;
 
       case 'Chave Aleatória':
-        keyPixControl.clearValidators();
+        keyPixControl.setValidators([Validators.required]);
+        this.keyPixError = 'Por favor, insira a Chave aleatória!';
         break;
 
       default:
