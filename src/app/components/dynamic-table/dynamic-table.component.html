@@ -7,17 +7,17 @@
   }
 
   <ng-container matColumnDef="actions" class="">
-      <th mat-header-cell *matHeaderCellDef> Ações </th>
-      <td mat-cell *matCellDef="let element; let i = index" >
-        <div class="actions">
-          <button mat-icon-button color="primary" (click)="editElement(i)">
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button mat-icon-button color="warn" (click)="deleteElement(element, i)">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </div>
-      </td>
+    <th mat-header-cell *matHeaderCellDef> Ações </th>
+    <td mat-cell *matCellDef="let element; let i = index">
+      <div class="actions">
+        <button mat-icon-button (click)="editElement(i)">
+          <mat-icon class="edit-icon">edit</mat-icon>
+        </button>
+        <button mat-icon-button (click)="deleteElement(element, i)">
+          <mat-icon class="delete-icon">delete</mat-icon>
+        </button>
+      </div>
+    </td>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns.concat('actions')"></tr>
