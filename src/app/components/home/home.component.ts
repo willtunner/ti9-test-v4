@@ -34,7 +34,6 @@ export class HomeComponent {
     public dialog: MatDialog,
     private snackBar: MatSnackBar,
     private crudService: CrudServiceService,
-    private formService: FormServiceService
   ) {
 
   }
@@ -54,7 +53,6 @@ export class HomeComponent {
   getData() {
     this.suppliers$.data = this.crudService.getItems()();
   }
-
 
   openFornecedorModal(): void {
     const dialogRef = this.dialog.open(DynamicFormComponent, {
