@@ -1,3 +1,9 @@
+<!-- Input de Filtro acima da tabela -->
+<mat-form-field appearance="outline" class="filter-input">
+  <mat-label>Filtro</mat-label>
+  <input matInput (keyup)="applyFilter($event)" placeholder="Digite para filtrar">
+</mat-form-field>
+
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 dynamic-table">
   @for(column of displayedColumns; track column) {
   <ng-container [matColumnDef]="column">
