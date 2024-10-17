@@ -1,18 +1,28 @@
 <div class="sidenav" [ngClass]="collapsed ? 'sidenav-collapsed' : ''">
     <div class="logo-container">
         <button class="logo" (click)="toggleCollapse()">TI9</button>
-        <div class="logo-text" @fadeInOut *ngIf="collapsed">Teste</div>
-        <button class="btn-close" @rotate *ngIf="collapsed" (click)="closeSidenav()" >
+        @if(collapsed) {
+            <div class="logo-text" @fadeInOut>Teste</div>
+        }
+        
+        @if(collapsed) {
+        <button class="btn-close" @rotate (click)="closeSidenav()" >
             <mat-icon class="close-icon">close</mat-icon></button>
+        }
     </div>
     <ul class="sidenav-nav">
-        <li class="sidenav-nav-item" *ngFor="let data of navData">
-            <a class="sidenav-nav-link" [routerLink]="[data.routerLink]"
-              routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-              <mat-icon class="sidenav-link-icon">{{ data.icon }}</mat-icon>
-                <span class="sidenav-link-text" @fadeInOut *ngIf="collapsed">{{ data.label }}</span>
-            </a>
-        </li>
+        @for(data of navData; track data) {
+            <li class="sidenav-nav-item">
+                <a class="sidenav-nav-link" [routerLink]="[data.routerLink]"
+                  routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                  <mat-icon class="sidenav-link-icon">{{ data.icon }}</mat-icon>
+                  @if(collapsed) {
+                    <span class="sidenav-link-text" @fadeInOut>{{ data.label }}</span>
+                  }
+                </a>
+            </li>
+        }
+        
     </ul>
 </div>
 
