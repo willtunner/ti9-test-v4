@@ -107,5 +107,68 @@ mat-form-field {
   width: 100%; /* Garantir que o campo ocupe toda a largura */
 }
 
-/* Estilo para os botões */
+/* Verde claro para sucesso */
+.success-snackbar {
+  --snackbar-bg-color: #81c784; /* Fundo verde claro */
+  --snackbar-text-color: #225124; /* Texto verde escuro */
+  --snackbar-button-color: #2e7d32; /* Botão verde escuro */
+  --snackbar-button-hover-color: #1b5e20; /* Hover do botão verde */
+}
+
+/* Azul claro para informações */
+.info-snackbar {
+  --snackbar-bg-color: #64b5f6; /* Fundo azul claro */
+  --snackbar-text-color: #0d47a1; /* Texto azul escuro */
+  --snackbar-button-color: #1565c0; /* Botão azul escuro */
+  --snackbar-button-hover-color: #0d47a1; /* Hover do botão azul */
+}
+
+/* Vermelho claro para erros */
+.error-snackbar {
+  --snackbar-bg-color: #e57373; /* Fundo vermelho claro */
+  --snackbar-text-color: #b71c1c; /* Texto vermelho escuro */
+  --snackbar-button-color: #d32f2f; /* Botão vermelho escuro */
+  --snackbar-button-hover-color: #b71c1c; /* Hover do botão vermelho */
+}
+
+/* Estilos gerais que se aplicam a todos os snackbars */
+.custom-snackbar {
+  background-color: transparent;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.custom-snackbar .mat-mdc-snack-bar-label {
+  background-color: var(--snackbar-bg-color); /* Cor dinâmica */
+  color: var(--snackbar-text-color); /* Texto dinâmico */
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.custom-snackbar .mat-mdc-snack-bar-actions .mat-mdc-snack-bar-action {
+  background-color: transparent;
+  padding: 8px 16px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+
+  .mdc-button__label {
+    color: var(--snackbar-button-color);
+    font-weight: bold;
+  }
+
+  &:hover .mdc-button__label {
+    color: var(--snackbar-button-hover-color);
+  }
+
+  .mdc-button__ripple {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+}
+
+
 

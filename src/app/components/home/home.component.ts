@@ -71,6 +71,7 @@ export class HomeComponent {
         this.getData();
         this.snackBar.open('Fornecedor adicionado com sucesso!', 'Fechar', {
           duration: 3000,
+          panelClass: ['custom-snackbar', 'success-snackbar'],
         });
         this.getData();
       }
@@ -92,6 +93,7 @@ export class HomeComponent {
         this.getData();
         this.snackBar.open('Fornecedor atualizado com sucesso!', 'Fechar', {
           duration: 3000,
+          panelClass: ['custom-snackbar', 'info-snackbar'],
         });
       }
     });
@@ -109,6 +111,7 @@ export class HomeComponent {
         this.getData();
         this.snackBar.open('Fornecedor excluído com sucesso!', 'Fechar', {
           duration: 3000,
+          panelClass: ['custom-snackbar', 'error-snackbar'],
         });
       }
     })
