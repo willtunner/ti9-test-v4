@@ -22,6 +22,7 @@
     "@angular/router": "^18.2.0",
     "ngx-mask": "^18.0.0",
     "rxjs": "~7.8.0",
+    "ti9-test-v4": "file:",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.10"
   },

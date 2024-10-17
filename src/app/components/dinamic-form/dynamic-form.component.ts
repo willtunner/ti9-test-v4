@@ -64,24 +64,24 @@ export class DynamicFormComponent implements OnInit {
 
   createFormGroupConfig(): { [key: string]: any } {
     const formGroupConfig: { [key: string]: any } = {};
-  
+
     this.form.formControls.forEach((control: IFormControl) => {
       const controlValidators = this.createValidators(control.validators);
-  
+
       // Verifica se o dado já existe no objeto `data` e preenche o valor inicial do controle.
       let controlValue = (this.data.data[control.name] ?? control.value) || ''; // Modificado para buscar o valor em `data.data`
-  
+
       // Verifica se o controle é o 'acceptPix' para tratar o valor como booleano
       if (control.name === 'acceptPix') {
         controlValue = (controlValue === 'true' || controlValue === true) ? true : false;
       }
-  
+
       formGroupConfig[control.name] = [controlValue, controlValidators];
     });
-  
+
     return formGroupConfig;
   }
-  
+
 
   createValidators(validators: IValidator[]): any[] {
     if (!validators) return [];
@@ -116,10 +116,10 @@ export class DynamicFormComponent implements OnInit {
     const keyPixControl = this.dynamicFormGroup.get('keyPix');
     const pixTypeControl = this.dynamicFormGroup.get('pixType');
     const natureControl = this.dynamicFormGroup.get('nature');
-  
+
     if (keyPixControl && pixTypeControl && natureControl) {
       const nature = natureControl.value;
-  
+
       if (acceptPix) {
         if (pixTypeControl.value === 'CPF/CNPJ') {
           // Validações para CPF ou CNPJ conforme a natureza
@@ -143,7 +143,7 @@ export class DynamicFormComponent implements OnInit {
       } else {
         keyPixControl.clearValidators();
       }
-  
+
       keyPixControl.updateValueAndValidity();
     }
   }
@@ -172,12 +172,12 @@ export class DynamicFormComponent implements OnInit {
     const selectedPixType = event.value;
     const keyPixControl = this.dynamicFormGroup.get('keyPix');
     const natureControl = this.dynamicFormGroup.get('nature');
-  
+
     if (!keyPixControl || !natureControl) return;
-  
+
     const nature = natureControl.value;
     this.keyPixError = null; // Limpa os erros antes de aplicar os novos
-  
+
     switch (selectedPixType) {
       case 'CPF/CNPJ':
         if (nature === 'Pessoa fisica') {
@@ -196,31 +196,31 @@ export class DynamicFormComponent implements OnInit {
           this.keyPixError = 'CNPJ deve ter 14 dígitos.';
         }
         break;
-  
+
       case 'Email':
         keyPixControl.setValidators([Validators.required, Validators.email]);
         this.keyPixError = 'Por favor, insira um e-mail válido.';
         break;
-  
+
       case 'Celular':
         keyPixControl.setValidators([Validators.required]);
         this.keyPixError = 'Por favor, insira um número de celular válido.';
         break;
-  
+
       case 'Chave Aleatória':
         keyPixControl.setValidators([Validators.required, Validators.minLength(32)]);
         this.keyPixError = 'Chave Aleatória deve ter pelo menos 32 caracteres.';
         break;
-  
+
       default:
         this.keyPixError = 'Selecione um tipo válido de chave Pix.';
         break;
     }
-  
+
     keyPixControl.updateValueAndValidity();
-  }  
-  
-  
+  }
+
+
 
   getPixPlaceholder(): string {
     const pixType = this.dynamicFormGroup.get('pixType')?.value;
@@ -254,7 +254,7 @@ export class DynamicFormComponent implements OnInit {
   getValidationErrors(control: IFormControl): string {
     const myFormControl = this.dynamicFormGroup.get(control.name);
     let errorMessage = '';
-  
+
     if (myFormControl?.errors) {
       if (myFormControl.errors['required']) {
         errorMessage = 'Este campo é obrigatório.';
@@ -269,10 +269,10 @@ export class DynamicFormComponent implements OnInit {
         errorMessage = 'Insira um e-mail válido.';
       }
     }
-  
+
     return errorMessage;
   }
-  
+
 
   populateFormWithData(): void {
     if (this.data && this.data.data) {
@@ -285,7 +285,7 @@ export class DynamicFormComponent implements OnInit {
       });
     }
   }
-  
-  
+
+
 
 }
