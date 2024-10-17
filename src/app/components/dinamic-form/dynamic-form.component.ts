@@ -74,8 +74,6 @@ export class DynamicFormComponent implements OnInit {
       let controlValue = (this.data.data[control.name] ?? control.value) || '';
       if (control.name === 'acceptPix') {
         controlValue = controlValue === 'true' || controlValue === true ? true : false;
-
-        if (!controlValue) this.dynamicFormGroup.get('keyPix')?.clearValidators();
       }
       formGroupConfig[control.name] = [controlValue, controlValidators];
     });
@@ -185,12 +183,6 @@ export class DynamicFormComponent implements OnInit {
       console.log('acceptPix false')
       keyPixControl.clearValidators();
     }
-
-
-
-
-
-
 
     keyPixControl.updateValueAndValidity();
   }

@@ -26,9 +26,7 @@ import { ConfirmDeleteDialogComponent } from '../confirm-delete-dialog/confirm-d
 export class HomeComponent {
   supplierForm!: IForm;
   suppliers$ = new MatTableDataSource<IForm>([]);
-  displayedColumns: string[] = [
-    'id', 'name', 'nature', 'address', 'uf', 'active', 'acceptPix', 'pixType', 'keyPix', 'obs'
-  ];
+  displayedColumns: string[] = [];
 
   constructor(
     public dialog: MatDialog,
@@ -47,7 +45,13 @@ export class HomeComponent {
     this.crudService.fetchForm().subscribe((data: IForm) => {
       this.supplierForm = data;
       this.getData();
+      this.displayedColumns = this.createDisplayedColumns(data.formControls);
     });
+  }
+
+  createDisplayedColumns(formControls: IFormControl[]): string[] {
+    const columnNames = formControls.map(control => control.name);
+    return columnNames;
   }
 
   getData() {
