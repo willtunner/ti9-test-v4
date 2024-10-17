@@ -209,8 +209,8 @@ export class DynamicFormComponent implements OnInit {
       // // Converte os valores de 'active' e 'pixtype' para 'sim' ou 'não'
       // formValue.active = formValue.active === true ? 'sim' : 'não';
       // formValue.pixtype = formValue.acceptPix === true ? 'sim' : 'não';
-      formValue.pixtype = (formValue.acceptPix && formValue.nature === NatureType.Pessoa_fisica  ) ? 'CPF' : 'CNPJ';
-  
+      formValue.pixType = formValue.nature === NatureType.Pessoa_fisica ? 'CPF' : 'CNPJ';
+      console.log('formValue', formValue);
       this.dialogRef.close(formValue);
     }
   }
