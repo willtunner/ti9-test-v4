@@ -42,23 +42,27 @@ export class DynamicFormComponent implements OnInit {
     public dialogRef: MatDialogRef<DynamicFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    console.log(data);
     this.form = data.form;
     this.dynamicFormGroup = this.fb.group({}, { updateOn: 'submit' });
   }
 
   ngOnInit(): void {
     this.initializeForm();
-    this.listenToPixTypeChange();
+    this.listenToNatureChanges();
+  }
+
+  listenToNatureChanges(): void {
+    const natureControl = this.dynamicFormGroup.get('nature');
+    natureControl?.valueChanges.subscribe(() => {
+      this.applyPixTypeValidators();
+    });
   }
 
   initializeForm(): void {
     if (this.data) {
       const formGroupConfig = this.createFormGroupConfig();
       this.dynamicFormGroup = this.fb.group(formGroupConfig);
-      // this.addMissingControls(['keyPix', 'nature', 'pixType']);
       this.listenToAcceptPixChanges();
-      this.populateFormWithData();
     }
   }
 
@@ -67,25 +71,18 @@ export class DynamicFormComponent implements OnInit {
 
     this.form.formControls.forEach((control: IFormControl) => {
       const controlValidators = this.createValidators(control.validators);
-
-      // Verifica se o dado já existe no objeto `data` e preenche o valor inicial do controle.
-      let controlValue = (this.data.data[control.name] ?? control.value) || ''; // Modificado para buscar o valor em `data.data`
-
-      // Verifica se o controle é o 'acceptPix' para tratar o valor como booleano
+      let controlValue = (this.data.data[control.name] ?? control.value) || '';
       if (control.name === 'acceptPix') {
-        controlValue = (controlValue === 'true' || controlValue === true) ? true : false;
+        controlValue = controlValue === 'true' || controlValue === true ? true : false;
       }
-
       formGroupConfig[control.name] = [controlValue, controlValidators];
     });
 
     return formGroupConfig;
   }
 
-
   createValidators(validators: IValidator[]): any[] {
     if (!validators) return [];
-
     return validators.map(val => {
       switch (val.validatorName) {
         case 'required': return Validators.required;
@@ -98,14 +95,6 @@ export class DynamicFormComponent implements OnInit {
     }).filter(Boolean);
   }
 
-  addMissingControls(controls: string[]): void {
-    controls.forEach(control => {
-      if (!this.dynamicFormGroup.get(control)) {
-        this.dynamicFormGroup.addControl(control, this.fb.control(''));
-      }
-    });
-  }
-
   listenToAcceptPixChanges(): void {
     this.dynamicFormGroup.get('acceptPix')?.valueChanges.subscribe(acceptPix => {
       this.updateKeyPixValidation(acceptPix);
@@ -114,41 +103,100 @@ export class DynamicFormComponent implements OnInit {
 
   updateKeyPixValidation(acceptPix: boolean): void {
     const keyPixControl = this.dynamicFormGroup.get('keyPix');
+    if (!keyPixControl) return;
+
+    if (acceptPix) {
+      this.applyPixTypeValidators();
+    } else {
+      keyPixControl.clearValidators();
+    }
+
+    keyPixControl.updateValueAndValidity();
+  }
+
+  onPixTypeChange(event: MatSelectChange): void {
+    console.log('onPixTypeChange', event)
+    this.applyPixTypeValidators();
+  }
+
+  applyPixTypeValidators(): void {
+    const keyPixControl = this.dynamicFormGroup.get('keyPix');
     const pixTypeControl = this.dynamicFormGroup.get('pixType');
     const natureControl = this.dynamicFormGroup.get('nature');
 
-    if (keyPixControl && pixTypeControl && natureControl) {
-      const nature = natureControl.value;
+    this.dynamicFormGroup.get('nature')?.valueChanges.subscribe(nature => {
+      console.log('nature', nature)
+    });
 
-      if (acceptPix) {
-        if (pixTypeControl.value === 'CPF/CNPJ') {
-          // Validações para CPF ou CNPJ conforme a natureza
-          if (nature === 'Pessoa fisica') {
-            keyPixControl.setValidators([
-              Validators.required,
-              Validators.minLength(11), // CPF tem 11 dígitos
-              Validators.maxLength(11)
-            ]);
-          } else if (nature === 'Pessoa jurídica') {
-            keyPixControl.setValidators([
-              Validators.required,
-              Validators.minLength(14), // CNPJ tem 14 dígitos
-              Validators.maxLength(14)
-            ]);
-          }
-        } else {
-          // Outras validações conforme o tipo de Pix
+    if (!keyPixControl || !pixTypeControl || !natureControl) return;
+
+    keyPixControl.clearValidators();
+    const pixType = pixTypeControl.value;
+    const nature = natureControl.value;
+    console.log('switch', pixType, 'nature', nature);
+    debugger;
+    switch (pixType) {
+      case 'CPF/CNPJ':
+        if (!nature) {
+          keyPixControl.clearValidators();
           keyPixControl.setValidators([Validators.required]);
+          this.keyPixError = 'Por favor, Selecione natureza do fornecedor ';
+        } else {
+          if (nature === 'Pessoa fisica') {
+            keyPixControl.clearValidators();
+            keyPixControl.setValidators([Validators.required, Validators.minLength(11), Validators.maxLength(11)]);
+            this.keyPixError = 'CPF deve ter 11 dígitos.';
+          } else {
+            keyPixControl.clearValidators();
+            keyPixControl.setValidators([Validators.required, Validators.minLength(14), Validators.maxLength(14)]);
+            this.keyPixError = 'CNPJ deve ter 14 dígitos.';
+          }
         }
-      } else {
+        break;
+      case 'Email':
         keyPixControl.clearValidators();
-      }
-
-      keyPixControl.updateValueAndValidity();
+        keyPixControl.setValidators([Validators.required, Validators.email]);
+        this.keyPixError = 'Por favor, insira um e-mail válido.';
+        break;
+      case 'Celular':
+        keyPixControl.clearValidators();
+        keyPixControl.setValidators([Validators.required]);
+        this.keyPixError = 'Por favor, insira um número de celular válido.';
+        break;
+      case 'Chave Aleatória':
+        keyPixControl.clearValidators();
+        keyPixControl.setValidators([Validators.required, Validators.minLength(32)]);
+        this.keyPixError = 'Chave Aleatória deve ter pelo menos 32 caracteres.';
+        break;
+      case '':
+        if (!nature) {
+          keyPixControl.clearValidators();
+          keyPixControl.setValidators([Validators.required]);
+          this.keyPixError = 'Por favor, Selecione natureza do fornecedor ';
+        } else {
+          keyPixControl.clearValidators();
+          keyPixControl.setValidators([Validators.required]);
+          this.keyPixError = 'Por favor, Selecione o tipo da chave';
+        }
+        break;
     }
+
+    keyPixControl.updateValueAndValidity();
+  }
+
+  getValidationErrors(control: IFormControl): string {
+    const myFormControl = this.dynamicFormGroup.get(control.name);
+    if (control.name === 'keyPix' && this.keyPixError) {
+      return this.keyPixError;
+    }
+    if (myFormControl?.invalid && myFormControl?.touched) {
+      return control.validators?.find(v => myFormControl.hasError(v.validatorName as string))?.message || '';
+    }
+    return '';
   }
 
   onsubmit(): void {
+    this.dynamicFormGroup.markAllAsTouched();
     if (this.dynamicFormGroup.valid) {
       this.dialogRef.close(this.dynamicFormGroup.value);
     }
@@ -157,70 +205,6 @@ export class DynamicFormComponent implements OnInit {
   onCancel(): void {
     this.dynamicFormGroup.reset();
   }
-
-  isPixAccepted(): boolean {
-    return this.dynamicFormGroup.get('acceptPix')?.value;
-  }
-
-  listenToPixTypeChange(): void {
-    this.dynamicFormGroup.get('pixType')?.valueChanges.subscribe(value => {
-      this.onPixTypeChange(value);
-    });
-  }
-
-  onPixTypeChange(event: MatSelectChange) {
-    const selectedPixType = event.value;
-    const keyPixControl = this.dynamicFormGroup.get('keyPix');
-    const natureControl = this.dynamicFormGroup.get('nature');
-
-    if (!keyPixControl || !natureControl) return;
-
-    const nature = natureControl.value;
-    this.keyPixError = null; // Limpa os erros antes de aplicar os novos
-
-    switch (selectedPixType) {
-      case 'CPF/CNPJ':
-        if (nature === 'Pessoa fisica') {
-          keyPixControl.setValidators([
-            Validators.required,
-            Validators.minLength(11),
-            Validators.maxLength(11)
-          ]);
-          this.keyPixError = 'CPF deve ter 11 dígitos.';
-        } else {
-          keyPixControl.setValidators([
-            Validators.required,
-            Validators.minLength(14),
-            Validators.maxLength(14)
-          ]);
-          this.keyPixError = 'CNPJ deve ter 14 dígitos.';
-        }
-        break;
-
-      case 'Email':
-        keyPixControl.setValidators([Validators.required, Validators.email]);
-        this.keyPixError = 'Por favor, insira um e-mail válido.';
-        break;
-
-      case 'Celular':
-        keyPixControl.setValidators([Validators.required]);
-        this.keyPixError = 'Por favor, insira um número de celular válido.';
-        break;
-
-      case 'Chave Aleatória':
-        keyPixControl.setValidators([Validators.required, Validators.minLength(32)]);
-        this.keyPixError = 'Chave Aleatória deve ter pelo menos 32 caracteres.';
-        break;
-
-      default:
-        this.keyPixError = 'Selecione um tipo válido de chave Pix.';
-        break;
-    }
-
-    keyPixControl.updateValueAndValidity();
-  }
-
-
 
   getPixPlaceholder(): string {
     const pixType = this.dynamicFormGroup.get('pixType')?.value;
@@ -245,47 +229,14 @@ export class DynamicFormComponent implements OnInit {
     }
   }
 
-  closeDialog(): void {
-    if (this.dynamicFormGroup.valid) {
-      this.dialogRef.close(this.dynamicFormGroup.value);
-    }
+  getInvalidControls(): { [key: string]: any } {
+    const invalidControls: { [key: string]: any } = {};
+    Object.keys(this.dynamicFormGroup.controls).forEach(key => {
+      const control = this.dynamicFormGroup.get(key);
+      if (control && control.invalid) {
+        invalidControls[key] = control.errors;
+      }
+    });
+    return invalidControls;
   }
-
-  getValidationErrors(control: IFormControl): string {
-    const myFormControl = this.dynamicFormGroup.get(control.name);
-    let errorMessage = '';
-
-    if (myFormControl?.errors) {
-      if (myFormControl.errors['required']) {
-        errorMessage = 'Este campo é obrigatório.';
-      }
-      if (myFormControl.errors['minlength']) {
-        errorMessage = `O campo deve ter no mínimo ${myFormControl.errors['minlength'].requiredLength} caracteres.`;
-      }
-      if (myFormControl.errors['maxlength']) {
-        errorMessage = `O campo deve ter no máximo ${myFormControl.errors['maxlength'].requiredLength} caracteres.`;
-      }
-      if (myFormControl.errors['email']) {
-        errorMessage = 'Insira um e-mail válido.';
-      }
-    }
-
-    return errorMessage;
-  }
-
-
-  populateFormWithData(): void {
-    if (this.data && this.data.data) {
-      // Itera sobre as chaves do objeto `data.data` e preenche o formulário
-      Object.keys(this.data.data).forEach(key => {
-        const formControl = this.dynamicFormGroup.get(key);
-        if (formControl) {
-          formControl.setValue(this.data.data[key]);
-        }
-      });
-    }
-  }
-
-
-
 }

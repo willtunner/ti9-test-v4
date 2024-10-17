@@ -12,7 +12,7 @@
                   <mat-label>{{ control.label }}</mat-label>
                   <input matInput [type]="control.type" formControlName="{{ control.name }}">
                   @if(dynamicFormGroup.get(control.name)?.invalid && dynamicFormGroup.get(control.name)?.touched) {
-                    <mat-error *ngIf="dynamicFormGroup.get(control.name)?.invalid && dynamicFormGroup.get(control.name)?.touched">
+                    <mat-error>
                       {{ getValidationErrors(control) }}
                     </mat-error>
                   }
@@ -31,7 +31,7 @@
                   }
                 </mat-select>
                 @if(dynamicFormGroup.get(control.name)?.invalid && dynamicFormGroup.get(control.name)?.touched || myForm.submitted) {
-                  <mat-error *ngIf="dynamicFormGroup.get(control.name)?.invalid && dynamicFormGroup.get(control.name)?.touched">
+                  <mat-error>
                     {{ getValidationErrors(control) }}
                   </mat-error>
                 }
@@ -62,7 +62,7 @@
                     }
                   </mat-select>
                   @if(dynamicFormGroup.get(control.name)?.invalid && dynamicFormGroup.get(control.name)?.touched || myForm.submitted) {
-                    <mat-error *ngIf="dynamicFormGroup.get(control.name)?.invalid && dynamicFormGroup.get(control.name)?.touched">
+                    <mat-error>
                       {{ getValidationErrors(control) }}
                     </mat-error>
                   }
@@ -76,7 +76,7 @@
                   <mat-label>{{ control.label }}</mat-label>
                   <input matInput formControlName="{{ control.name }}" [placeholder]="getPixPlaceholder()" [mask]="getPixMask()">
                   @if(dynamicFormGroup.get(control.name)?.invalid && dynamicFormGroup.get(control.name)?.touched) {
-                    <mat-error *ngIf="dynamicFormGroup.get(control.name)?.invalid && dynamicFormGroup.get(control.name)?.touched">
+                    <mat-error>
                       {{ getValidationErrors(control) }}
                     </mat-error>
                   }
@@ -102,3 +102,5 @@
     </form>
   </div>
 </div>
+
+<pre>{{ getInvalidControls() | json }}</pre>
