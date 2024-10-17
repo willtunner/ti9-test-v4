@@ -24,10 +24,7 @@ import { ConfirmDeleteDialogComponent } from '../confirm-delete-dialog/confirm-d
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
-  supplierForm!: IForm;
-  suppliers$ = new MatTableDataSource<IForm>([]);
-  displayedColumns: string[] = [];
-
+ 
   constructor(
     public dialog: MatDialog,
     private snackBar: MatSnackBar,
@@ -38,83 +35,7 @@ export class HomeComponent {
 
   ngOnInit(): void {
     this.crudService.setEntityType('supplier');
-    this.loadSupplierForm();
   }
 
-  loadSupplierForm(): void {
-    this.crudService.fetchForm().subscribe((data: IForm) => {
-      this.supplierForm = data;
-      this.getData();
-      this.displayedColumns = this.createDisplayedColumns(data.formControls);
-    });
-  }
-
-  createDisplayedColumns(formControls: IFormControl[]): string[] {
-    const columnNames = formControls.map(control => control.name);
-    return columnNames;
-  }
-
-  getData() {
-    this.suppliers$.data = this.crudService.getItems()();
-  }
-
-  openFornecedorModal(): void {
-    const dialogRef = this.dialog.open(DynamicFormComponent, {
-      width: '600px',
-      height: '600px',
-      data: {form: this.supplierForm, data: false }
-    });
-
-    dialogRef.afterClosed().subscribe((result: IForm) => {
-      if (result) {
-        this.crudService.addItem(result);
-        this.getData();
-        this.snackBar.open('Fornecedor adicionado com sucesso!', 'Fechar', {
-          duration: 3000,
-          panelClass: ['custom-snackbar', 'success-snackbar'],
-        });
-        this.getData();
-      }
-    });
-  }
-
-  editSupplier(index: number): void {
-    const supplier = this.suppliers$.data[index];
-    console.log('supplier', supplier);
-    const dialogRef = this.dialog.open(DynamicFormComponent, {
-      width: '600px',
-      height: '600px',
-      data: {form: this.supplierForm, data: supplier }
-    });
-
-    dialogRef.afterClosed().subscribe((supplier: IForm) => {
-      if (supplier) {
-        this.crudService.updateItem(index, supplier);
-        this.getData();
-        this.snackBar.open('Fornecedor atualizado com sucesso!', 'Fechar', {
-          duration: 3000,
-          panelClass: ['custom-snackbar', 'info-snackbar'],
-        });
-      }
-    });
-  }
-
-  deleteSupplier(event: { element: IFormControl, index: number }): void {
-    const confirmDialog = this.dialog.open(ConfirmDeleteDialogComponent, {
-      width: '400px',
-      data: { message: event.element.name }
-    });
-
-    confirmDialog.afterClosed().subscribe(result => {
-      if (result) {
-        this.crudService.removeItem(event.index);
-        this.getData();
-        this.snackBar.open('Fornecedor excluído com sucesso!', 'Fechar', {
-          duration: 3000,
-          panelClass: ['custom-snackbar', 'error-snackbar'],
-        });
-      }
-    })
-  }
 
 }

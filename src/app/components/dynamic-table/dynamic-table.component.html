@@ -1,7 +1,16 @@
-<!-- Input de Filtro acima da tabela -->
 <mat-form-field appearance="outline" class="filter-input">
-  <mat-label>Filtro</mat-label>
-  <input matInput (keyup)="applyFilter($event)" placeholder="Digite para filtrar">
+<div class="base-filter">
+  <div class="filter">
+    <mat-label>Filtro</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Digite para filtrar">
+  </div>
+  <div class="modal-buttom">
+    <button mat-raised-button color="primary" (click)="openFornecedorModal()" class="custom-button">
+      <mat-icon>add</mat-icon>
+      Cadastrar
+    </button>
+  </div>
+</div>
 </mat-form-field>
 
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 dynamic-table">
@@ -16,10 +25,10 @@
     <th mat-header-cell *matHeaderCellDef> Ações </th>
     <td mat-cell *matCellDef="let element; let i = index">
       <div class="actions">
-        <button mat-icon-button (click)="editElement(i)">
+        <button mat-icon-button (click)="editData(i)">
           <mat-icon class="edit-icon">edit</mat-icon>
         </button>
-        <button mat-icon-button (click)="deleteElement(element, i)">
+        <button mat-icon-button (click)="deleteData(element, i)">
           <mat-icon class="delete-icon">delete</mat-icon>
         </button>
       </div>
