@@ -11,6 +11,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { PixType } from '../../enum/pixtype.enum';
+import { NatureType } from '../../enum/naturetype.enum';
 
 @Component({
   selector: 'app-dynamic-form',
@@ -132,16 +134,17 @@ export class DynamicFormComponent implements OnInit {
     const nature = natureControl.value;
 
     console.log('switch', pixType, 'nature', nature);
+    const pixType2 = pixTypeControl.value as PixType; 
 
     if(acceptPix) {
       switch (pixType) {
-        case 'CPF/CNPJ':
+        case PixType.CPF_CNPJ:
           if (!nature) {
             keyPixControl.clearValidators();
             keyPixControl.setValidators([Validators.required]);
             this.keyPixError = 'Por favor, Selecione natureza do fornecedor ';
           } else {
-            if (nature === 'Pessoa fisica') {
+            if (nature === NatureType.Pessoa_fisica) {
               keyPixControl.clearValidators();
               keyPixControl.setValidators([Validators.required, Validators.minLength(11), Validators.maxLength(11)]);
               this.keyPixError = 'CPF deve ter 11 dígitos.';
@@ -152,12 +155,12 @@ export class DynamicFormComponent implements OnInit {
             }
           }
           break;
-        case 'Email':
+        case PixType.Email:
           keyPixControl.clearValidators();
           keyPixControl.setValidators([Validators.required, Validators.email]);
           this.keyPixError = 'Por favor, insira um e-mail válido.';
           break;
-        case 'Celular':
+        case PixType.Celular:
           keyPixControl.clearValidators();
           keyPixControl.setValidators([Validators.required]);
           this.keyPixError = 'Por favor, insira um número de celular válido.';
@@ -214,10 +217,10 @@ export class DynamicFormComponent implements OnInit {
     const nature = this.dynamicFormGroup.get('nature')?.value;
 
     switch (pixType) {
-      case 'Celular': return 'Digite seu celular';
-      case 'Email': return 'Digite seu e-mail';
-      case 'CPF/CNPJ': return nature === 'Pessoa fisica' ? 'Digite seu CPF' : 'Digite seu CNPJ';
-      default: return 'Chave Aleatória';
+      case PixType.Celular: return 'Digite seu celular';
+      case PixType.Email: return 'Digite seu e-mail';
+      case PixType.CPF_CNPJ: return nature === NatureType.Pessoa_fisica ? 'Digite seu CPF' : 'Digite seu CNPJ';
+      default: return PixType.ChaveAleatoria;
     }
   }
 
@@ -226,8 +229,8 @@ export class DynamicFormComponent implements OnInit {
     const nature = this.dynamicFormGroup.get('nature')?.value;
 
     switch (pixType) {
-      case 'Celular': return '(00) 00000-0000';
-      case 'CPF/CNPJ': return nature === 'Pessoa fisica' ? '000.000.000-00' : '00.000.000/0000-00';
+      case PixType.Celular: return '(00) 00000-0000';
+      case PixType.CPF_CNPJ: return nature === NatureType.Pessoa_fisica ? '000.000.000-00' : '00.000.000/0000-00';
       default: return null;
     }
   }
