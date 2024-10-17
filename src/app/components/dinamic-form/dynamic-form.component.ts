@@ -74,6 +74,8 @@ export class DynamicFormComponent implements OnInit {
       let controlValue = (this.data.data[control.name] ?? control.value) || '';
       if (control.name === 'acceptPix') {
         controlValue = controlValue === 'true' || controlValue === true ? true : false;
+
+        if (!controlValue) this.dynamicFormGroup.get('keyPix')?.clearValidators();
       }
       formGroupConfig[control.name] = [controlValue, controlValidators];
     });
@@ -123,63 +125,72 @@ export class DynamicFormComponent implements OnInit {
     const keyPixControl = this.dynamicFormGroup.get('keyPix');
     const pixTypeControl = this.dynamicFormGroup.get('pixType');
     const natureControl = this.dynamicFormGroup.get('nature');
+    const acceptPix = this.dynamicFormGroup.get('acceptPix')?.value;
 
-    this.dynamicFormGroup.get('nature')?.valueChanges.subscribe(nature => {
-      console.log('nature', nature)
-    });
 
     if (!keyPixControl || !pixTypeControl || !natureControl) return;
-
     keyPixControl.clearValidators();
     const pixType = pixTypeControl.value;
     const nature = natureControl.value;
+
     console.log('switch', pixType, 'nature', nature);
-    debugger;
-    switch (pixType) {
-      case 'CPF/CNPJ':
-        if (!nature) {
+
+    if(acceptPix) {
+      switch (pixType) {
+        case 'CPF/CNPJ':
+          if (!nature) {
+            keyPixControl.clearValidators();
+            keyPixControl.setValidators([Validators.required]);
+            this.keyPixError = 'Por favor, Selecione natureza do fornecedor ';
+          } else {
+            if (nature === 'Pessoa fisica') {
+              keyPixControl.clearValidators();
+              keyPixControl.setValidators([Validators.required, Validators.minLength(11), Validators.maxLength(11)]);
+              this.keyPixError = 'CPF deve ter 11 dígitos.';
+            } else {
+              keyPixControl.clearValidators();
+              keyPixControl.setValidators([Validators.required, Validators.minLength(14), Validators.maxLength(14)]);
+              this.keyPixError = 'CNPJ deve ter 14 dígitos.';
+            }
+          }
+          break;
+        case 'Email':
+          keyPixControl.clearValidators();
+          keyPixControl.setValidators([Validators.required, Validators.email]);
+          this.keyPixError = 'Por favor, insira um e-mail válido.';
+          break;
+        case 'Celular':
           keyPixControl.clearValidators();
           keyPixControl.setValidators([Validators.required]);
-          this.keyPixError = 'Por favor, Selecione natureza do fornecedor ';
-        } else {
-          if (nature === 'Pessoa fisica') {
+          this.keyPixError = 'Por favor, insira um número de celular válido.';
+          break;
+        case 'Chave Aleatória':
+          keyPixControl.clearValidators();
+          keyPixControl.setValidators([Validators.required, Validators.minLength(32)]);
+          this.keyPixError = 'Chave Aleatória deve ter pelo menos 32 caracteres.';
+          break;
+        case '':
+          if (!nature) {
             keyPixControl.clearValidators();
-            keyPixControl.setValidators([Validators.required, Validators.minLength(11), Validators.maxLength(11)]);
-            this.keyPixError = 'CPF deve ter 11 dígitos.';
+            keyPixControl.setValidators([Validators.required]);
+            this.keyPixError = 'Por favor, Selecione natureza do fornecedor ';
           } else {
             keyPixControl.clearValidators();
-            keyPixControl.setValidators([Validators.required, Validators.minLength(14), Validators.maxLength(14)]);
-            this.keyPixError = 'CNPJ deve ter 14 dígitos.';
+            keyPixControl.setValidators([Validators.required]);
+            this.keyPixError = 'Por favor, Selecione o tipo da chave';
           }
-        }
-        break;
-      case 'Email':
-        keyPixControl.clearValidators();
-        keyPixControl.setValidators([Validators.required, Validators.email]);
-        this.keyPixError = 'Por favor, insira um e-mail válido.';
-        break;
-      case 'Celular':
-        keyPixControl.clearValidators();
-        keyPixControl.setValidators([Validators.required]);
-        this.keyPixError = 'Por favor, insira um número de celular válido.';
-        break;
-      case 'Chave Aleatória':
-        keyPixControl.clearValidators();
-        keyPixControl.setValidators([Validators.required, Validators.minLength(32)]);
-        this.keyPixError = 'Chave Aleatória deve ter pelo menos 32 caracteres.';
-        break;
-      case '':
-        if (!nature) {
-          keyPixControl.clearValidators();
-          keyPixControl.setValidators([Validators.required]);
-          this.keyPixError = 'Por favor, Selecione natureza do fornecedor ';
-        } else {
-          keyPixControl.clearValidators();
-          keyPixControl.setValidators([Validators.required]);
-          this.keyPixError = 'Por favor, Selecione o tipo da chave';
-        }
-        break;
+          break;
+      }
+    } else {
+      console.log('acceptPix false')
+      keyPixControl.clearValidators();
     }
+
+
+
+
+
+
 
     keyPixControl.updateValueAndValidity();
   }
