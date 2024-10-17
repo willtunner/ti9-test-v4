@@ -204,7 +204,14 @@ export class DynamicFormComponent implements OnInit {
   onsubmit(): void {
     this.dynamicFormGroup.markAllAsTouched();
     if (this.dynamicFormGroup.valid) {
-      this.dialogRef.close(this.dynamicFormGroup.value);
+      const formValue = this.dynamicFormGroup.value;
+    
+      // // Converte os valores de 'active' e 'pixtype' para 'sim' ou 'não'
+      // formValue.active = formValue.active === true ? 'sim' : 'não';
+      // formValue.pixtype = formValue.acceptPix === true ? 'sim' : 'não';
+      formValue.pixtype = (formValue.acceptPix && formValue.nature === NatureType.Pessoa_fisica  ) ? 'CPF' : 'CNPJ';
+  
+      this.dialogRef.close(formValue);
     }
   }
 

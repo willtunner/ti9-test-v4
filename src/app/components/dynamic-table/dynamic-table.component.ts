@@ -3,13 +3,14 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { IForm, IFormControl } from '../../interface/supplier.interface';
+import { IForm, IFormControl, Supplier } from '../../interface/supplier.interface';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CrudServiceService } from '../../services/crud-service.service';
 import { DynamicFormComponent } from '../dinamic-form/dynamic-form.component';
 import { ConfirmDeleteDialogComponent } from '../confirm-delete-dialog/confirm-delete-dialog.component';
+import { NatureType } from '../../enum/naturetype.enum';
 
 @Component({
   selector: 'app-dynamic-table',
@@ -79,9 +80,17 @@ export class DynamicTableComponent<T> {
   }
 
   getData() {
-    const items = this.crudService.getItems()();
-    this.dataSource.data = items;
-    console.log('Dynamic Data', items);
+    const items = this.crudService.getItems()(); // Acessa o valor do sinal
+    
+    const transformedItems = items.map((item: any) => ({
+      ...item,
+      active: item.active ? 'Sim' : 'Não',
+      acceptPix: item.acceptPix ? 'Sim' : 'Não',
+      
+    }));
+  
+    this.dataSource.data = transformedItems;
+    console.log('Dynamic Data', transformedItems);
   }
 
   editDataModal(index: number): void {
