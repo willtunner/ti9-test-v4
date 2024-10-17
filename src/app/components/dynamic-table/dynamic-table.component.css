@@ -49,3 +49,13 @@ button.mat-icon-button {
   width: 100%;
   margin-bottom: 16px;
 }
+
+.base-filter {
+  display: flex; /* Usado para colocar os elementos lado a lado */
+  align-items: baseline; /* Alinha verticalmente os elementos ao centro */
+}
+
+.no-border-radius {
+  border-radius: 0; /* Remove bordas arredondadas do botão */
+}
+

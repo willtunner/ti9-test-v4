@@ -58,7 +58,7 @@ export class DynamicTableComponent<T> {
   }
 
 
-  openFornecedorModal(): void {
+  createDatadorModal(): void {
     const dialogRef = this.dialog.open(DynamicFormComponent, {
       width: '600px',
       height: '600px',
@@ -84,7 +84,7 @@ export class DynamicTableComponent<T> {
     console.log('Dynamic Data', items);
   }
 
-  editData(index: number): void {
+  editDataModal(index: number): void {
     const supplier = this.dataSource.data[index];
     console.log('supplier', supplier);
     const dialogRef = this.dialog.open(DynamicFormComponent, {

@@ -1,31 +1,29 @@
-<mat-form-field appearance="outline" class="filter-input">
 <div class="base-filter">
-  <div class="filter">
+  <mat-form-field appearance="outline" class="filter-input" style="flex: 1; margin-right: 8px;">
     <mat-label>Filtro</mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="Digite para filtrar">
-  </div>
-  <div class="modal-buttom">
-    <button mat-raised-button color="primary" (click)="openFornecedorModal()" class="custom-button">
+  </mat-form-field>
+
+  <div>
+    <button mat-raised-button color="primary" (click)="createDatadorModal()" class="custom-button no-border-radius">
       <mat-icon>add</mat-icon>
       Cadastrar
     </button>
   </div>
 </div>
-</mat-form-field>
 
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 dynamic-table">
-  @for(column of displayedColumns; track column) {
-  <ng-container [matColumnDef]="column">
+  
+  <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
     <th mat-header-cell *matHeaderCellDef> {{ column | titlecase }} </th>
     <td mat-cell *matCellDef="let element"> {{ element[column] }} </td>
   </ng-container>
-  }
 
-  <ng-container matColumnDef="actions" class="">
+  <ng-container matColumnDef="actions">
     <th mat-header-cell *matHeaderCellDef> Ações </th>
     <td mat-cell *matCellDef="let element; let i = index">
       <div class="actions">
-        <button mat-icon-button (click)="editData(i)">
+        <button mat-icon-button (click)="editDataModal(i)">
           <mat-icon class="edit-icon">edit</mat-icon>
         </button>
         <button mat-icon-button (click)="deleteData(element, i)">
@@ -40,7 +38,7 @@
 </table>
 
 @if(dataSource.data.length === 0) {
-<div class="no-records-message">
-  Não há registros.
-</div>
+  <div class="no-records-message">
+    Não há registros.
+  </div>
 }
