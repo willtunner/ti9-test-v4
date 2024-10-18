@@ -17,7 +17,8 @@
   @for(column of displayedColumns; track column) {
   <ng-container [matColumnDef]="column">
     <th mat-header-cell *matHeaderCellDef> {{ column | titlecase }} </th>
-    <td mat-cell *matCellDef="let element" [ngClass]="{'mid-cell': column === 'Chave Pix' || column === 'Observação', 'small-cell': column === 'Tipo da Chave Pix'}">
+    <td mat-cell *matCellDef="let element" 
+    [ngClass]="{'mid-cell': column === 'Chave Pix' || column === 'Observação', 'small-cell': column === 'Tipo Pix'}">
       {{ element[column] }}
     </td>
   </ng-container>

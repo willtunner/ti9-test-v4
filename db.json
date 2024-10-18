@@ -118,7 +118,7 @@
       },
       {
         "name": "pixType",
-        "label": "Tipo da Chave Pix",
+        "label": "Tipo Pix",
         "options": [
           {
             "id": "1",

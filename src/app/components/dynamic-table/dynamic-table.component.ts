@@ -1,16 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { IForm, IFormControl, Supplier } from '../../interface/supplier.interface';
+import { IForm, IFormControl } from '../../interface/supplier.interface';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CrudServiceService } from '../../services/crud-service.service';
 import { DynamicFormComponent } from '../dinamic-form/dynamic-form.component';
 import { ConfirmDeleteDialogComponent } from '../confirm-delete-dialog/confirm-delete-dialog.component';
-import { NatureType } from '../../enum/naturetype.enum';
 
 @Component({
   selector: 'app-dynamic-table',
@@ -59,19 +58,31 @@ export class DynamicTableComponent<T> {
     if (items && items.length > 0) {
       const transformedItems = items.map((item: any) => {
         const rowData: any = {};
-        // Populando a tabela com o label (rótulo) visível ao usuário
+        
+        // Itera sobre os controles do formulário
         this.dynamicForm.formControls.forEach(control => {
-          rowData[control.label] = item[control.name]; // label para tabela, name para edição
+          // Verifica se o control.name é 'active' ou 'acceptPix'
+          if (control.name === 'active' || control.name === 'acceptPix') {
+            // Altera o valor para 'sim' ou 'não' para exibição na tabela
+            rowData[control.label] = item[control.name] ? 'sim' : 'não';
+          } else {
+            // Caso contrário, mantém o valor original
+            rowData[control.label] = item[control.name];
+          }
         });
-        // Adicionando os dados originais para edição
-        rowData['originalData'] = item; // Armazena os dados originais para edição
+        
+        // Preserva os dados originais para edição
+        rowData['originalData'] = item;
+        
         return rowData;
       });
   
+      // Atualiza a tabela com os dados transformados
       this.dataSource.data = transformedItems;
       console.log('transformedItems', transformedItems);
     }
   }
+  
   
 
   applyFilter(event: Event): void {
@@ -99,8 +110,6 @@ export class DynamicTableComponent<T> {
       }
     });
   }
-
-  
 
   editDataModal(index: number): void {
     const supplierRow = this.dataSource.data[index];
