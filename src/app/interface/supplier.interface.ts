@@ -11,9 +11,9 @@ export interface IFormControl {
   label: string
   value: string
   type: string
-  class: string
+  class?: string
   validators: IValidator[]
-  placeholder: string
+  placeholder?: string
   options?: IOptions[]
 }
 

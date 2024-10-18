@@ -59,3 +59,9 @@ button.mat-icon-button {
   border-radius: 0; /* Remove bordas arredondadas do botão */
 }
 
+.pix-cell {
+  max-width: 120px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

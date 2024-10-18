@@ -27,7 +27,7 @@ import { NatureType } from '../../enum/naturetype.enum';
 })
 export class DynamicTableComponent<T> {
   displayedColumns: string[] = [];
-  dataSource = new MatTableDataSource<IForm>();
+  dataSource = new MatTableDataSource<any>();
   dynamicForm!: IForm;
 
   constructor(
@@ -44,14 +44,32 @@ export class DynamicTableComponent<T> {
     this.crudService.fetchForm().subscribe((data: IForm) => {
       this.dynamicForm = data;
       this.displayedColumns = this.createDisplayedColumns(data.formControls);
-      this.getData(); // Certifique-se de chamar getData aqui após definir as colunas
+      this.getData();
     });
   }
 
   createDisplayedColumns(formControls: IFormControl[]): string[] {
-    const columnNames = formControls.map(control => control.name);
+    const columnNames = formControls.map(control => control.label);
     return columnNames;
   }
+
+  getData() {
+    const items = this.crudService.getItems()();
+  
+    if (items && items.length > 0) {
+      const transformedItems = items.map((item: any) => {
+        const rowData: any = {};
+        this.dynamicForm.formControls.forEach(control => {
+          rowData[control.label] = item[control.name];
+        });
+        return rowData;
+      });
+  
+      this.dataSource.data = transformedItems;
+      console.log('transformedItems', transformedItems);
+    }
+  }
+  
 
   applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -79,19 +97,7 @@ export class DynamicTableComponent<T> {
     });
   }
 
-  getData() {
-    const items = this.crudService.getItems()(); // Acessa o valor do sinal
-    
-    const transformedItems = items.map((item: any) => ({
-      ...item,
-      active: item.active ? 'Sim' : 'Não',
-      acceptPix: item.acceptPix ? 'Sim' : 'Não',
-      
-    }));
   
-    this.dataSource.data = transformedItems;
-    console.log('Dynamic Data', transformedItems);
-  }
 
   editDataModal(index: number): void {
     const supplier = this.dataSource.data[index];

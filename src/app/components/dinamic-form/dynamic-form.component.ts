@@ -44,6 +44,7 @@ export class DynamicFormComponent implements OnInit {
     public dialogRef: MatDialogRef<DynamicFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
+    console.log('Data dynamic Form: ', data);
     this.form = data.form;
     this.dynamicFormGroup = this.fb.group({}, { updateOn: 'submit' });
   }
