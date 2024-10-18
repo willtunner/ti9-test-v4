@@ -59,9 +59,12 @@ export class DynamicTableComponent<T> {
     if (items && items.length > 0) {
       const transformedItems = items.map((item: any) => {
         const rowData: any = {};
+        // Populando a tabela com o label (rótulo) visível ao usuário
         this.dynamicForm.formControls.forEach(control => {
-          rowData[control.label] = item[control.name];
+          rowData[control.label] = item[control.name]; // label para tabela, name para edição
         });
+        // Adicionando os dados originais para edição
+        rowData['originalData'] = item; // Armazena os dados originais para edição
         return rowData;
       });
   
@@ -100,17 +103,19 @@ export class DynamicTableComponent<T> {
   
 
   editDataModal(index: number): void {
-    const supplier = this.dataSource.data[index];
-    console.log('supplier', supplier);
+    const supplierRow = this.dataSource.data[index];
+    const originalSupplier = supplierRow.originalData; // Pegando os dados originais
+  
+    console.log('supplier', supplierRow);
     const dialogRef = this.dialog.open(DynamicFormComponent, {
       width: '600px',
       height: '600px',
-      data: {form: this.dynamicForm, data: supplier }
+      data: { form: this.dynamicForm, data: originalSupplier } // Passa os dados originais
     });
-
-    dialogRef.afterClosed().subscribe((supplier: IForm) => {
-      if (supplier) {
-        this.crudService.updateItem(index, supplier);
+  
+    dialogRef.afterClosed().subscribe((updatedSupplier: IForm) => {
+      if (updatedSupplier) {
+        this.crudService.updateItem(index, updatedSupplier);
         this.getData();
         this.snackBar.open('Fornecedor atualizado com sucesso!', 'Fechar', {
           duration: 3000,
@@ -119,6 +124,7 @@ export class DynamicTableComponent<T> {
       }
     });
   }
+  
 
   deleteData(element: IFormControl, index: number ): void {
     const confirmDialog = this.dialog.open(ConfirmDeleteDialogComponent, {
