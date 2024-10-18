@@ -110,7 +110,7 @@ mat-form-field {
 /* Verde claro para sucesso */
 .success-snackbar {
   --snackbar-bg-color: #81c784; /* Fundo verde claro */
-  --snackbar-text-color: #225124; /* Texto verde escuro */
+  --snackbar-text-color: #fff; /* Texto verde escuro */
   --snackbar-button-color: #2e7d32; /* Botão verde escuro */
   --snackbar-button-hover-color: #1b5e20; /* Hover do botão verde */
 }
@@ -118,7 +118,7 @@ mat-form-field {
 /* Azul claro para informações */
 .info-snackbar {
   --snackbar-bg-color: #64b5f6; /* Fundo azul claro */
-  --snackbar-text-color: #0d47a1; /* Texto azul escuro */
+  --snackbar-text-color: #fff; /* Texto azul escuro */
   --snackbar-button-color: #1565c0; /* Botão azul escuro */
   --snackbar-button-hover-color: #0d47a1; /* Hover do botão azul */
 }
@@ -126,7 +126,7 @@ mat-form-field {
 /* Vermelho claro para erros */
 .error-snackbar {
   --snackbar-bg-color: #e57373; /* Fundo vermelho claro */
-  --snackbar-text-color: #b71c1c; /* Texto vermelho escuro */
+  --snackbar-text-color: #fff; /* Texto vermelho escuro */
   --snackbar-button-color: #d32f2f; /* Botão vermelho escuro */
   --snackbar-button-hover-color: #b71c1c; /* Hover do botão vermelho */
 }
