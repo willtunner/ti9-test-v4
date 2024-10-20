@@ -44,3 +44,9 @@ export interface Supplier {
   keyPix: string,
   obs: string
 }
+
+export interface SideNavBar {
+  routerLink: string,
+  icon: string,
+  label: string
+}

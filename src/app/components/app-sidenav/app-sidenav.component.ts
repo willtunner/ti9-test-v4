@@ -2,8 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, HostListener, OnInit, Output } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { animate, keyframes, style, transition, trigger } from '@angular/animations';
-import { navbarData } from './nav-data';
 import { MatIconModule } from '@angular/material/icon';
+import { FormServiceService } from '../../services/form-service.service';
+import { SideNavBar } from '../../interface/supplier.interface';
 
 interface SideNaveToggle {
   screenWidth: number;
@@ -49,7 +50,9 @@ export class AppSidenavComponent implements OnInit {
   @Output() onToggleSideNav: EventEmitter<SideNaveToggle> = new EventEmitter();
   screenWidth = 0;
   collapsed = false;
-  navData = navbarData;
+  navData: SideNavBar[] = [];
+
+  constructor(private sidenavBar: FormServiceService) { }
 
   @HostListener('window:resize', ['$event'])
 
@@ -67,7 +70,9 @@ export class AppSidenavComponent implements OnInit {
 
   ngOnInit(): void {
     this.screenWidth = window.innerWidth;
-    console.log('navData: ', this.navData);
+    this.sidenavBar.getSideNavBar().subscribe((data: SideNavBar[]) => {
+      this.navData = data;
+    });
   }
 
   toggleCollapse() {

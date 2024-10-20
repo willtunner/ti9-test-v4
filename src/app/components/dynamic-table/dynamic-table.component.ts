@@ -6,10 +6,11 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { IForm, IFormControl } from '../../interface/supplier.interface';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { CrudServiceService } from '../../services/crud-service.service';
 import { DynamicFormComponent } from '../dinamic-form/dynamic-form.component';
 import { ConfirmDeleteDialogComponent } from '../confirm-delete-dialog/confirm-delete-dialog.component';
+import { SendNotificationService } from '../../services/send-notification.service';
+import { NotificationType } from '../../enum/notificationType.enum';
 
 @Component({
   selector: 'app-dynamic-table',
@@ -31,8 +32,8 @@ export class DynamicTableComponent<T> {
 
   constructor(
     public dialog: MatDialog,
-    private snackBar: MatSnackBar,
     private crudService: CrudServiceService,
+    private notificationService: SendNotificationService
   ) {}
 
   ngOnInit(): void {
@@ -97,10 +98,7 @@ export class DynamicTableComponent<T> {
       if (result) {
         this.crudService.addItem(result);
         this.getData();
-        this.snackBar.open('Fornecedor adicionado com sucesso!', 'Fechar', {
-          duration: 3000,
-          panelClass: ['custom-snackbar', 'success-snackbar'],
-        });
+        this.notificationService.showNotification(NotificationType.SUCCESS);
         this.getData();
       }
     });
@@ -120,10 +118,7 @@ export class DynamicTableComponent<T> {
       if (updatedSupplier) {
         this.crudService.updateItem(index, updatedSupplier);
         this.getData();
-        this.snackBar.open('Fornecedor atualizado com sucesso!', 'Fechar', {
-          duration: 3000,
-          panelClass: ['custom-snackbar', 'info-snackbar'],
-        });
+        this.notificationService.showNotification(NotificationType.UPDATE);
       }
     });
   }
@@ -139,10 +134,7 @@ export class DynamicTableComponent<T> {
       if (result) {
         this.crudService.removeItem(index);
         this.getData();
-        this.snackBar.open('Fornecedor excluído com sucesso!', 'Fechar', {
-          duration: 3000,
-          panelClass: ['custom-snackbar', 'error-snackbar'],
-        });
+        this.notificationService.showNotification(NotificationType.DELETE);
       }
     })
   }

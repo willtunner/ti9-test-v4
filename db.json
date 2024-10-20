@@ -202,9 +202,16 @@
       }
     ]
   },
-  "navbarData": {
-    "routerLink": "dashboard",
-    "icon": "home",
-    "label": "Dashboard"
-  }
+  "navbarData": [
+    {
+      "routerLink": "dashboard",
+      "icon": "home",
+      "label": "Fornecedores"
+    },
+    {
+      "routerLink": "supplier",
+      "icon": "inventory_2",
+      "label": "Produtos"
+    }
+  ]
 }
