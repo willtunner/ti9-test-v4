@@ -12,7 +12,7 @@ export class ConfirmDeleteDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<ConfirmDeleteDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
+  ) { }
 
   onConfirm(): void {
     this.dialogRef.close(true); // Confirmação da exclusão

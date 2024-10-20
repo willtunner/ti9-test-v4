@@ -44,7 +44,6 @@ export class DynamicFormComponent implements OnInit {
     public dialogRef: MatDialogRef<DynamicFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    console.log('Data dynamic Form: ', data);
     this.form = data.form;
     this.dynamicFormGroup = this.fb.group({}, { updateOn: 'submit' });
   }
@@ -118,7 +117,6 @@ export class DynamicFormComponent implements OnInit {
   }
 
   onPixTypeChange(event: MatSelectChange): void {
-    console.log('onPixTypeChange', event)
     this.applyPixTypeValidators();
   }
 
@@ -128,14 +126,10 @@ export class DynamicFormComponent implements OnInit {
     const natureControl = this.dynamicFormGroup.get('nature');
     const acceptPix = this.dynamicFormGroup.get('acceptPix')?.value;
 
-
     if (!keyPixControl || !pixTypeControl || !natureControl) return;
     keyPixControl.clearValidators();
     const pixType = pixTypeControl.value;
     const nature = natureControl.value;
-
-    console.log('switch', pixType, 'nature', nature);
-    const pixType2 = pixTypeControl.value as PixType; 
 
     if(acceptPix) {
       switch (pixType) {
@@ -184,7 +178,6 @@ export class DynamicFormComponent implements OnInit {
           break;
       }
     } else {
-      console.log('acceptPix false')
       keyPixControl.clearValidators();
     }
 
@@ -206,14 +199,12 @@ export class DynamicFormComponent implements OnInit {
     this.dynamicFormGroup.markAllAsTouched();
     if (this.dynamicFormGroup.valid) {
       const formValue = this.dynamicFormGroup.value;
-    
-      // // Converte os valores de 'active' e 'pixtype' para 'sim' ou 'não'
-      // formValue.active = formValue.active === true ? 'sim' : 'não';
-      // formValue.pixtype = formValue.acceptPix === true ? 'sim' : 'não';
-      formValue.pixType = formValue.nature === NatureType.Pessoa_fisica ? 'CPF' : 'CNPJ';
-      console.log('formValue', formValue);
       this.dialogRef.close(formValue);
     }
+  }
+
+  typePixLabelChange() {
+
   }
 
   onCancel(): void {

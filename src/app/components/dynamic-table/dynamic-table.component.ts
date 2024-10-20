@@ -54,36 +54,31 @@ export class DynamicTableComponent<T> {
 
   getData() {
     const items = this.crudService.getItems()();
-  
+
     if (items && items.length > 0) {
       const transformedItems = items.map((item: any) => {
         const rowData: any = {};
-        
-        // Itera sobre os controles do formulário
+
         this.dynamicForm.formControls.forEach(control => {
-          // Verifica se o control.name é 'active' ou 'acceptPix'
           if (control.name === 'active' || control.name === 'acceptPix') {
-            // Altera o valor para 'sim' ou 'não' para exibição na tabela
             rowData[control.label] = item[control.name] ? 'sim' : 'não';
           } else {
-            // Caso contrário, mantém o valor original
             rowData[control.label] = item[control.name];
           }
         });
-        
-        // Preserva os dados originais para edição
+
         rowData['originalData'] = item;
-        
+
         return rowData;
       });
-  
-      // Atualiza a tabela com os dados transformados
+
       this.dataSource.data = transformedItems;
-      console.log('transformedItems', transformedItems);
+    } else {
+      this.dataSource.data = items;
     }
   }
-  
-  
+
+
 
   applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -91,7 +86,7 @@ export class DynamicTableComponent<T> {
   }
 
 
-  createDatadorModal(): void {
+  createDataModal(): void {
     const dialogRef = this.dialog.open(DynamicFormComponent, {
       width: '600px',
       height: '600px',
@@ -114,14 +109,13 @@ export class DynamicTableComponent<T> {
   editDataModal(index: number): void {
     const supplierRow = this.dataSource.data[index];
     const originalSupplier = supplierRow.originalData; // Pegando os dados originais
-  
-    console.log('supplier', supplierRow);
+
     const dialogRef = this.dialog.open(DynamicFormComponent, {
       width: '600px',
       height: '600px',
       data: { form: this.dynamicForm, data: originalSupplier } // Passa os dados originais
     });
-  
+
     dialogRef.afterClosed().subscribe((updatedSupplier: IForm) => {
       if (updatedSupplier) {
         this.crudService.updateItem(index, updatedSupplier);
@@ -133,12 +127,12 @@ export class DynamicTableComponent<T> {
       }
     });
   }
-  
 
-  deleteData(element: IFormControl, index: number ): void {
+
+  deleteData(element: any, index: number ): void {
     const confirmDialog = this.dialog.open(ConfirmDeleteDialogComponent, {
       width: '400px',
-      data: { message: element.name }
+      data: { message: element.Nome }
     });
 
     confirmDialog.afterClosed().subscribe(result => {
@@ -153,5 +147,5 @@ export class DynamicTableComponent<T> {
     })
   }
 
-  
+
 }

@@ -201,5 +201,10 @@
         ]
       }
     ]
+  },
+  "navbarData": {
+    "routerLink": "dashboard",
+    "icon": "home",
+    "label": "Dashboard"
   }
 }
