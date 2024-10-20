@@ -199,12 +199,23 @@ export class DynamicFormComponent implements OnInit {
     this.dynamicFormGroup.markAllAsTouched();
     if (this.dynamicFormGroup.valid) {
       const formValue = this.dynamicFormGroup.value;
+      const acceptPix = formValue.acceptPix;
+      const pixType = formValue.pixType;
+      const nature = formValue.nature;
+
+      if (acceptPix) {
+        if (pixType === PixType.CPF_CNPJ) {
+          if (nature === NatureType.Pessoa_fisica) {
+            formValue.pixType = "CPF";  // Se natureza for Pessoa Física, pixType será CPF
+          } else if (nature === NatureType.Pessoa_Jurídica) {
+            formValue.pixType = "CNPJ"; // Se natureza for Pessoa Jurídica, pixType será CNPJ
+          }
+        }
+        // Se pixType não for CPF ou CNPJ, manter o valor original
+      }
+
       this.dialogRef.close(formValue);
     }
-  }
-
-  typePixLabelChange() {
-
   }
 
   onCancel(): void {
