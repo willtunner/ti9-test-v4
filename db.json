@@ -163,7 +163,7 @@
   "product": {
     "formTitle": "Cadastro de produtos",
     "saveBtnTitle": "Salvar",
-    "deleteBtnTitle": "Deletar",
+    "deleteBtnTitle": "Limpar",
     "updateBtnTitle": "Atualizar",
     "formControls": [
       {
@@ -199,6 +199,46 @@
             "message": "Campo Obrigatório!"
           }
         ]
+      },
+      {
+        "name": "price",
+        "label": "Preço",
+        "placeholder": "Digite o preço!",
+        "value": "",
+        "type": "number",
+        "class": "",
+        "validators": [
+          {
+            "validatorName": "required",
+            "required": true,
+            "message": "Campo Obrigatório!"
+          }
+        ]
+      },
+      {
+        "name": "productType",
+        "label": "Tipo do produto",
+        "options": [
+          {
+            "id": "1",
+            "value": "Informática"
+          },
+          {
+            "id": "2",
+            "value": "Celular"
+          },
+          {
+            "id": "3",
+            "value": "Eletro Domésticos"
+          },
+          {
+            "id": "4",
+            "value": "Games"
+          }
+        ],
+        "type": "select",
+        "class": "",
+        "validators": []
       }
     ]
   },
