@@ -105,4 +105,8 @@
   </div>
 </div>
 
-<pre>{{ getInvalidControls() | json }}</pre>
+
+@if(activeDebugger) {
+  <pre>{{ getInvalidControls() | json }}</pre>
+}
+

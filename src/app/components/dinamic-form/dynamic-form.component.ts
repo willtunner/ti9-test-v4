@@ -38,6 +38,7 @@ export class DynamicFormComponent implements OnInit {
   form: IForm;
   dynamicFormGroup: FormGroup;
   keyPixError: string | null = null;
+  activeDebugger = false;
 
   constructor(
     private fb: FormBuilder,
