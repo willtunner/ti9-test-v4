@@ -5,6 +5,8 @@
       @for(control of form.formControls; track control.name) {
         <ng-container>
 
+          
+
           @if(['text', 'email', 'password', 'number', 'date'].includes(control.type)) {
             @if(control.name !== 'keyPix') {
               <div [class]="control.class">
