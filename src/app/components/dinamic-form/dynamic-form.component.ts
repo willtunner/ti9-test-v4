@@ -223,8 +223,6 @@ export class DynamicFormComponent implements OnInit {
       this.dialogRef.close(formValue);
       console.log('formValue: ', formValue);
     }
-
-
   }
 
   onCancel(): void {
@@ -264,4 +262,28 @@ export class DynamicFormComponent implements OnInit {
     });
     return invalidControls;
   }
+
+  onPriceChange(value: string): void {
+    // Remove todos os caracteres não numéricos, exceto a vírgula para o formato monetário
+    const numericValue = value.replace(/[^0-9,.]/g, '');
+    console.log(numericValue);
+    
+    // Tenta converter o valor para um número
+    const parsedValue = parseFloat(numericValue.replace(',', '.'));
+    
+    // Verifica se o valor foi corretamente convertido para um número
+    if (!isNaN(parsedValue)) {
+      // Converte para valor monetário e atualiza o formulário
+      const formattedValue = this.formatCurrency(parsedValue / 100); // Divide por 100 para obter o valor em reais
+      this.dynamicFormGroup.get('price')?.setValue(formattedValue, { emitEvent: false });
+    } else {
+      // Se o valor não for válido, você pode querer resetar o campo ou lidar de outra forma
+      this.dynamicFormGroup.get('price')?.setValue('', { emitEvent: false });
+    }
+  }
+  
+  formatCurrency(value: number): string {
+    return `R$ ${value.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+  }
+  
 }
