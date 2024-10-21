@@ -24,10 +24,9 @@ import { ConfirmDeleteDialogComponent } from '../confirm-delete-dialog/confirm-d
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
- 
+
   constructor(
     public dialog: MatDialog,
-    private snackBar: MatSnackBar,
     private crudService: CrudServiceService,
   ) {
 

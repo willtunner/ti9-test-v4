@@ -2,7 +2,7 @@
   "supplier": {
     "formTitle": "Cadastro de fornecedor",
     "saveBtnTitle": "Salvar",
-    "deleteBtnTitle": "Deletar",
+    "deleteBtnTitle": "Limpar",
     "updateBtnTitle": "Atualizar",
     "formControls": [
       {
