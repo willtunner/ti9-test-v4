@@ -5,7 +5,7 @@ import { animate, keyframes, style, transition, trigger } from '@angular/animati
 import { MatIconModule } from '@angular/material/icon';
 import { FormServiceService } from '../../services/form-service.service';
 import { INavbarData } from '../../interface/side-nav.interface';
-import { AppSublevelMenuComponent } from '../app-sublevel-menu/app-sublevel-menu.component';
+import { AppSublevelMenuComponent } from './app-sublevel-menu/app-sublevel-menu.component';
 
 interface SideNaveToggle {
   screenWidth: number;

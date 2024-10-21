@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { state, trigger, style, transition, animate } from '@angular/animations';
-import { INavbarData, fadeInOut } from '../../interface/side-nav.interface';
+import { INavbarData, fadeInOut } from '../../../interface/side-nav.interface';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 

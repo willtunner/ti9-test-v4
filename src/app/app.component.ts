@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { HomeComponent } from './components/home/home.component';
+import { HomeComponent } from './views/home/home.component';
 import { BodyComponent } from './components/body/body.component';
 import { AppSidenavComponent } from './components/app-sidenav/app-sidenav.component';
 
