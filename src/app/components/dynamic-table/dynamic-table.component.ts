@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { IForm, IFormControl } from '../../interface/supplier.interface';
+import { IForm, IFormControl } from '../../interface/dynamic-form.interface';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialog } from '@angular/material/dialog';
 import { CrudServiceService } from '../../services/crud-service.service';
@@ -78,9 +78,7 @@ export class DynamicTableComponent<T> {
       this.dataSource.data = items;
     }
   }
-
-
-
+  
   applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -134,7 +132,7 @@ export class DynamicTableComponent<T> {
       if (result) {
         this.crudService.removeItem(index);
         this.getData();
-        this.notificationService.showNotification(NotificationType.DELETE);
+        this.notificationService.showNotification(NotificationType.ERROR);
       }
     })
   }

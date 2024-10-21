@@ -1,5 +1,5 @@
 import { Injectable, signal, WritableSignal } from '@angular/core';
-import { IForm } from '../interface/supplier.interface';
+import { IForm } from '../interface/dynamic-form.interface';
 import { FormServiceService } from './form-service.service'; // Importar o FormServiceService
 import { Observable } from 'rxjs';
 

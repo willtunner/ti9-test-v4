@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { IForm, IFormControl, IValidator } from '../../interface/supplier.interface';
+import { IForm, IFormControl, IValidator } from '../../interface/dynamic-form.interface';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
@@ -131,7 +131,7 @@ export class DynamicFormComponent implements OnInit {
     const pixType = pixTypeControl.value;
     const nature = natureControl.value;
 
-    if(acceptPix) {
+    if (acceptPix) {
       switch (pixType) {
         case PixType.CPF_CNPJ:
           if (!nature) {
@@ -197,6 +197,8 @@ export class DynamicFormComponent implements OnInit {
 
   onsubmit(): void {
     this.dynamicFormGroup.markAllAsTouched();
+
+
     if (this.dynamicFormGroup.valid) {
       const formValue = this.dynamicFormGroup.value;
       const acceptPix = formValue.acceptPix;
@@ -212,10 +214,16 @@ export class DynamicFormComponent implements OnInit {
           }
         }
         // Se pixType não for CPF ou CNPJ, manter o valor original
+      } else {
+        formValue.pixType = "";
+        formValue.keyPix = "";
       }
 
       this.dialogRef.close(formValue);
+      console.log('formValue: ', formValue);
     }
+
+
   }
 
   onCancel(): void {

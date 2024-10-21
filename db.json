@@ -1,6 +1,7 @@
 {
   "supplier": {
     "formTitle": "Cadastro de fornecedor",
+    "titlePage": "Lista fornecedor",
     "saveBtnTitle": "Salvar",
     "deleteBtnTitle": "Limpar",
     "updateBtnTitle": "Atualizar",
@@ -162,6 +163,7 @@
   },
   "product": {
     "formTitle": "Cadastro de produtos",
+    "titlePage": "Lista produtos",
     "saveBtnTitle": "Salvar",
     "deleteBtnTitle": "Limpar",
     "updateBtnTitle": "Atualizar",

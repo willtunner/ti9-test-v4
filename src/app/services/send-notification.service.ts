@@ -18,8 +18,8 @@ export class SendNotificationService {
       case NotificationType.UPDATE:
         panelClass = 'info-snackbar';
         break;
-      case NotificationType.DELETE:
-        panelClass = 'error-snackbar';
+      case NotificationType.ERROR:
+        panelClass = 'success-snackbar';
         break;
       default:
         panelClass = 'default-snackbar';

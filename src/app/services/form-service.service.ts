@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { IForm } from '../interface/supplier.interface';
+import { IForm } from '../interface/dynamic-form.interface';
 
 @Injectable({
   providedIn: 'root',
