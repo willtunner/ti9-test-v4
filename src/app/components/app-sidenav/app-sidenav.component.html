@@ -3,26 +3,51 @@
         <button class="logo" (click)="toggleCollapse()">TI9</button>
         @if(collapsed) {
             <div class="logo-text" @fadeInOut>Teste</div>
-        }
-        
-        @if(collapsed) {
-        <button class="btn-close" @rotate (click)="closeSidenav()" >
-            <mat-icon class="close-icon">close</mat-icon></button>
+            <button class="btn-close" @rotate (click)="closeSidenav()" >
+                <mat-icon class="close-icon">close</mat-icon></button>
         }
     </div>
-    <ul class="sidenav-nav">
-        @for(data of navData; track data) {
-            <li class="sidenav-nav-item">
-                <a class="sidenav-nav-link" [routerLink]="[data.routerLink]"
-                  routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-                  <mat-icon class="sidenav-link-icon">{{ data.icon }}</mat-icon>
-                  @if(collapsed) {
-                    <span class="sidenav-link-text" @fadeInOut>{{ data.label }}</span>
-                  }
+    
+
+    <div class="scrollwrap scrollwrap_delayed">
+        <ul class="sidenav-nav">
+            <li class="sidenav-nav-item" *ngFor="let data of navData">
+                <a class="sidenav-nav-link"
+                    (click)="handleClick(data)"
+                    *ngIf="data.items && data.items.length > 0"
+                    [ngClass]="getActiveClass(data)"
+                >
+                <mat-icon class="sidenav-link-icon">{{ data.icon }}</mat-icon>
+                    <span class="sidenav-link-text" @fadeInOut *ngIf="collapsed">
+                        {{ data.label }}
+                    </span>
+                    <mat-icon *ngIf="data.items && collapsed" class="menu-collapse-icon">
+                        {{ data.expanded ? 'expand_more' : 'chevron_right' }}
+                    </mat-icon>
                 </a>
+    
+                <a  class="sidenav-nav-link" 
+                    *ngIf=" !data.items || (data.items && data.items.length === 0) "
+                    [routerLink]="[data.routeLink]"
+                    routerLinkActive="active" 
+                    [routerLinkActiveOptions]="{exact: true}"
+                    (click)="shrinkItems(data)"
+                    >
+                    <mat-icon class="sidenav-link-icon">{{ data.icon }}</mat-icon>
+                    <span class="sidenav-link-text" @fadeInOut *ngIf="collapsed">
+                        {{ data.label }}
+                    </span>
+                </a>
+                <div *ngIf="collapsed && data.items && data.items.length > 0">
+                    <app-sublevel-menu
+                        [data]="data"
+                        [collapsed]="collapsed"
+                        [multiple]="multiple"
+                        [expanded]="data.expanded"
+                    ></app-sublevel-menu>
+                </div>
             </li>
-        }
-        
-    </ul>
+        </ul>
+    </div>
 </div>
 

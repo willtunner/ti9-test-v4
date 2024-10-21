@@ -244,14 +244,14 @@
   },
   "navbarData": [
     {
-      "routerLink": "dashboard",
+      "routeLink": "dashboard",
       "icon": "home",
       "label": "Fornecedores"
     },
     {
-      "routerLink": "supplier",
+      "routeLink": "product",
       "icon": "inventory_2",
       "label": "Produtos"
-    }
+  }
   ]
 }

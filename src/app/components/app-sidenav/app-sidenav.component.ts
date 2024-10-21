@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, HostListener, OnInit, Output } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { animate, keyframes, style, transition, trigger } from '@angular/animations';
 import { MatIconModule } from '@angular/material/icon';
 import { FormServiceService } from '../../services/form-service.service';
-import { SideNavBar } from '../../interface/supplier.interface';
+import { INavbarData } from '../../interface/side-nav.interface';
+import { AppSublevelMenuComponent } from '../app-sublevel-menu/app-sublevel-menu.component';
 
 interface SideNaveToggle {
   screenWidth: number;
@@ -14,7 +15,7 @@ interface SideNaveToggle {
 @Component({
   selector: 'app-sidenav',
   standalone: true,
-  imports: [RouterModule, CommonModule, MatIconModule],
+  imports: [RouterModule, CommonModule, MatIconModule, AppSublevelMenuComponent],
   templateUrl: './app-sidenav.component.html',
   styleUrl: './app-sidenav.component.css',
   animations: [
@@ -50,9 +51,10 @@ export class AppSidenavComponent implements OnInit {
   @Output() onToggleSideNav: EventEmitter<SideNaveToggle> = new EventEmitter();
   screenWidth = 0;
   collapsed = false;
-  navData: SideNavBar[] = [];
+  navData: INavbarData[] = [];
+  multiple: boolean = false;
 
-  constructor(private sidenavBar: FormServiceService) { }
+  constructor(private sidenavBar: FormServiceService, public router: Router) { }
 
   @HostListener('window:resize', ['$event'])
 
@@ -70,25 +72,45 @@ export class AppSidenavComponent implements OnInit {
 
   ngOnInit(): void {
     this.screenWidth = window.innerWidth;
-    this.sidenavBar.getSideNavBar().subscribe((data: SideNavBar[]) => {
+    this.sidenavBar.getSideNavBar().subscribe((data: INavbarData[]) => {
+      console.log('dataNavSide: ', data);
       this.navData = data;
     });
   }
 
-  toggleCollapse() {
+  toggleCollapse(): void {
     this.collapsed = !this.collapsed;
     this.onToggleSideNav.emit({
       collapsed: this.collapsed,
-      screenWidth: this.screenWidth,
+      screenWidth: this.screenWidth
     });
   }
 
-  closeSidenav() {
+  closeSidenav(): void {
     this.collapsed = false;
     this.onToggleSideNav.emit({
       collapsed: this.collapsed,
-      screenWidth: this.screenWidth,
+      screenWidth: this.screenWidth
     });
+  }
+
+  handleClick(item: INavbarData): void {
+    this.shrinkItems(item);
+    item.expanded = !item.expanded;
+  }
+
+  getActiveClass(data: INavbarData): string {
+    return this.router.url.includes(data.routeLink) ? 'active' : '';
+  }
+
+  shrinkItems(item: INavbarData): void {
+    if (!this.multiple) {
+      for (let modelItem of this.navData) {
+        if (item !== modelItem && modelItem.expanded) {
+          modelItem.expanded = false;
+        }
+      }
+    }
   }
 
 }
