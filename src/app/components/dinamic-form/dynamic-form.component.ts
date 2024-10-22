@@ -52,14 +52,14 @@ export class DynamicFormComponent implements OnInit {
   ngOnInit(): void {
     this.initializeForm();
     this.listenToNatureChanges();
+    this.listenToPixTypeChanges();
   }
 
   listenToNatureChanges(): void {
     const natureControl = this.dynamicFormGroup.get('nature');
     natureControl?.valueChanges.subscribe(() => {
-      this.applyPixTypeValidators();
       this.dynamicFormGroup.get('keyPix')?.setValue(null);
-
+      this.applyPixTypeValidators();
     });
   }
 
@@ -130,62 +130,77 @@ export class DynamicFormComponent implements OnInit {
     const acceptPix = this.dynamicFormGroup.get('acceptPix')?.value;
 
     if (!keyPixControl || !pixTypeControl || !natureControl) return;
+
+    // Limpa os validadores existentes
     keyPixControl.clearValidators();
-    const pixType = pixTypeControl.value;
-    const nature = natureControl.value;
 
     if (acceptPix) {
+      const pixType = pixTypeControl.value;
+      const nature = natureControl.value;
+
+      // Sempre que acceptPix for true, keyPix é required
+      keyPixControl.setValidators([Validators.required]);
+
       switch (pixType) {
         case PixType.CPF_CNPJ:
           if (!nature) {
-            keyPixControl.clearValidators();
-            keyPixControl.setValidators([Validators.required]);
-            this.keyPixError = 'Por favor, Selecione natureza do fornecedor ';
+            this.keyPixError = 'Por favor, selecione a natureza do fornecedor.';
+          } else if (nature === NatureType.Pessoa_fisica) {
+            keyPixControl.setValidators([
+              Validators.required,
+              Validators.minLength(11),
+              Validators.maxLength(11)
+            ]);
+            this.keyPixError = 'CPF deve ter 11 dígitos.';
           } else {
-            if (nature === NatureType.Pessoa_fisica) {
-              keyPixControl.clearValidators();
-              keyPixControl.setValidators([Validators.required, Validators.minLength(11), Validators.maxLength(11)]);
-              this.keyPixError = 'CPF deve ter 11 dígitos.';
-            } else {
-              keyPixControl.clearValidators();
-              keyPixControl.setValidators([Validators.required, Validators.minLength(14), Validators.maxLength(14)]);
-              this.keyPixError = 'CNPJ deve ter 14 dígitos.';
-            }
+            keyPixControl.setValidators([
+              Validators.required,
+              Validators.minLength(14),
+              Validators.maxLength(14)
+            ]);
+            this.keyPixError = 'CNPJ deve ter 14 dígitos.';
           }
           break;
+
         case PixType.Email:
-          keyPixControl.clearValidators();
-          keyPixControl.setValidators([Validators.required, Validators.email]);
+          keyPixControl.setValidators([
+            Validators.required,
+            Validators.email
+          ]);
           this.keyPixError = 'Por favor, insira um e-mail válido.';
           break;
+
         case PixType.Celular:
-          keyPixControl.clearValidators();
-          keyPixControl.setValidators([Validators.required]);
+          keyPixControl.setValidators([
+            Validators.required,
+            Validators.minLength(11)
+          ]);
           this.keyPixError = 'Por favor, insira um número de celular válido.';
           break;
-        case 'Chave Aleatória':
-          keyPixControl.clearValidators();
-          keyPixControl.setValidators([Validators.required, Validators.minLength(32)]);
+
+        case PixType.ChaveAleatoria:
+          keyPixControl.setValidators([
+            Validators.required,
+            Validators.minLength(32)
+          ]);
           this.keyPixError = 'Chave Aleatória deve ter pelo menos 32 caracteres.';
           break;
-        case '':
-          if (!nature) {
-            keyPixControl.clearValidators();
-            keyPixControl.setValidators([Validators.required]);
-            this.keyPixError = 'Por favor, Selecione natureza do fornecedor ';
-          } else {
-            keyPixControl.clearValidators();
-            keyPixControl.setValidators([Validators.required]);
-            this.keyPixError = 'Por favor, Selecione o tipo da chave';
-          }
+
+        default:
+          this.keyPixError = nature
+            ? 'Por favor, selecione o tipo da chave.'
+            : 'Por favor, selecione a natureza do fornecedor.';
           break;
       }
     } else {
+      // Se acceptPix for false, limpa as validações
       keyPixControl.clearValidators();
     }
 
+    // Atualiza a validação
     keyPixControl.updateValueAndValidity();
   }
+
 
   getValidationErrors(control: IFormControl): string {
     const myFormControl = this.dynamicFormGroup.get(control.name);
@@ -286,6 +301,14 @@ export class DynamicFormComponent implements OnInit {
 
   formatCurrency(value: number): string {
     return `R$ ${value.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+  }
+
+  listenToPixTypeChanges(): void {
+    const pixTypeControl = this.dynamicFormGroup.get('pixType');
+    pixTypeControl?.valueChanges.subscribe(() => {
+      // Redefine o valor do campo keyPix para vazio sempre que o pixType mudar
+      this.dynamicFormGroup.get('keyPix')?.setValue('');
+    });
   }
 
 }
