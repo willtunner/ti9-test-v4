@@ -425,7 +425,7 @@
   },
   "product": {
     "formTitle": "Cadastro de produtos",
-    "titlePage": "Lista produtos 2",
+    "titlePage": "Lista produtos",
     "saveBtnTitle": "Salvar",
     "deleteBtnTitle": "Limpar",
     "updateBtnTitle": "Atualizar",
@@ -522,6 +522,6 @@
       "routeLink": "product",
       "icon": "inventory_2",
       "label": "Produtos"
-  }
+    }
   ]
 }

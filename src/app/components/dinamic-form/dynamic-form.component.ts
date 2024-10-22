@@ -45,6 +45,8 @@ export class DynamicFormComponent implements OnInit {
     public dialogRef: MatDialogRef<DynamicFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
+
+    if (data.data.pixType === 'CPF' || data.data.pixType === 'CNPJ' ) data.data.pixType = PixType.CPF_CNPJ;
     this.form = data.form;
     this.dynamicFormGroup = this.fb.group({}, { updateOn: 'submit' });
   }
