@@ -9,7 +9,8 @@ export class SendNotificationService {
 
   constructor(private snackBar: MatSnackBar) {}
 
-  showNotification(type: NotificationType, duration: number = 3000): void {
+  // Função para exibir notificação com base no tipo e na mensagem personalizada
+  customNotification(type: NotificationType, message: string, duration: number = 5000): void {
     let panelClass = '';
     switch (type) {
       case NotificationType.SUCCESS:
@@ -19,14 +20,15 @@ export class SendNotificationService {
         panelClass = 'info-snackbar';
         break;
       case NotificationType.ERROR:
-        panelClass = 'success-snackbar';
+        panelClass = 'error-snackbar';
         break;
       default:
         panelClass = 'default-snackbar';
         break;
     }
 
-    this.snackBar.open(type, 'Fechar', {
+    // Exibe a notificação personalizada
+    this.snackBar.open(message, 'Fechar', {
       duration,
       panelClass: ['custom-snackbar', panelClass],
     });

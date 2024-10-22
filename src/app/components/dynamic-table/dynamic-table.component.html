@@ -20,7 +20,8 @@
   <ng-container [matColumnDef]="column">
     <th mat-header-cell *matHeaderCellDef> {{ column | titlecase }} </th>
     <td mat-cell *matCellDef="let element"
-    [ngClass]="{'mid-cell': column === 'Chave Pix' || column === 'Observação', 'small-cell': column === 'Tipo Pix'}">
+    [ngClass]="{'mid-cell': column === 'Chave Pix' || column === 'Observação',
+              'small-cell': column === 'Tipo Pix' || column === 'Aceita Pix'}">
       {{ element[column] }}
     </td>
   </ng-container>

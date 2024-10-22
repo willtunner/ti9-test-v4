@@ -1,13 +1,13 @@
 .dynamic-table {
     width: 100%;
   }
-  
+
   .no-records-message {
     margin: 20px 0;
     color: #888;
     text-align: center;
   }
-  
+
   button.mat-icon-button {
     margin-right: 8px;
   }
@@ -17,17 +17,17 @@
     width: 100%;
     margin-top: 20px;
   }
-  
+
   .mat-header-cell {
     font-weight: bold;
     background-color: #f5f5f5;
   }
-  
+
   .mat-cell {
     text-align: center;
     padding: 10px;
   }
-  
+
 button.mat-icon-button {
   background-color: transparent;
 }
@@ -52,16 +52,23 @@ button.mat-icon-button {
 }
 
 .base-filter {
-  display: flex; /* Usado para colocar os elementos lado a lado */
-  align-items: baseline; /* Alinha verticalmente os elementos ao centro */
+  display: flex;
+  align-items: baseline;
 }
 
 .no-border-radius {
-  border-radius: 0; /* Remove bordas arredondadas do botão */
+  border-radius: 0;
 }
 
 .mid-cell {
   max-width: 120px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.small-cell {
+  max-width: 100px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

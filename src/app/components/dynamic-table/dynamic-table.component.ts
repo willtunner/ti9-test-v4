@@ -25,7 +25,7 @@ import { NotificationType } from '../../enum/notificationType.enum';
   templateUrl: './dynamic-table.component.html',
   styleUrl: './dynamic-table.component.css'
 })
-export class DynamicTableComponent<T> {
+export class DynamicTableComponent {
   displayedColumns: string[] = [];
   dataSource = new MatTableDataSource<any>();
   dynamicForm!: IForm;
@@ -60,6 +60,8 @@ export class DynamicTableComponent<T> {
       const transformedItems = items.map((item: any) => {
         const rowData: any = {};
 
+
+        if (this.dynamicForm?.formControls) {
         this.dynamicForm.formControls.forEach(control => {
           if (control.name === 'active' || control.name === 'acceptPix') {
             rowData[control.label] = item[control.name] ? 'sim' : 'não';
@@ -71,14 +73,14 @@ export class DynamicTableComponent<T> {
         rowData['originalData'] = item;
 
         return rowData;
-      });
+      }});
 
       this.dataSource.data = transformedItems;
     } else {
       this.dataSource.data = items;
     }
   }
-  
+
   applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -96,7 +98,7 @@ export class DynamicTableComponent<T> {
       if (result) {
         this.crudService.addItem(result);
         this.getData();
-        this.notificationService.showNotification(NotificationType.SUCCESS);
+        this.notificationService.customNotification(NotificationType.SUCCESS, 'Operação realizada com sucesso!');
         this.getData();
       }
     });
@@ -116,7 +118,7 @@ export class DynamicTableComponent<T> {
       if (updatedSupplier) {
         this.crudService.updateItem(index, updatedSupplier);
         this.getData();
-        this.notificationService.showNotification(NotificationType.UPDATE);
+        this.notificationService.customNotification(NotificationType.UPDATE, 'Os dados foram atualizados com sucesso.');
       }
     });
   }
@@ -132,7 +134,7 @@ export class DynamicTableComponent<T> {
       if (result) {
         this.crudService.removeItem(index);
         this.getData();
-        this.notificationService.showNotification(NotificationType.ERROR);
+        this.notificationService.customNotification(NotificationType.SUCCESS, 'Excluido com sucesso!');
       }
     })
   }

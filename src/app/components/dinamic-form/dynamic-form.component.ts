@@ -38,7 +38,7 @@ export class DynamicFormComponent implements OnInit {
   form: IForm;
   dynamicFormGroup: FormGroup;
   keyPixError: string | null = null;
-  activeDebugger = false;
+  activeDebugger = true;
 
   constructor(
     private fb: FormBuilder,
@@ -58,6 +58,8 @@ export class DynamicFormComponent implements OnInit {
     const natureControl = this.dynamicFormGroup.get('nature');
     natureControl?.valueChanges.subscribe(() => {
       this.applyPixTypeValidators();
+      this.dynamicFormGroup.get('keyPix')?.setValue(null);
+
     });
   }
 
@@ -267,10 +269,10 @@ export class DynamicFormComponent implements OnInit {
     // Remove todos os caracteres não numéricos, exceto a vírgula para o formato monetário
     const numericValue = value.replace(/[^0-9,.]/g, '');
     console.log(numericValue);
-    
+
     // Tenta converter o valor para um número
     const parsedValue = parseFloat(numericValue.replace(',', '.'));
-    
+
     // Verifica se o valor foi corretamente convertido para um número
     if (!isNaN(parsedValue)) {
       // Converte para valor monetário e atualiza o formulário
@@ -281,9 +283,9 @@ export class DynamicFormComponent implements OnInit {
       this.dynamicFormGroup.get('price')?.setValue('', { emitEvent: false });
     }
   }
-  
+
   formatCurrency(value: number): string {
     return `R$ ${value.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
   }
-  
+
 }

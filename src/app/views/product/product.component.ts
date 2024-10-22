@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CrudServiceService } from '../../services/crud-service.service';
 import { DynamicTableComponent } from '../../components/dynamic-table/dynamic-table.component';
+import { EntityType } from '../../enum/entityType.enum';
 
 @Component({
   selector: 'app-product',
@@ -20,7 +21,7 @@ export class ProductComponent {
   }
 
   ngOnInit(): void {
-    this.crudService.setEntityType('product');
+    this.crudService.setEntityType(EntityType.PRODUCTS);
   }
 
 }

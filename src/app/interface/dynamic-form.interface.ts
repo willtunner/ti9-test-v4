@@ -19,8 +19,16 @@ export interface IFormControl {
 }
 
 export interface IOptions {
-  id: string
+  id: number
   value: string
+  nome: string
+  regiao: Regiao
+}
+
+export interface Regiao {
+  id: number
+  value: string
+  nome: string
 }
 
 export interface IValidator {

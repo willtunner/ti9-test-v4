@@ -83,12 +83,274 @@
         "label": "Estado",
         "options": [
           {
-            "id": "1",
-            "value": "SP"
+            "id": 11,
+            "value": "RO",
+            "nome": "Rondônia",
+            "regiao": {
+              "id": 1,
+              "value": "N",
+              "nome": "Norte"
+            }
           },
           {
-            "id": "2",
-            "value": "PA"
+            "id": 12,
+            "value": "AC",
+            "nome": "Acre",
+            "regiao": {
+              "id": 1,
+              "value": "N",
+              "nome": "Norte"
+            }
+          },
+          {
+            "id": 13,
+            "value": "AM",
+            "nome": "Amazonas",
+            "regiao": {
+              "id": 1,
+              "value": "N",
+              "nome": "Norte"
+            }
+          },
+          {
+            "id": 14,
+            "value": "RR",
+            "nome": "Roraima",
+            "regiao": {
+              "id": 1,
+              "value": "N",
+              "nome": "Norte"
+            }
+          },
+          {
+            "id": 15,
+            "value": "PA",
+            "nome": "Pará",
+            "regiao": {
+              "id": 1,
+              "value": "N",
+              "nome": "Norte"
+            }
+          },
+          {
+            "id": 16,
+            "value": "AP",
+            "nome": "Amapá",
+            "regiao": {
+              "id": 1,
+              "value": "N",
+              "nome": "Norte"
+            }
+          },
+          {
+            "id": 17,
+            "value": "TO",
+            "nome": "Tocantins",
+            "regiao": {
+              "id": 1,
+              "value": "N",
+              "nome": "Norte"
+            }
+          },
+          {
+            "id": 21,
+            "value": "MA",
+            "nome": "Maranhão",
+            "regiao": {
+              "id": 2,
+              "value": "NE",
+              "nome": "Nordeste"
+            }
+          },
+          {
+            "id": 22,
+            "value": "PI",
+            "nome": "Piauí",
+            "regiao": {
+              "id": 2,
+              "value": "NE",
+              "nome": "Nordeste"
+            }
+          },
+          {
+            "id": 23,
+            "value": "CE",
+            "nome": "Ceará",
+            "regiao": {
+              "id": 2,
+              "value": "NE",
+              "nome": "Nordeste"
+            }
+          },
+          {
+            "id": 24,
+            "value": "RN",
+            "nome": "Rio Grande do Norte",
+            "regiao": {
+              "id": 2,
+              "value": "NE",
+              "nome": "Nordeste"
+            }
+          },
+          {
+            "id": 25,
+            "value": "PB",
+            "nome": "Paraíba",
+            "regiao": {
+              "id": 2,
+              "value": "NE",
+              "nome": "Nordeste"
+            }
+          },
+          {
+            "id": 26,
+            "value": "PE",
+            "nome": "Pernambuco",
+            "regiao": {
+              "id": 2,
+              "value": "NE",
+              "nome": "Nordeste"
+            }
+          },
+          {
+            "id": 27,
+            "value": "AL",
+            "nome": "Alagoas",
+            "regiao": {
+              "id": 2,
+              "value": "NE",
+              "nome": "Nordeste"
+            }
+          },
+          {
+            "id": 28,
+            "value": "SE",
+            "nome": "Sergipe",
+            "regiao": {
+              "id": 2,
+              "value": "NE",
+              "nome": "Nordeste"
+            }
+          },
+          {
+            "id": 29,
+            "value": "BA",
+            "nome": "Bahia",
+            "regiao": {
+              "id": 2,
+              "value": "NE",
+              "nome": "Nordeste"
+            }
+          },
+          {
+            "id": 31,
+            "value": "MG",
+            "nome": "Minas Gerais",
+            "regiao": {
+              "id": 3,
+              "value": "SE",
+              "nome": "Sudeste"
+            }
+          },
+          {
+            "id": 32,
+            "value": "ES",
+            "nome": "Espírito Santo",
+            "regiao": {
+              "id": 3,
+              "value": "SE",
+              "nome": "Sudeste"
+            }
+          },
+          {
+            "id": 33,
+            "value": "RJ",
+            "nome": "Rio de Janeiro",
+            "regiao": {
+              "id": 3,
+              "value": "SE",
+              "nome": "Sudeste"
+            }
+          },
+          {
+            "id": 35,
+            "value": "SP",
+            "nome": "São Paulo",
+            "regiao": {
+              "id": 3,
+              "value": "SE",
+              "nome": "Sudeste"
+            }
+          },
+          {
+            "id": 41,
+            "value": "PR",
+            "nome": "Paraná",
+            "regiao": {
+              "id": 4,
+              "value": "S",
+              "nome": "Sul"
+            }
+          },
+          {
+            "id": 42,
+            "value": "SC",
+            "nome": "Santa Catarina",
+            "regiao": {
+              "id": 4,
+              "value": "S",
+              "nome": "Sul"
+            }
+          },
+          {
+            "id": 43,
+            "value": "RS",
+            "nome": "Rio Grande do Sul",
+            "regiao": {
+              "id": 4,
+              "value": "S",
+              "nome": "Sul"
+            }
+          },
+          {
+            "id": 50,
+            "value": "MS",
+            "nome": "Mato Grosso do Sul",
+            "regiao": {
+              "id": 5,
+              "value": "CO",
+              "nome": "Centro-Oeste"
+            }
+          },
+          {
+            "id": 51,
+            "value": "MT",
+            "nome": "Mato Grosso",
+            "regiao": {
+              "id": 5,
+              "value": "CO",
+              "nome": "Centro-Oeste"
+            }
+          },
+          {
+            "id": 52,
+            "value": "GO",
+            "nome": "Goiás",
+            "regiao": {
+              "id": 5,
+              "value": "CO",
+              "nome": "Centro-Oeste"
+            }
+          },
+          {
+            "id": 53,
+            "value": "DF",
+            "nome": "Distrito Federal",
+            "regiao": {
+              "id": 5,
+              "value": "CO",
+              "nome": "Centro-Oeste"
+            }
           }
         ],
         "type": "select",
@@ -163,7 +425,7 @@
   },
   "product": {
     "formTitle": "Cadastro de produtos",
-    "titlePage": "Lista produtos",
+    "titlePage": "Lista produtos 2",
     "saveBtnTitle": "Salvar",
     "deleteBtnTitle": "Limpar",
     "updateBtnTitle": "Atualizar",
@@ -240,7 +502,13 @@
         ],
         "type": "select",
         "class": "",
-        "validators": []
+        "validators": [
+          {
+            "validatorName": "required",
+            "required": true,
+            "message": "Campo Obrigatório!"
+          }
+        ]
       }
     ]
   },
