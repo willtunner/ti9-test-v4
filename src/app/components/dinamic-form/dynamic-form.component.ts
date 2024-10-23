@@ -246,9 +246,9 @@ export class DynamicFormComponent implements OnInit {
       if (acceptPix) {
         if (pixType === PixType.CPF_CNPJ) {
           if (nature === NatureType.Pessoa_fisica) {
-            formValue.pixType = "CPF";  // Se natureza for Pessoa Física, pixType será CPF
+            formValue.pixType = "CPF"; 
           } else if (nature === NatureType.Pessoa_Jurídica) {
-            formValue.pixType = "CNPJ"; // Se natureza for Pessoa Jurídica, pixType será CNPJ
+            formValue.pixType = "CNPJ"; 
           }
         }
         // Se pixType não for CPF ou CNPJ, manter o valor original
