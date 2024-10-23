@@ -45,11 +45,9 @@ export class AppSublevelMenuComponent {
   constructor(public router: Router) { }
 
   ngOnInit(): void {
-    console.log(this.data);
   }
 
   handleClick(item: any): void {
-    console.log('handleClick', item);
     if (!this.multiple) {
       if (this.data.items && this.data.items.length > 0) {
         for(let modelItem of this.data.items) {

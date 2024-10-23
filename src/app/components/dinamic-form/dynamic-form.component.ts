@@ -35,60 +35,69 @@ import { NatureType } from '../../enum/naturetype.enum';
   providers: [provideNgxMask()],
 })
 export class DynamicFormComponent implements OnInit {
-  form: IForm;
-  dynamicFormGroup: FormGroup;
-  keyPixError: string | null = null;
-  activeDebugger = true;
+  form: IForm; // Armazena o objeto de formulário que será utilizado no template
+  dynamicFormGroup: FormGroup; // FormGroup dinâmico que conterá os controles do formulário
+  keyPixError: string | null = null; // Variável para armazenar erros relacionados à chave Pix
+  activeDebugger = false; // Variável auxiliar de depuração
 
   constructor(
-    private fb: FormBuilder,
-    public dialogRef: MatDialogRef<DynamicFormComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    private fb: FormBuilder, 
+    public dialogRef: MatDialogRef<DynamicFormComponent>, // Referência ao diálogo, permitindo fechamento e controle de estado
+    @Inject(MAT_DIALOG_DATA) public data: any // Injeta os dados passados para o diálogo
   ) {
 
+    // Verifica o tipo de chave Pix e ajusta o valor se for CPF ou CNPJ
     if (data.data.pixType === 'CPF' || data.data.pixType === 'CNPJ' ) data.data.pixType = PixType.CPF_CNPJ;
-    this.form = data.form;
-    this.dynamicFormGroup = this.fb.group({}, { updateOn: 'submit' });
+
+    this.form = data.form; // Atribui o formulário dos dados injetados à propriedade form
+    this.dynamicFormGroup = this.fb.group({}, { updateOn: 'submit' }); // Cria um FormGroup vazio com atualização no 'submit'
   }
 
   ngOnInit(): void {
-    this.initializeForm();
-    this.listenToNatureChanges();
-    this.listenToPixTypeChanges();
+    this.initializeForm(); // Inicializa o formulário e define listeners para mudanças no formulário
+    this.listenToNatureChanges(); // Observa mudanças na natureza (pessoa física/jurídica)
+    this.listenToPixTypeChanges(); // Observa mudanças no tipo de chave Pix
   }
 
   listenToNatureChanges(): void {
+    // Obtém o controle da natureza (tipo de fornecedor) e reseta a chave Pix sempre que mudar
     const natureControl = this.dynamicFormGroup.get('nature');
     natureControl?.valueChanges.subscribe(() => {
       this.dynamicFormGroup.get('keyPix')?.setValue(null);
-      this.applyPixTypeValidators();
+      this.applyPixTypeValidators(); // Aplica os validadores baseados na natureza e tipo de chave Pix
     });
   }
 
   initializeForm(): void {
+    // Inicializa o formulário com base nos dados injetados
     if (this.data) {
-      const formGroupConfig = this.createFormGroupConfig();
-      this.dynamicFormGroup = this.fb.group(formGroupConfig);
-      this.listenToAcceptPixChanges();
+      const formGroupConfig = this.createFormGroupConfig(); // Cria a configuração para o FormGroup
+      this.dynamicFormGroup = this.fb.group(formGroupConfig); // Atribui a configuração ao FormGroup
+      this.listenToAcceptPixChanges(); // Observa mudanças no campo 'acceptPix'
     }
   }
 
   createFormGroupConfig(): { [key: string]: any } {
+    // Cria a configuração do FormGroup com base nos controles e validadores
     const formGroupConfig: { [key: string]: any } = {};
 
+    // Itera sobre os controles do formulário
     this.form.formControls.forEach((control: IFormControl) => {
-      const controlValidators = this.createValidators(control.validators);
-      let controlValue = (this.data.data[control.name] ?? control.value) || '';
+      const controlValidators = this.createValidators(control.validators); // Cria os validadores
+      let controlValue = (this.data.data[control.name] ?? control.value) || ''; // Define o valor inicial
+
       if (control.name === 'acceptPix') {
-        controlValue = controlValue === 'true' || controlValue === true ? true : false;
+        controlValue = controlValue === 'true' || controlValue === true ? true : false; // Verifica e ajusta o valor de acceptPix
       }
-      formGroupConfig[control.name] = [controlValue, controlValidators];
+
+      formGroupConfig[control.name] = [controlValue, controlValidators]; // Atribui o valor e validadores ao FormGroup
     });
 
-    return formGroupConfig;
+    return formGroupConfig; // Retorna a configuração do FormGroup
   }
 
   createValidators(validators: IValidator[]): any[] {
+    // Cria validadores com base nas regras especificadas no json
     if (!validators) return [];
     return validators.map(val => {
       switch (val.validatorName) {
@@ -109,6 +118,8 @@ export class DynamicFormComponent implements OnInit {
   }
 
   updateKeyPixValidation(acceptPix: boolean): void {
+
+    // Atualiza a validação do campo chave Pix com base no valor de 'acceptPix'
     const keyPixControl = this.dynamicFormGroup.get('keyPix');
     if (!keyPixControl) return;
 
@@ -122,10 +133,13 @@ export class DynamicFormComponent implements OnInit {
   }
 
   onPixTypeChange(event: MatSelectChange): void {
+     // Atualiza os validadores da chave Pix quando o tipo de chave mudar
     this.applyPixTypeValidators();
   }
 
   applyPixTypeValidators(): void {
+    
+     // Aplica os validadores apropriados à chave Pix com base no tipo de chave e natureza
     const keyPixControl = this.dynamicFormGroup.get('keyPix');
     const pixTypeControl = this.dynamicFormGroup.get('pixType');
     const natureControl = this.dynamicFormGroup.get('nature');
@@ -204,20 +218,23 @@ export class DynamicFormComponent implements OnInit {
   }
 
 
+  // Função que retorna a mensagem de erro de validação para um controle de formulário
   getValidationErrors(control: IFormControl): string {
     const myFormControl = this.dynamicFormGroup.get(control.name);
-    if (control.name === 'keyPix' && this.keyPixError) {
-      return this.keyPixError;
-    }
+    // Se o controle for 'keyPix' e houver um erro específico de keyPix, retorna esse erro
+    if (control.name === 'keyPix' && this.keyPixError) return this.keyPixError; 
+
+    // Se o controle estiver inválido e já tiver sido tocado, retorna a mensagem de erro correspondente
     if (myFormControl?.invalid && myFormControl?.touched) {
       return control.validators?.find(v => myFormControl.hasError(v.validatorName as string))?.message || '';
     }
+
     return '';
   }
 
   onsubmit(): void {
+     // Marca todos os campos do formulário como "tocados" para que as validações sejam exibidas
     this.dynamicFormGroup.markAllAsTouched();
-
 
     if (this.dynamicFormGroup.valid) {
       const formValue = this.dynamicFormGroup.value;
@@ -225,6 +242,7 @@ export class DynamicFormComponent implements OnInit {
       const pixType = formValue.pixType;
       const nature = formValue.nature;
 
+      // Se o pagamento com Pix for marcado no front
       if (acceptPix) {
         if (pixType === PixType.CPF_CNPJ) {
           if (nature === NatureType.Pessoa_fisica) {
@@ -235,19 +253,21 @@ export class DynamicFormComponent implements OnInit {
         }
         // Se pixType não for CPF ou CNPJ, manter o valor original
       } else {
+         // Se o pagamento com Pix não for aceito, limpa os campos 'pixType' e 'keyPix'
         formValue.pixType = "";
         formValue.keyPix = "";
       }
-
+      // Fecha o diálogo passando os valores do formulário
       this.dialogRef.close(formValue);
-      console.log('formValue: ', formValue);
     }
   }
 
+  // Função chamada ao cancelar a ação, reseta o formulário
   onCancel(): void {
     this.dynamicFormGroup.reset();
   }
 
+  // Função que retorna o placeholder (texto de instrução) para o campo de chave Pix, baseado no tipo de Pix e na natureza
   getPixPlaceholder(): string {
     const pixType = this.dynamicFormGroup.get('pixType')?.value;
     const nature = this.dynamicFormGroup.get('nature')?.value;
@@ -260,6 +280,7 @@ export class DynamicFormComponent implements OnInit {
     }
   }
 
+  // Função que retorna a máscara de entrada apropriada para o campo chave Pix
   getPixMask(): string | null {
     const pixType = this.dynamicFormGroup.get('pixType')?.value;
     const nature = this.dynamicFormGroup.get('nature')?.value;
@@ -271,6 +292,7 @@ export class DynamicFormComponent implements OnInit {
     }
   }
 
+  // Função que retorna uma lista de controles de formulário inválidos com seus erros
   getInvalidControls(): { [key: string]: any } {
     const invalidControls: { [key: string]: any } = {};
     Object.keys(this.dynamicFormGroup.controls).forEach(key => {
@@ -282,29 +304,7 @@ export class DynamicFormComponent implements OnInit {
     return invalidControls;
   }
 
-  onPriceChange(value: string): void {
-    // Remove todos os caracteres não numéricos, exceto a vírgula para o formato monetário
-    const numericValue = value.replace(/[^0-9,.]/g, '');
-    console.log(numericValue);
-
-    // Tenta converter o valor para um número
-    const parsedValue = parseFloat(numericValue.replace(',', '.'));
-
-    // Verifica se o valor foi corretamente convertido para um número
-    if (!isNaN(parsedValue)) {
-      // Converte para valor monetário e atualiza o formulário
-      const formattedValue = this.formatCurrency(parsedValue / 100); // Divide por 100 para obter o valor em reais
-      this.dynamicFormGroup.get('price')?.setValue(formattedValue, { emitEvent: false });
-    } else {
-      // Se o valor não for válido, você pode querer resetar o campo ou lidar de outra forma
-      this.dynamicFormGroup.get('price')?.setValue('', { emitEvent: false });
-    }
-  }
-
-  formatCurrency(value: number): string {
-    return `R$ ${value.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
-  }
-
+  // Função que escuta mudanças no tipo de Pix e redefine a chave Pix quando o tipo muda
   listenToPixTypeChanges(): void {
     const pixTypeControl = this.dynamicFormGroup.get('pixType');
     pixTypeControl?.valueChanges.subscribe(() => {

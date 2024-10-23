@@ -23,25 +23,6 @@
             }
           }
 
-          <!-- @if(control.name === 'price') {
-            <div [class]="control.class">
-              <mat-form-field appearance="outline" class="full-width">
-                <mat-label>{{ control.label }}</mat-label>
-                <input matInput
-                       formControlName="{{ control.name }}"
-                       [mask]="'separator.2'"
-                       [dropSpecialCharacters]="false"
-                       (ngModelChange)="onPriceChange($event)"
-                       placeholder="R$ 0,00">
-                @if(dynamicFormGroup.get(control.name)?.invalid && dynamicFormGroup.get(control.name)?.touched) {
-                  <mat-error>
-                    {{ getValidationErrors(control) }}
-                  </mat-error>
-                }
-              </mat-form-field>
-            </div>
-          } -->
-
           @if(control.type === 'select' && control.name !== 'pixType') {
             <div [class]="control.class">
               <mat-form-field appearance="outline" class="full-width">
